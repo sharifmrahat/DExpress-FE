@@ -1,16 +1,17 @@
 import Header from "@/components/layout/Header";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
 import Footer from "@/components/layout/Footer";
 import Providers from "@/lib/Provider";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Poppins } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Lorry Lagbe",
   description: "Lorry Booking Application",
 };
+
+const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${poppins.className} bg-background`}>
           <Header />
           {children}
           <Footer />
