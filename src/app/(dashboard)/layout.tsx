@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/services/auth.service";
 import DashboardContents from "@/components/dashboard/DashboardContents";
 import { useEffect, useState } from "react";
-import Header from "@/components/layout/Header";
+import Header from "@/components/common/Header";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const userLoggedIn = isLoggedIn();

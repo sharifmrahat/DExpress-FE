@@ -1,8 +1,8 @@
-import Header from "@/components/layout/Header";
+import Header from "@/components/common/Header";
 import "./globals.css";
 import type { Metadata } from "next";
 
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/common/Footer";
 import Providers from "@/lib/Provider";
 import { Poppins } from "next/font/google";
 
