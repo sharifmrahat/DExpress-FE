@@ -21,8 +21,8 @@ const SignupPage = () => {
       if (res?.accessToken) {
         router.push("/profile");
         // message.success("User logged in successfully!");
+        storeUserInfo({ accessToken: res?.accessToken });
       }
-      storeUserInfo({ accessToken: res?.accessToken });
       // console.log(res);
     } catch (err: any) {
       console.error(err.message);

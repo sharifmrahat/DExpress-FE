@@ -40,7 +40,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`${poppins.className} bg-primary sticky top-0 z-50`}>
+    <header className={`${poppins.className} bg-primary sticky top-0 z-30`}>
       <nav
         className="mx-auto flex lg:max-w-7xl items-center justify-between py-4"
         aria-label="Global"
