@@ -17,6 +17,9 @@ import {
 import { Oswald } from "next/font/google";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+import { getUserInfo, removeUserInfo } from "@/services/auth.service";
+import { authKey } from "@/constants/storageKey";
+import { useRouter } from "next/navigation";
 
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
@@ -27,9 +30,13 @@ function classNames(...classes: string[]) {
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { userId, name, email, role, imageUrl } = getUserInfo() as any;
 
-  const session = {
-    user: { name: "John Doe", email: "johndoe@gmail.com", image: "" },
+  const router = useRouter();
+
+  const signOut = () => {
+    removeUserInfo(authKey);
+    router.push("/login");
   };
 
   return (
@@ -96,16 +103,16 @@ export default function Header() {
             <SquaresPlusIcon className="w-4 h-4 mr-3 inline-block" />
             Book Now
           </Link>
-          {session?.user ? (
+          {userId ? (
             <Menu as="div" className="relative ml-3">
               <div>
                 <Menu.Button className="relative flex rounded-full bg-white text-sm border-2 border-secondary">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  {session.user.image ? (
+                  {imageUrl ? (
                     <img
                       className="h-10 w-10 rounded-full"
-                      src={session.user.image}
+                      src={imageUrl}
                       alt=""
                     />
                   ) : (
@@ -125,7 +132,7 @@ export default function Header() {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <Menu.Item>
                     <p className="px-4 py-1 text-primary font-semibold text-center">
-                      {session.user.name}
+                      {userId}
                     </p>
                   </Menu.Item>
                   <Menu.Item>
@@ -157,7 +164,7 @@ export default function Header() {
                   <Menu.Item>
                     {({ active }) => (
                       <div
-                        // onClick={() => signOut()}
+                        onClick={() => signOut()}
                         className={classNames(
                           active ? "bg-red-200 text-primary" : "text-primary",
                           "block px-4 py-2 text-sm text-red-600 cursor-pointer"
@@ -217,16 +224,16 @@ export default function Header() {
                   <SquaresPlusIcon className="w-4 h-4 mr-3 inline-block" />
                   Book Now
                 </Link>
-                {session?.user ? (
+                {userId ? (
                   <Menu as="div" className="relative ml-3 w-fit">
                     <div>
                       <Menu.Button className="relative flex rounded-full bg-white text-sm border-2 border-secondary w-fit">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        {session.user.image ? (
+                        {imageUrl ? (
                           <img
                             className="h-10 w-10 rounded-full"
-                            src={session.user.image}
+                            src={imageUrl}
                             alt=""
                           />
                         ) : (
@@ -246,7 +253,7 @@ export default function Header() {
                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           <p className="px-4 py-1 text-primary font-semibold text-center">
-                            {session.user.name}
+                            {userId}
                           </p>
                         </Menu.Item>
                         <Menu.Item>
@@ -280,7 +287,7 @@ export default function Header() {
                         <Menu.Item>
                           {({ active }) => (
                             <div
-                              //   onClick={() => signOut()}
+                              onClick={() => signOut()}
                               className={classNames(
                                 active
                                   ? "bg-red-200 text-primary"
