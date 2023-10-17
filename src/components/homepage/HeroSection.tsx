@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-// import heroImage from "@/assets/images/hero-image.jpeg";
+import heroImage from "@/assets/images/heroImage.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -49,7 +49,7 @@ export default function HeroSection() {
       <div className="pt-5 lg:pt-0 mx-auto lg:max-w-7xl">
         <Image
           className="py-5 w-[280px] mx-auto rounded"
-          src=""
+          src={heroImage}
           alt="heroImage"
           width={280}
           height={200}

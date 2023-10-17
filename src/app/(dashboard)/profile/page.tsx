@@ -1,9 +1,21 @@
 "use client";
+import { useUserProfileQuery } from "@/redux/api/userApi";
+
 const ProfilePage = () => {
+  const { data: userProfile, isLoading } = useUserProfileQuery({
+    refetchOnMountOrArgChange: true,
+  });
   return (
-    <div>
-      <h1>Welcome back to your profile</h1>
-    </div>
+    <>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <h1>Welcome back to your profile</h1>
+          <p>User: {userProfile?.data?.name}</p>
+        </div>
+      )}
+    </>
   );
 };
 

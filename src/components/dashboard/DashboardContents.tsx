@@ -235,9 +235,7 @@ const DashboardContents = ({ children }: { children: React.ReactNode }) => {
                     </Transition.Root>
 
                     <div className="flex flex-1 flex-col">
-                      <section className="flex-1 bg-red-400">
-                        {children}
-                      </section>
+                      <section className="flex-1">{children}</section>
                     </div>
                   </div>
                 }

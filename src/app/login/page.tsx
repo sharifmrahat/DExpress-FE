@@ -7,21 +7,21 @@ import { Oswald } from "next/font/google";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import { useRouter } from "next/navigation";
 import { storeUserInfo } from "@/services/auth.service";
+import { useUserProfileQuery } from "@/redux/api/userApi";
 
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
 const LoginPage = () => {
-  const [userLogin] = useUserLoginMutation();
+  const [userLogin, { isLoading, isError }] = useUserLoginMutation();
+  const { refetch } = useUserProfileQuery({});
   const router = useRouter();
-
-  // console.log(isLoggedIn());
 
   const handleLoginSubmit = async (data: any) => {
     try {
       const res = await userLogin({ ...data }).unwrap();
-      console.log(res);
       if (res?.accessToken) {
         storeUserInfo({ accessToken: res?.accessToken });
+        await refetch();
         router.push("/profile");
         // message.success("User logged in successfully!");
       }
@@ -47,7 +47,7 @@ const LoginPage = () => {
         </section>
         <section className="mb-10">
           <div className="bg-white p-6 rounded shadow">
-            <LoginForm onSubmit={handleLoginSubmit} isLoading={false} />
+            <LoginForm onSubmit={handleLoginSubmit} isLoading={isLoading} />
             <p className="text-center mt-5 text-sm text-slate-700">
               {"Don't"} have an account?{" "}
               <Link

@@ -5,25 +5,40 @@ import Link from "next/link";
 import { Oswald } from "next/font/google";
 import SignupForm from "@/components/signup/SignupForm";
 import { useRouter } from "next/navigation";
-import { useUserSignupMutation } from "@/redux/api/authApi";
+import {
+  useUserLoginMutation,
+  useUserSignupMutation,
+} from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
+import { useUserProfileQuery } from "@/redux/api/userApi";
 
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
 const SignupPage = () => {
-  const [userSignup] = useUserSignupMutation();
+  const [userSignup, { isLoading, isError }] = useUserSignupMutation();
+  const [userLogin, { isLoading: isLoginLoading, isError: isLoginError }] =
+    useUserLoginMutation();
+  const { refetch } = useUserProfileQuery({});
   const router = useRouter();
 
   const handleSignupSubmit = async (data: any) => {
     try {
       const res = await userSignup({ ...data }).unwrap();
-      // console.log(res);
-      if (res?.accessToken) {
-        router.push("/profile");
-        // message.success("User logged in successfully!");
-        storeUserInfo({ accessToken: res?.accessToken });
+      console.log(res);
+
+      if (res?.success) {
+        const loginRes = await userLogin({
+          email: data.email,
+          password: data.password,
+        }).unwrap();
+        console.log(loginRes);
+        if (loginRes.accessToken) {
+          // message.success("User logged in successfully!");
+          storeUserInfo({ accessToken: loginRes?.accessToken });
+          await refetch();
+          router.push("/profile");
+        }
       }
-      // console.log(res);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -45,7 +60,10 @@ const SignupPage = () => {
         </section>
         <section className="mb-10">
           <div className="bg-white p-6 rounded shadow">
-            <SignupForm isLoading={false} onSubmit={handleSignupSubmit} />
+            <SignupForm
+              isLoading={isLoading || isLoginLoading}
+              onSubmit={handleSignupSubmit}
+            />
             <p className="text-center mt-5 text-sm text-slate-700">
               Already have an account?{" "}
               <Link
