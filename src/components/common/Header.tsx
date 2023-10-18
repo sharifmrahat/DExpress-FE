@@ -17,14 +17,13 @@ import {
 import { Oswald } from "next/font/google";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
-import { removeUserInfo } from "@/services/auth.service";
+import { isLoggedIn, removeUserInfo } from "@/services/auth.service";
 import { authKey } from "@/constants/storageKey";
 import { useRouter } from "next/navigation";
 import { useUserProfileQuery } from "@/redux/api/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import { setProfile, handleLogout } from "@/redux/slice/profileSlice";
-import { getFromLocalStorage } from "@/utils/local-storage";
 
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
@@ -41,7 +40,7 @@ export default function Header() {
 
   const dispatch = useDispatch();
 
-  const token = getFromLocalStorage(authKey);
+  const userLoggedIn = isLoggedIn();
 
   const router = useRouter();
 
@@ -53,7 +52,7 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if (token) {
+    if (userLoggedIn) {
       refetch();
       if (data?.success) {
         dispatch(setProfile(data?.data));
@@ -61,7 +60,7 @@ export default function Header() {
     } else {
       dispatch(setProfile({}));
     }
-  }, [token, data, dispatch, refetch]);
+  }, [userLoggedIn, data, dispatch, refetch]);
 
   return (
     <header className={`${poppins.className} bg-primary sticky top-0 z-30`}>
