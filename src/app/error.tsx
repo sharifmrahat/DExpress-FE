@@ -1,13 +1,6 @@
 "use client";
 
-import { useRouter } from "next/router";
-
 const ErrorPage = () => {
-  const router = useRouter();
-
-  const handleGoBack = () => {
-    router.back(); // This will navigate back in the browser's history.
-  };
   return (
     <div className="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
       <div className="flex items-center justify-center w-12 bg-red-500">

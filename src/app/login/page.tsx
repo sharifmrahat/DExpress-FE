@@ -8,6 +8,7 @@ import { useUserLoginMutation } from "@/redux/api/authApi";
 import { useRouter } from "next/navigation";
 import { storeUserInfo } from "@/services/auth.service";
 import { useUserProfileQuery } from "@/redux/api/userApi";
+import { toast } from "react-toastify";
 
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
@@ -22,12 +23,11 @@ const LoginPage = () => {
       if (res?.accessToken) {
         storeUserInfo({ accessToken: res?.accessToken });
         await refetch();
+        toast.success(res?.message);
         router.push("/profile");
-        // message.success("User logged in successfully!");
       }
-      // console.log(res);
     } catch (err: any) {
-      console.error(err.message);
+      console.error(err);
     }
   };
   return (

@@ -3,6 +3,7 @@ import { authKey } from "@/constants/storageKey";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -31,7 +32,7 @@ instance.interceptors.response.use(
   function (response) {
     const responseObject: ResponseSuccessType = {
       data: response?.data,
-      meta: response.data.meta,
+      meta: response?.data.meta,
     };
     return responseObject;
   },
@@ -43,6 +44,7 @@ instance.interceptors.response.use(
         message: error?.response?.data?.message || "Something went wrong",
         errorMessages: error?.response?.data?.message,
       };
+      toast.error(responseObject.message);
       return responseObject;
     }
 

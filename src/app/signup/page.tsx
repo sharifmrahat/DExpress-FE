@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-// import loginImage from "@/assets/images/login-image.jpg";
 "use client";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
@@ -11,6 +9,7 @@ import {
 } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
 import { useUserProfileQuery } from "@/redux/api/userApi";
+import { toast } from "react-toastify";
 
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
@@ -24,18 +23,16 @@ const SignupPage = () => {
   const handleSignupSubmit = async (data: any) => {
     try {
       const res = await userSignup({ ...data }).unwrap();
-      console.log(res);
-
       if (res?.success) {
+        toast.success(res?.message);
         const loginRes = await userLogin({
           email: data.email,
           password: data.password,
         }).unwrap();
-        console.log(loginRes);
         if (loginRes.accessToken) {
-          // message.success("User logged in successfully!");
           storeUserInfo({ accessToken: loginRes?.accessToken });
           await refetch();
+          toast.success(loginRes?.message);
           router.push("/profile");
         }
       }
