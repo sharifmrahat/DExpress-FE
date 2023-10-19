@@ -10,7 +10,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: loginData,
       }),
-      invalidatesTags: [tagTypes.user],
+      invalidatesTags: [tagTypes.CUSTOMER],
     }),
     userSignup: build.mutation({
       query: (signupData) => ({
@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: signupData,
       }),
-      invalidatesTags: [tagTypes.user],
+      invalidatesTags: [tagTypes.CUSTOMER],
     }),
   }),
 });

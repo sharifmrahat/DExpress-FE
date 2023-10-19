@@ -7,7 +7,9 @@ type updateProfileProps = {
   isOpen: boolean;
   children: React.ReactNode;
   closeModal: () => void;
-  submitModal: () => void;
+  buttonType?: "button" | "submit" | "reset";
+  submitModal: any;
+  enableButton?: boolean;
 };
 
 const Modal = ({
@@ -16,6 +18,8 @@ const Modal = ({
   children,
   closeModal,
   submitModal,
+  buttonType = "button",
+  enableButton = false,
 }: updateProfileProps) => {
   return (
     <>
@@ -45,24 +49,26 @@ const Modal = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white px-4 pt-3 text-left align-middle shadow-xl transition-all">
                   {children}
-                  <div className="mt-4 flex flex-row justify-end items-center gap-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                      onClick={submitModal}
-                    >
-                      {buttonLabel}
-                    </button>
-                  </div>
+                  {enableButton && (
+                    <div className="mt-4 flex flex-row justify-end items-center gap-4">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-1 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type={buttonType}
+                        className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-1 text-sm font-medium text-white hover:bg-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        onClick={submitModal}
+                      >
+                        {buttonLabel}
+                      </button>
+                    </div>
+                  )}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
