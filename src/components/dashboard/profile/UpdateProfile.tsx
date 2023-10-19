@@ -15,11 +15,9 @@ import { toast } from "react-toastify";
 const UpdateProfile = ({
   isOpen,
   setIsOpen,
-  openModal,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  openModal: () => void;
 }) => {
   const {
     data: userProfile,

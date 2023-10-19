@@ -1,11 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import Spinner from "@/components/common/Spinner";
-import { useAllUsersQuery, useUserProfileQuery } from "@/redux/api/userApi";
+import {
+  useAllUsersQuery,
+  useDeleteUserMutation,
+  useUserProfileQuery,
+} from "@/redux/api/userApi";
 import profileAvatar from "@/assets/images/profileAvatar.png";
 import { IUser } from "@/types";
 import UpdateUser from "@/components/dashboard/admin/UpdateUser";
 import { useState } from "react";
+import Modal from "@/components/ui/Modal";
+import { toast } from "react-toastify";
+import DeleteUser from "@/components/dashboard/admin/DeleteUser";
 
 const ProfilePage = () => {
   const {
@@ -16,17 +23,27 @@ const ProfilePage = () => {
     refetchOnMountOrArgChange: true,
   });
 
+  const [deleteUser] = useDeleteUserMutation();
+
   const [userId, setUserId] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+
   let [isOpen, setIsOpen] = useState(false);
+  let [openAlert, setOpenAlert] = useState(false);
 
   function openModal() {
     setIsOpen(true);
   }
+
   const handleUpdateProfile = (id: string) => {
     setUserId(id);
     openModal();
   };
 
+  const handleDeleteUser = async (id: string) => {
+    setDeleteId(id);
+    setOpenAlert(true);
+  };
   return (
     <>
       {isLoading ? (
@@ -131,10 +148,15 @@ const ProfilePage = () => {
                               {person.role}
                             </td>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex flex-row gap-3 justify-end">
-                              <button className="bg-red-200 text-red-800 py-1 px-2 rounded text-xs">
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteUser(person.id)}
+                                className="bg-red-200 text-red-800 py-1 px-2 rounded text-xs"
+                              >
                                 Delete
                               </button>
                               <button
+                                type="button"
                                 onClick={() => handleUpdateProfile(person?.id)}
                                 className="bg-teal-700 text-white py-1 px-2 rounded text-xs"
                               >
@@ -154,9 +176,16 @@ const ProfilePage = () => {
           {userId && (
             <UpdateUser
               isOpen={isOpen}
-              openModal={openModal}
               setIsOpen={setIsOpen}
               userId={userId}
+              refetchAll={refetchAll}
+            />
+          )}
+          {deleteId && (
+            <DeleteUser
+              isOpen={openAlert}
+              setIsOpen={setOpenAlert}
+              userId={deleteId}
               refetchAll={refetchAll}
             />
           )}

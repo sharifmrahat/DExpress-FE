@@ -2,13 +2,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 
-type updateProfileProps = {
+type ModalProps = {
   buttonLabel?: string;
   isOpen: boolean;
   children: React.ReactNode;
   closeModal: () => void;
   buttonType?: "button" | "submit" | "reset";
-  submitModal: any;
+  submitModal?: any;
   enableButton?: boolean;
 };
 
@@ -20,7 +20,7 @@ const Modal = ({
   submitModal,
   buttonType = "button",
   enableButton = false,
-}: updateProfileProps) => {
+}: ModalProps) => {
   return (
     <>
       {" "}

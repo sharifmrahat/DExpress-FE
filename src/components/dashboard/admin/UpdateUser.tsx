@@ -15,13 +15,11 @@ import { toast } from "react-toastify";
 const UpdateUser = ({
   isOpen,
   setIsOpen,
-  openModal,
   userId,
   refetchAll,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  openModal: () => void;
   userId: string;
   refetchAll: any;
 }) => {
