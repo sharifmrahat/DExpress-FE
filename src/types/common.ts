@@ -115,7 +115,13 @@ export interface IBooking {
   id: string;
   startTime: Date;
   endTime: Date;
+  total: number;
+  status: BookingStatus;
+  reviews: IReview;
   lorryId: string;
+  lorry: ILorry;
+  userId: string;
+  user: IUser;
   createdAt: Date;
   updateAt: Date;
 }

@@ -1,41 +1,41 @@
 "use client";
-import CategoryCard from "../shared/CategoryCard";
-import { ICategory } from "@/types";
+import { ILorry } from "@/types";
 import Spinner from "../common/Spinner";
+import LorryCard from "../shared/LorriesCard";
 
-const AvailableServices = ({
-  categories,
+const CustomerFeedbacks = ({
+  lorries,
   isLoading,
 }: {
-  categories: ICategory[];
-  isLoading: boolean;
+  lorries?: ILorry[];
+  isLoading?: boolean;
 }) => {
   return (
     <div>
       <div className="text-center mb-8">
         <h3 className="text-primary text-xl lg:text-2xl font-semibold">
-          Available Services
+          Customer Feedbacks
         </h3>
         <p className="text-sm lg:text-lg text-slate-500">
-          Book Your Desired Service from Available Category!
+          Feedbacks are coming soon!
         </p>
       </div>
-      <div>
+      {/* <div>
         {isLoading && (
           <div className="w-fit mx-auto">
             <Spinner />
           </div>
         )}
-        {categories?.length && (
+        {lorries?.length && (
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-10 justify-center items-center px-5 lg:px-16">
-            {categories?.map((category: ICategory) => (
-              <CategoryCard key={category.id} category={category} />
+            {lorries?.map((lorry: ILorry) => (
+              <LorryCard key={lorry.id} lorry={lorry} />
             ))}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default AvailableServices;
+export default CustomerFeedbacks;

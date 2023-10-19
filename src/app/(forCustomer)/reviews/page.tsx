@@ -8,7 +8,7 @@ import UpdateUser from "@/components/dashboard/admin/manage-users/UpdateUser";
 import { useState } from "react";
 import DeleteUser from "@/components/dashboard/admin/manage-users/DeleteUser";
 import EmptyState from "@/components/ui/EmptyState";
-import CreateAdmin from "@/components/dashboard/admin/CreateAdmin";
+import CreateAdmin from "@/components/dashboard/admin/manage-admins/CreateAdmin";
 
 const MyReviewsPage = () => {
   const {
