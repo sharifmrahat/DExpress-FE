@@ -9,14 +9,14 @@ import CreateLorry from "@/components/dashboard/admin/manage-lorries/CreateLorry
 import { useAllLorriesQuery } from "@/redux/api/lorryApi";
 import UpdateLorry from "@/components/dashboard/admin/manage-lorries/UpdateLorry";
 import DeleteLorry from "@/components/dashboard/admin/manage-lorries/DeleteLorry";
-import { useAllBookingsQuery } from "@/redux/api/bookingApi";
+import { useCustomerBookingsQuery } from "@/redux/api/bookingApi";
 
 const MyBookingsPage = () => {
   const {
     data: bookings,
     isLoading,
     refetch: refetchAll,
-  } = useAllBookingsQuery({});
+  } = useCustomerBookingsQuery({});
 
   // const [lorryId, setLorryId] = useState("");
   // const [deleteId, setDeleteId] = useState("");
@@ -44,7 +44,7 @@ const MyBookingsPage = () => {
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 backdrop-blur-md">
           <Spinner />
         </div>
-      ) : bookings?.data?.result?.length ? (
+      ) : bookings?.data?.length ? (
         <>
           <div>
             <div className="px-4 sm:px-6 lg:px-8">
@@ -54,7 +54,7 @@ const MyBookingsPage = () => {
                     My Bookings
                   </h1>
                   <p className="mt-2 text-sm text-gray-700">
-                    Total Booking: {bookings?.data?.result?.length}
+                    Total Booking: {bookings?.data?.length}
                   </p>
                 </div>
                 {/* <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -132,7 +132,7 @@ const MyBookingsPage = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
-                        {bookings?.data?.result?.map((booking: IBooking) => (
+                        {bookings?.data?.map((booking: IBooking) => (
                           <tr key={booking.id}>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                               {booking.lorry.model}

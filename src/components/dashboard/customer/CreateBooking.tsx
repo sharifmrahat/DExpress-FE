@@ -3,7 +3,10 @@
 import CustomDatePicker from "@/components/ui/DatePicker";
 import Form from "@/components/ui/Form";
 import Modal from "@/components/ui/Modal";
-import { useCreateBookingMutation } from "@/redux/api/bookingApi";
+import {
+  useCreateBookingMutation,
+  useCustomerBookingsQuery,
+} from "@/redux/api/bookingApi";
 import { ILorry } from "@/types";
 import { Dialog } from "@headlessui/react";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -19,6 +22,7 @@ const CreateBooking = ({
   lorry: ILorry;
 }) => {
   const [createBooking] = useCreateBookingMutation();
+  const { refetch: refetchAll } = useCustomerBookingsQuery({});
 
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(
     new Date()
@@ -52,6 +56,7 @@ const CreateBooking = ({
       const res = await createBooking(values).unwrap();
 
       if (res?.success) {
+        refetchAll();
         toast.success(res?.message);
       }
     } catch (err: any) {
