@@ -1,3 +1,4 @@
+import { ILorryQueryType } from "@/types";
 import { baseApi } from "./baseApi";
 const LORRY_URL = "/lorries";
 
@@ -11,10 +12,48 @@ export const lorryApi = baseApi.injectEndpoints({
       }),
     }),
     allLorries: build.query({
-      query: () => ({
-        url: `${LORRY_URL}`,
-        method: "GET",
-      }),
+      query: (query?: ILorryQueryType) => {
+        let url = `/lorries`;
+
+        const queryArr = [];
+        for (const key in query) {
+          if (query[key as keyof ILorryQueryType]) {
+            const tempQuery = query[key as keyof ILorryQueryType];
+            if (tempQuery) queryArr.push(`${key}=${tempQuery}`);
+          }
+        }
+
+        if (queryArr.length) {
+          url = `${url}?${queryArr.join("&")}`;
+        }
+
+        return {
+          url: url,
+          method: "GET",
+        };
+      },
+    }),
+    geLorryByCategoryId: build.query({
+      query: (input: { query?: ILorryQueryType; id: string }) => {
+        let url = `/lorries/${input.id}/category`;
+
+        const queryArr = [];
+        for (const key in input?.query) {
+          if (input?.query[key as keyof ILorryQueryType]) {
+            const tempQuery = input?.query[key as keyof ILorryQueryType];
+            if (tempQuery) queryArr.push(`${key}=${tempQuery}`);
+          }
+        }
+
+        if (queryArr.length) {
+          url = `${url}?${queryArr.join("&")}`;
+        }
+
+        return {
+          url: url,
+          method: "GET",
+        };
+      },
     }),
     updateLorry: build.mutation({
       query: (data) => ({
