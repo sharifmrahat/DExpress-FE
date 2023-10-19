@@ -118,7 +118,7 @@ export default function Header() {
             Articles
           </Link>
           <Link
-            href="/feedbacks"
+            href="/customer-feedbacks"
             className="text-sm font-semibold leading-6 text-accent hover:text-secondary"
           >
             Feedbacks
@@ -334,7 +334,7 @@ export default function Header() {
                       </Link>
                       <Link
                         onClick={() => setMobileMenuOpen(false)}
-                        href="/feedbacks"
+                        href="/customer-feedbacks"
                         className="rounded py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-accent hover:bg-accent hover:text-primary block"
                       >
                         Feedbacks

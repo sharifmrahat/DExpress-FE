@@ -55,7 +55,13 @@ const ManageAdminsPage = () => {
                     Manage Admins
                   </h1>
                   <p className="mt-2 text-sm text-gray-700">
-                    Total Admin: {users?.data?.length}
+                    Total Admin:{" "}
+                    {
+                      users?.data?.filter(
+                        (u: IUser) =>
+                          u.role === "admin" || u.role === "super_admin"
+                      )?.length
+                    }
                   </p>
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">

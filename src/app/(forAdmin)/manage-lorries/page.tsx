@@ -10,7 +10,7 @@ import DeleteUser from "@/components/dashboard/admin/DeleteUser";
 import EmptyState from "@/components/ui/EmptyState";
 import CreateAdmin from "@/components/dashboard/admin/CreateAdmin";
 
-const MyReviewsPage = () => {
+const ManageLorriesPage = () => {
   const {
     data: users,
     isLoading,
@@ -52,10 +52,10 @@ const MyReviewsPage = () => {
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                   <h1 className="text-base font-semibold leading-6 text-gray-900">
-                    My Reviews
+                    Manage Lorries
                   </h1>
                   <p className="mt-2 text-sm text-gray-700">
-                    Total Review: {users?.data?.length}
+                    Total Lorry: {users?.data?.length}
                   </p>
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -64,7 +64,7 @@ const MyReviewsPage = () => {
                     type="button"
                     className="block rounded-md bg-primary px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    Add New Review
+                    Add New Lorry
                   </button>
                 </div>
               </div>
@@ -206,4 +206,4 @@ const MyReviewsPage = () => {
   );
 };
 
-export default MyReviewsPage;
+export default ManageLorriesPage;
