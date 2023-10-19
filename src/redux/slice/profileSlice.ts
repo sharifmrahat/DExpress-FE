@@ -1,11 +1,5 @@
+import { IUser } from "@/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-export type IUser = {
-  id: string;
-  name: string;
-  email: string;
-  imageUrl: string;
-};
 
 const initialState = {
   profile: {} as Partial<IUser>,

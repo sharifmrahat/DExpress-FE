@@ -22,7 +22,7 @@ export const userApi = baseApi.injectEndpoints({
         tagTypes.SUPER_ADMIN,
       ],
     }),
-    singleUser: build.mutation({
+    singleUser: build.query({
       query: (id) => ({
         url: `${USER_URL}/${id}`,
         method: "GET",
@@ -54,7 +54,7 @@ export const {
   useUserProfileQuery,
   useUpdateProfileMutation,
   useAllUsersQuery,
-  useSingleUserMutation,
+  useSingleUserQuery,
   useDeleteUserMutation,
   useCreateAdminMutation,
 } = userApi;
