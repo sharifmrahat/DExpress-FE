@@ -29,5 +29,12 @@ export type IUser = {
   address: string;
   role: string;
   createdAt: Date;
-  updatedAt: Date;
+  updateAt: Date;
+};
+
+export type ICategory = {
+  id: string;
+  title: string;
+  createdAt: Date;
+  updateAt: Date;
 };

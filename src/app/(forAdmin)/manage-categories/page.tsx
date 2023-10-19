@@ -1,25 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import { format } from "date-fns";
 import Spinner from "@/components/common/Spinner";
-import { useAllUsersQuery } from "@/redux/api/userApi";
-import profileAvatar from "@/assets/images/profileAvatar.png";
-import { IUser } from "@/types";
-import UpdateUser from "@/components/dashboard/admin/UpdateUser";
+import { ICategory } from "@/types";
 import { useState } from "react";
-import DeleteUser from "@/components/dashboard/admin/DeleteUser";
 import EmptyState from "@/components/ui/EmptyState";
-import CreateAdmin from "@/components/dashboard/admin/CreateAdmin";
+import CreateCategory from "@/components/dashboard/admin/manage-categories/CreateCategory";
+import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
+import UpdateCategory from "@/components/dashboard/admin/manage-categories/UpdateCategory";
+import DeleteCategory from "@/components/dashboard/admin/manage-categories/DeleteCategory";
 
 const ManageCategoriesPage = () => {
   const {
-    data: users,
+    data: categories,
     isLoading,
     refetch: refetchAll,
-  } = useAllUsersQuery({
+  } = useAllCategoriesQuery({
     refetchOnMountOrArgChange: true,
   });
 
-  const [userId, setUserId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [deleteId, setDeleteId] = useState("");
 
   let [isOpen, setIsOpen] = useState(false);
@@ -30,12 +30,12 @@ const ManageCategoriesPage = () => {
     setIsOpen(true);
   }
 
-  const handleUpdateProfile = (id: string) => {
-    setUserId(id);
+  const handleUpdateCategory = (id: string) => {
+    setCategoryId(id);
     openModal();
   };
 
-  const handleDeleteUser = async (id: string) => {
+  const handleDeleteCategory = async (id: string) => {
     setDeleteId(id);
     setOpenAlert(true);
   };
@@ -45,7 +45,7 @@ const ManageCategoriesPage = () => {
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 backdrop-blur-md">
           <Spinner />
         </div>
-      ) : users?.data.length ? (
+      ) : categories?.data.length ? (
         <>
           <div>
             <div className="px-4 sm:px-6 lg:px-8">
@@ -55,7 +55,7 @@ const ManageCategoriesPage = () => {
                     Manage Categories
                   </h1>
                   <p className="mt-2 text-sm text-gray-700">
-                    Total Categories: {users?.data?.length}
+                    Total Categories: {categories?.data?.length}
                   </p>
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -79,32 +79,21 @@ const ManageCategoriesPage = () => {
                               scope="col"
                               className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                             >
-                              Name
+                              Title
                             </th>
                             <th
                               scope="col"
                               className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
-                              Email
+                              Created At
                             </th>
                             <th
                               scope="col"
                               className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
-                              Contact No.
+                              Updated At
                             </th>
-                            <th
-                              scope="col"
-                              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
-                              Address
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
-                              Role
-                            </th>
+
                             <th
                               scope="col"
                               className="relative py-3.5 pl-3 pr-4 sm:pr-6"
@@ -114,40 +103,30 @@ const ManageCategoriesPage = () => {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 bg-white">
-                          {users?.data?.map((person: IUser) => (
-                            <tr key={person.email}>
-                              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                <div className="flex items-center">
-                                  <div className="h-11 w-11 flex-shrink-0">
-                                    <img
-                                      className="h-11 w-11 rounded-full"
-                                      src={person.imageUrl ?? profileAvatar.src}
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div className="ml-4">
-                                    <div className="font-semibold text-gray-900">
-                                      {person.name}
-                                    </div>
-                                  </div>
-                                </div>
+                          {categories?.data?.map((category: ICategory) => (
+                            <tr key={category.id}>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                {category.title}
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {person.email}
+                                {format(
+                                  new Date(category.createdAt),
+                                  "dd MMMM yyyy - hh:mm:ss"
+                                )}
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {person.contactNo ?? "N/A"}
+                                {format(
+                                  new Date(category.updateAt),
+                                  "dd MMMM yyyy - hh:mm:ss"
+                                )}
                               </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {person.address ?? "N/A"}
-                              </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {person.role}
-                              </td>
+
                               <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex flex-row gap-3 justify-end">
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteUser(person.id)}
+                                  onClick={() =>
+                                    handleDeleteCategory(category.id)
+                                  }
                                   className="bg-red-200 text-red-800 py-1 px-2 rounded text-xs"
                                 >
                                   Delete
@@ -155,7 +134,7 @@ const ManageCategoriesPage = () => {
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    handleUpdateProfile(person?.id)
+                                    handleUpdateCategory(category?.id)
                                   }
                                   className="bg-teal-700 text-white py-1 px-2 rounded text-xs"
                                 >
@@ -172,36 +151,46 @@ const ManageCategoriesPage = () => {
               </div>
             </div>
 
-            {userId && (
-              <UpdateUser
+            {categoryId && (
+              <UpdateCategory
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                userId={userId}
+                categoryId={categoryId}
                 refetchAll={refetchAll}
               />
             )}
             {deleteId && (
-              <DeleteUser
+              <DeleteCategory
                 isOpen={openAlert}
                 setIsOpen={setOpenAlert}
-                userId={deleteId}
+                categoryId={deleteId}
                 refetchAll={refetchAll}
               />
             )}
-            <CreateAdmin
-              isOpen={openCreate}
-              setIsOpen={setOpenCreate}
-              refetchAll={refetchAll}
-            />
           </div>
         </>
       ) : (
         <>
           <div className="w-fit mx-auto my-20">
             <EmptyState />
+
+            <div className="mt-6 w-fit mx-auto">
+              <button
+                onClick={() => setOpenCreate(true)}
+                type="button"
+                className="block rounded-md border-2 border-primary px-3 py-2 text-center text-sm font-semibold text-primary shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                Add New Category
+              </button>
+            </div>
           </div>
         </>
       )}
+      <CreateCategory
+        isOpen={openCreate}
+        setIsOpen={setOpenCreate}
+        refetchAll={refetchAll}
+      />
     </>
   );
 };

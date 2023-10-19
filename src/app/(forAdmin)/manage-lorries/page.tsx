@@ -4,9 +4,9 @@ import Spinner from "@/components/common/Spinner";
 import { useAllUsersQuery } from "@/redux/api/userApi";
 import profileAvatar from "@/assets/images/profileAvatar.png";
 import { IUser } from "@/types";
-import UpdateUser from "@/components/dashboard/admin/UpdateUser";
+import UpdateUser from "@/components/dashboard/admin/manage-users/UpdateUser";
 import { useState } from "react";
-import DeleteUser from "@/components/dashboard/admin/DeleteUser";
+import DeleteUser from "@/components/dashboard/admin/manage-users/DeleteUser";
 import EmptyState from "@/components/ui/EmptyState";
 import CreateAdmin from "@/components/dashboard/admin/CreateAdmin";
 

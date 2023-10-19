@@ -3,52 +3,45 @@
 import Form from "@/components/ui/Form";
 import FormInput from "@/components/ui/FormInput";
 import Modal from "@/components/ui/Modal";
-import Select from "@/components/ui/Select";
 import {
-  useSingleUserQuery,
-  useUpdateProfileMutation,
-} from "@/redux/api/userApi";
+  useSingleCategoryQuery,
+  useUpdateCategoryMutation,
+} from "@/redux/api/categoryApi";
 import { Dialog, Transition } from "@headlessui/react";
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const UpdateUser = ({
+const UpdateCategory = ({
   isOpen,
   setIsOpen,
-  userId,
+  categoryId,
   refetchAll,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  userId: string;
+  categoryId: string;
   refetchAll: any;
 }) => {
-  const { data: userProfile, isLoading, refetch } = useSingleUserQuery(userId);
-  const [UpdateProfile] = useUpdateProfileMutation();
+  const {
+    data: category,
+    isLoading,
+    refetch,
+  } = useSingleCategoryQuery(categoryId);
+  const [updateCategory] = useUpdateCategoryMutation();
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value);
-  };
   function closeModal() {
     setIsOpen(false);
   }
 
-  const [selectedValue, setSelectedValue] = useState(userProfile?.data?.role);
-
   const defaultValues = {
-    name: userProfile?.data?.name || "",
-    imageUrl: userProfile?.data?.imageUrl || "",
-    email: userProfile?.data?.email || "",
-    role: selectedValue || "",
-    contactNo: userProfile?.data?.contactNo || "",
-    address: userProfile?.data?.address || "",
+    title: category?.data?.title || "",
   };
 
   const onSubmit = async (values: any) => {
     setIsOpen(false);
     try {
-      const res = await UpdateProfile({
-        id: userProfile?.data?.id,
+      const res = await updateCategory({
+        id: category?.data?.id,
         body: values,
       }).unwrap();
 
@@ -62,11 +55,10 @@ const UpdateUser = ({
   };
 
   useEffect(() => {
-    if (userId) {
+    if (categoryId) {
       refetch();
-      setSelectedValue(userProfile?.data?.role);
     }
-  }, [refetch, userId, userProfile?.data?.role]);
+  }, [refetch, categoryId, category?.data?.role]);
 
   return (
     <>
@@ -78,31 +70,12 @@ const UpdateUser = ({
         buttonType="submit"
       >
         <Dialog.Title as="h3" className="font-medium leading-6 text-gray-900">
-          Update Profile | <span>{defaultValues.name}</span>
+          Update Category
         </Dialog.Title>
         <div className="my-4">
           <Form submitHandler={onSubmit} defaultValues={defaultValues}>
-            <div className="my-2 w-fit mx-auto">
-              <img
-                className="w-[100px] h-[100px] rounded-full mx-auto object-cover border-2 border-primary"
-                src={defaultValues.imageUrl}
-                alt={defaultValues.name}
-              />
-            </div>
             <div className="flex flex-col gap-2">
-              <FormInput label="Profile Image" name="imageUrl" />
-              <FormInput label="Name" name="name" />
-              <FormInput label="Email" name="email" />
-              <FormInput label="Contact No." name="contactNo" />
-              <FormInput label="Address" name="address" />
-              <Select
-                label="Role"
-                name="role"
-                value={selectedValue}
-                options={["customer", "admin", "super_admin"]}
-                selectedValue={selectedValue}
-                handleChange={handleChange}
-              />
+              <FormInput label="Category Title" name="title" />
             </div>
 
             <div className="mt-4 flex flex-row justify-end items-center gap-4">
@@ -127,4 +100,4 @@ const UpdateUser = ({
   );
 };
 
-export default UpdateUser;
+export default UpdateCategory;

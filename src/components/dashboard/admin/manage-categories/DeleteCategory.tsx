@@ -2,27 +2,30 @@
 "use client";
 import Modal from "@/components/ui/Modal";
 import {
-  useDeleteUserMutation,
-  useSingleUserQuery,
-  useUpdateProfileMutation,
-} from "@/redux/api/userApi";
-import { Dialog, Transition } from "@headlessui/react";
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
+  useDeleteCategoryMutation,
+  useSingleCategoryQuery,
+} from "@/redux/api/categoryApi";
+import { Dialog } from "@headlessui/react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";
 
-const DeleteUser = ({
+const DeleteCategory = ({
   isOpen,
   setIsOpen,
-  userId,
+  categoryId,
   refetchAll,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  userId: string;
+  categoryId: string;
   refetchAll: any;
 }) => {
-  const { data: userProfile, isLoading, refetch } = useSingleUserQuery(userId);
-  const [deleteUser] = useDeleteUserMutation();
+  const {
+    data: category,
+    isLoading,
+    refetch,
+  } = useSingleCategoryQuery(categoryId);
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   function closeModal() {
     setIsOpen(false);
@@ -31,7 +34,7 @@ const DeleteUser = ({
   const onSubmit = async () => {
     setIsOpen(false);
     try {
-      const res = await deleteUser(userId).unwrap();
+      const res = await deleteCategory(categoryId).unwrap();
 
       if (res?.success) {
         refetchAll();
@@ -43,10 +46,10 @@ const DeleteUser = ({
   };
 
   useEffect(() => {
-    if (userId) {
+    if (categoryId) {
       refetch();
     }
-  }, [refetch, userId, userProfile?.data?.role]);
+  }, [refetch, categoryId]);
 
   return (
     <>
@@ -57,12 +60,12 @@ const DeleteUser = ({
         buttonType="submit"
       >
         <Dialog.Title as="h3" className="font-semibold leading-6 text-gray-900">
-          Delete User
+          Delete Category
         </Dialog.Title>
         <div className="my-4">
           <h1>
             Are you sure to remove{" "}
-            <span className="font-semibold">{userProfile?.data?.name}</span> ?
+            <span className="font-semibold">{category?.data?.title}</span> ?
           </h1>
           <div className="mt-4 flex flex-row justify-end items-center gap-4">
             <button
@@ -86,4 +89,4 @@ const DeleteUser = ({
   );
 };
 
-export default DeleteUser;
+export default DeleteCategory;
