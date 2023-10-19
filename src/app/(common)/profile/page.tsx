@@ -5,16 +5,13 @@ import Spinner from "@/components/common/Spinner";
 import { useUserProfileQuery } from "@/redux/api/userApi";
 import profileAvatar from "@/assets/images/profileAvatar.png";
 import UpdateProfile from "@/components/dashboard/profile/UpdateProfile";
+import Modal from "@/components/ui/Modal";
 
 const ProfilePage = () => {
   const { data: userProfile, isLoading } = useUserProfileQuery({
     refetchOnMountOrArgChange: true,
   });
-  let [isOpen, setIsOpen] = useState(true);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  let [isOpen, setIsOpen] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -122,7 +119,11 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <UpdateProfile isOpen={isOpen} closeModal={closeModal} />
+          <UpdateProfile
+            isOpen={isOpen}
+            openModal={openModal}
+            setIsOpen={setIsOpen}
+          />
         </>
       )}
     </>

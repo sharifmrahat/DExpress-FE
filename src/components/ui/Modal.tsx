@@ -1,13 +1,22 @@
 "use client";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 
 type updateProfileProps = {
+  buttonLabel?: string;
   isOpen: boolean;
+  children: React.ReactNode;
   closeModal: () => void;
+  submitModal: () => void;
 };
 
-const Modal = ({ isOpen, closeModal }: updateProfileProps) => {
+const Modal = ({
+  buttonLabel = "Submit",
+  isOpen,
+  children,
+  closeModal,
+  submitModal,
+}: updateProfileProps) => {
   return (
     <>
       {" "}
@@ -37,14 +46,7 @@ const Modal = ({ isOpen, closeModal }: updateProfileProps) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Update Profile
-                  </Dialog.Title>
-                  <div className="my-4">Inputs</div>
-
+                  {children}
                   <div className="mt-4 flex flex-row justify-end items-center gap-4">
                     <button
                       type="button"
@@ -56,9 +58,9 @@ const Modal = ({ isOpen, closeModal }: updateProfileProps) => {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={submitModal}
                     >
-                      Submit
+                      {buttonLabel}
                     </button>
                   </div>
                 </Dialog.Panel>
