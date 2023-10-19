@@ -22,7 +22,39 @@ export const userApi = baseApi.injectEndpoints({
         tagTypes.SUPER_ADMIN,
       ],
     }),
+    singleUser: build.mutation({
+      query: (id) => ({
+        url: `${USER_URL}/${id}`,
+        method: "GET",
+      }),
+    }),
+    allUsers: build.query({
+      query: () => ({
+        url: `${USER_URL}`,
+        method: "GET",
+      }),
+    }),
+    deleteUser: build.mutation({
+      query: (id) => ({
+        url: `${USER_URL}/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    createAdmin: build.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/create-admin`,
+        method: "POST",
+        data: data.body,
+      }),
+    }),
   }),
 });
 
-export const { useUserProfileQuery, useUpdateProfileMutation } = userApi;
+export const {
+  useUserProfileQuery,
+  useUpdateProfileMutation,
+  useAllUsersQuery,
+  useSingleUserMutation,
+  useDeleteUserMutation,
+  useCreateAdminMutation,
+} = userApi;
