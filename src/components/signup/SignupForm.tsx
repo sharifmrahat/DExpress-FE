@@ -23,7 +23,7 @@ const SignupForm: React.FC<{
           id="name"
           placeholder="Sharif Rahat"
           {...register("name", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-accent"
+          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
         />
         {errors.name && <p className="text-red-700">Name is required</p>}
       </div>
@@ -37,7 +37,7 @@ const SignupForm: React.FC<{
           id="email"
           placeholder="mail@sharifrahat.com"
           {...register("email", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-accent"
+          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
         />
         {errors.email && <p className="text-red-700">Email is required</p>}
       </div>
@@ -51,7 +51,7 @@ const SignupForm: React.FC<{
           id="password"
           placeholder="************"
           {...register("password", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-accent"
+          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
         />
         {errors.password && (
           <p className="text-red-700">Password is required</p>

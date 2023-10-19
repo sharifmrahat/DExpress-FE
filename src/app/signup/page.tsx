@@ -1,4 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
+
+import loginImage from "@/assets/images/loginImage.jpg";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
 import SignupForm from "@/components/signup/SignupForm";
@@ -43,7 +46,11 @@ const SignupPage = () => {
   return (
     <div className="flex flex-row justify-center items-center h-screen gap-10 overflow-hidden">
       <div className="w-1/2 hidden lg:block">
-        <img src="" className="h-screen w-full object-cover" alt="" />
+        <img
+          src={loginImage.src}
+          className="h-screen w-full object-cover"
+          alt="lorry"
+        />
       </div>
       <div className="lg:w-1/2 flex flex-col justify-center items-center h-full px-5 lg:px-0">
         <section className="pb-10 text-center">

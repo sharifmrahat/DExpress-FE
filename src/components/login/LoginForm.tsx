@@ -21,7 +21,7 @@ const LoginForm: React.FC<{
           placeholder="mail@sharifrahat.com"
           id="email"
           {...register("email", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-accent"
+          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
         />
         {errors.email && <p className="text-red-700">Email is required</p>}
       </div>
@@ -35,7 +35,7 @@ const LoginForm: React.FC<{
           placeholder="************"
           id="password"
           {...register("password", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-accent"
+          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
         />
         {errors.password && (
           <p className="text-red-700">Password is required</p>
