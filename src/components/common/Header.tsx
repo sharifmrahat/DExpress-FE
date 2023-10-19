@@ -100,16 +100,22 @@ export default function Header() {
             Home
           </Link>
           <Link
-            href="/service"
+            href="/categories"
             className="text-sm font-semibold leading-6 text-accent hover:text-secondary"
           >
-            Service
+            Categories
           </Link>
           <Link
-            href="/blogs"
+            href="/lorries"
             className="text-sm font-semibold leading-6 text-accent hover:text-secondary"
           >
-            Blogs
+            Lorries
+          </Link>
+          <Link
+            href="/articles"
+            className="text-sm font-semibold leading-6 text-accent hover:text-secondary"
+          >
+            Articles
           </Link>
           <Link
             href="/feedbacks"
@@ -160,20 +166,7 @@ export default function Header() {
                           "block px-4 py-2 text-sm text-gray-700"
                         )}
                       >
-                        Profile
-                      </Link>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link
-                        href="/bookings"
-                        className={classNames(
-                          active ? "bg-gray-100" : "",
-                          "block px-4 py-2 text-sm text-gray-700"
-                        )}
-                      >
-                        bookings
+                        Dashboard
                       </Link>
                     )}
                   </Menu.Item>
@@ -232,14 +225,6 @@ export default function Header() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-accent/50">
               <div className="py-6 flex flex-row justify-center items-center gap-5">
-                <Link
-                  onClick={() => setMobileMenuOpen(false)}
-                  href="/pc-builder"
-                  className="text-sm font-semibold leading-6 text-accent border-2 py-1 px-3 rounded border-secondary hover:text-secondary w-fit text-center"
-                >
-                  <SquaresPlusIcon className="w-4 h-4 mr-3 inline-block" />
-                  Book Now
-                </Link>
                 {profile?.id ? (
                   <Menu as="div" className="relative ml-3 w-fit">
                     <div>
@@ -282,24 +267,11 @@ export default function Header() {
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
-                              Profile
+                              Dashboard
                             </Link>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <Link
-                              onClick={() => setMobileMenuOpen(false)}
-                              href="/orders"
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
-                              )}
-                            >
-                              Orders
-                            </Link>
-                          )}
-                        </Menu.Item>
+
                         <Menu.Item>
                           {({ active }) => (
                             <div
@@ -341,24 +313,31 @@ export default function Header() {
                       </Link>
                       <Link
                         onClick={() => setMobileMenuOpen(false)}
-                        href="/products"
+                        href="/categories"
                         className="rounded py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-accent hover:bg-accent hover:text-primary block"
                       >
-                        Products
+                        Categories
                       </Link>
                       <Link
                         onClick={() => setMobileMenuOpen(false)}
-                        href="/promotion"
+                        href="/lorries"
                         className="rounded py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-accent hover:bg-accent hover:text-primary block"
                       >
-                        Promotion
+                        Lorries
                       </Link>
                       <Link
                         onClick={() => setMobileMenuOpen(false)}
-                        href="/service"
+                        href="/articles"
                         className="rounded py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-accent hover:bg-accent hover:text-primary block"
                       >
-                        Service
+                        Articles
+                      </Link>
+                      <Link
+                        onClick={() => setMobileMenuOpen(false)}
+                        href="/feedbacks"
+                        className="rounded py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-accent hover:bg-accent hover:text-primary block"
+                      >
+                        Feedbacks
                       </Link>
                     </>
                   )}

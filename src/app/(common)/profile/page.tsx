@@ -119,11 +119,7 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <UpdateProfile
-            isOpen={isOpen}
-            openModal={openModal}
-            setIsOpen={setIsOpen}
-          />
+          <UpdateProfile isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
       )}
     </>

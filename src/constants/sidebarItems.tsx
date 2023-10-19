@@ -5,6 +5,9 @@ import {
   ChatBubbleBottomCenterTextIcon,
   UserGroupIcon,
   ShieldCheckIcon,
+  ShoppingCartIcon,
+  DocumentTextIcon,
+  RssIcon,
 } from "@heroicons/react/24/outline";
 import { USER_ROLE } from "./role";
 export const SidebarItems = (role: string) => {
@@ -19,7 +22,7 @@ export const SidebarItems = (role: string) => {
       id: 3,
       name: "My Bookings",
       href: "/bookings",
-      icon: TruckIcon,
+      icon: ShoppingCartIcon,
     },
     {
       id: 4,
@@ -46,22 +49,40 @@ export const SidebarItems = (role: string) => {
       id: 2,
       name: "Manage Bookings",
       href: "/manage-bookings",
-      icon: TruckIcon,
+      icon: ShoppingCartIcon,
     },
     {
       id: 3,
+      name: "Manage Categories",
+      href: "/manage-categories",
+      icon: DocumentTextIcon,
+    },
+    {
+      id: 4,
+      name: "Manage Lorries",
+      href: "/manage-lorries",
+      icon: TruckIcon,
+    },
+    {
+      id: 5,
       name: "Manage Reviews",
       href: "/manage-reviews",
       icon: StarIcon,
     },
     {
-      id: 4,
+      id: 6,
       name: "Manage Feedbacks",
       href: "/manage-feedbacks",
       icon: ChatBubbleBottomCenterTextIcon,
     },
     {
-      id: 5,
+      id: 7,
+      name: "Manage Articles",
+      href: "/manage-articles",
+      icon: RssIcon,
+    },
+    {
+      id: 8,
       name: "Manage Users",
       href: "/manage-users",
       icon: UserGroupIcon,
@@ -71,7 +92,7 @@ export const SidebarItems = (role: string) => {
   const superAdminDashboardNavigation = [
     ...adminDashboardNavigation,
     {
-      id: 6,
+      id: 9,
       name: "Manage Admin",
       href: "/manage-admins",
       icon: ShieldCheckIcon,
