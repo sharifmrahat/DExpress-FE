@@ -44,7 +44,7 @@ export const userApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `${USER_URL}/create-admin`,
         method: "POST",
-        data: data.body,
+        data: data,
       }),
     }),
   }),

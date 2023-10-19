@@ -1,5 +1,6 @@
 import AvailableServices from "@/components/homepage/AvailableServices";
-import FeatureSection from "@/components/homepage/FeatureSection";
+import DownloadSection from "@/components/homepage/DownloadSection";
+import FeatureSection from "@/components/homepage/Survey";
 import HeroSection from "@/components/homepage/HeroSection";
 import UpcomingServices from "@/components/homepage/UpcomingServices";
 
@@ -18,6 +19,9 @@ export default function HomePage() {
         </section>
         <section className="my-20">
           <UpcomingServices />
+        </section>
+        <section className="my-20">
+          <DownloadSection />
         </section>
       </main>
     </>

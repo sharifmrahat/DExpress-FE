@@ -9,7 +9,7 @@ const NotFoundPage = () => {
     router.back();
   };
   return (
-    <section className="bg-white dark:bg-gray-900 ">
+    <section className="bg-white fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 backdrop-blur-md">
       <div className="container flex items-center min-h-screen px-6 py-12 mx-auto">
         <div className="flex flex-col items-center max-w-sm mx-auto text-center">
           <p className="p-3 text-sm font-medium text-primary rounded-full bg-blue-50 dark:bg-gray-800">
