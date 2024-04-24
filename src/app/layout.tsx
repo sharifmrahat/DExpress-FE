@@ -1,15 +1,17 @@
 import "./globals.css";
+import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import Providers from "@/lib/Provider";
 import { Poppins } from "next/font/google";
-
 import { ToastContainer } from "react-toastify";
+import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { theme } from "../../theme";
 
 import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
-  title: "Lorry Lagbe",
-  description: "Lorry Booking Application",
+  title: "DExpress",
+  description: "The incredible tale of reliable logistics",
 };
 
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
@@ -22,7 +24,14 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={`${poppins.className} bg-background`}>{children}</body>
+        <head>
+          <ColorSchemeScript />
+          <link rel="shortcut icon" href="/favicon.ico" />
+        </head>
+        <body className={`${poppins.className} bg-background`}>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
+        </body>
+
         <ToastContainer
           position="top-center"
           autoClose={5000}

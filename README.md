@@ -1,11 +1,27 @@
-## DExpress | Front-End
-The incredible tale of effortless transportation
+## DExpress | API
+The incredible tale of reliable logistics
 
 ### Important Links
-- [Case Study](https://drive.google.com/file/d/1OTnUsS3iDLE6amuRMld0Zls5xT5PX9g2/view?usp=sharing)
 
-- [Requirement Analysis](https://docs.google.com/document/d/1H_8wLAGah82C1x55JKwkkPtmSoBnBqC9JiuHEZv3PrQ/edit?usp=sharing)
+- [Application Link](https://dexpress-dev.vercel.app)
 
-- [ER Diagram](https://docs.google.com/document/d/1H_8wLAGah82C1x55JKwkkPtmSoBnBqC9JiuHEZv3PrQ/edit?usp=sharing)
+- [Server Link](https://dexpress-api.vercel.app)
 
-- [API Documentation](https://docs.google.com/document/d/1H_8wLAGah82C1x55JKwkkPtmSoBnBqC9JiuHEZv3PrQ/edit?usp=sharing)
+- [Case Study](https://drive.google.com/file/d/1gzhL2uMgo3udZkXi2G4nT58IIwKfkFEP/view?usp=sharing)
+
+- [Requirement Analysis](https://drive.google.com/file/d/1G2kElYsXU_4rpYJ2XLnbPgugFSWxjWsn/view?usp=sharing)
+
+- [ER Diagram](https://drive.google.com/file/d/1TUcUtChPPWXtI2MYdxyfdFvumrZqgIox/view?usp=sharing)
+
+- [API Documentation](https://documenter.getpostman.com/view/21772045/2sA3BobXVx)
+
+
+### Technology Integration
+
+- TypeScript
+- Next.js
+- Redux
+- Tailwind
+- Mantine
+- Axios
+- Vercel

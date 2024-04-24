@@ -10,11 +10,15 @@ import LorriesByCategory from "@/components/homepage/LorriesByCategory";
 import { useAllLorriesQuery } from "@/redux/api/lorryApi";
 import LatestArticles from "@/components/homepage/LatestArticles";
 import CustomerFeedbacks from "@/components/homepage/CustomerFeedbacks";
+import { SegmentedControl, PasswordInput } from "@mantine/core";
+import { useState } from "react";
 
 export default function HomePage() {
   const { data: categories, isLoading } = useAllCategoriesQuery({});
 
   const { data: lorries, isLoading: lorryLoading } = useAllLorriesQuery({});
+
+  const [value, setValue] = useState("react");
   return (
     <>
       <main className="w-full lg:max-w-7xl mx-auto px-5 lg:px-0 pb-10">
@@ -24,6 +28,21 @@ export default function HomePage() {
         <section className="my-20">
           <FeatureSection />
         </section>
+        <SegmentedControl
+          value={value}
+          onChange={setValue}
+          data={[
+            { label: "React", value: "react" },
+            { label: "Angular", value: "ng" },
+            { label: "Vue", value: "vue" },
+            { label: "Svelte", value: "svelte" },
+          ]}
+        />
+        <PasswordInput
+          label="Input label"
+          description="Input description"
+          placeholder="Input placeholder"
+        />
         <section className="my-10">
           <AvailableServices
             categories={categories?.data?.slice(0, 10)}

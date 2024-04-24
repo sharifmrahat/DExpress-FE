@@ -37,6 +37,7 @@ instance.interceptors.response.use(
     return responseObject;
   },
   async function (error) {
+    const accessToken = getFromLocalStorage(authKey);
     if (error?.response?.status === 403) {
     } else {
       const responseObject: IGenericErrorResponse = {
@@ -44,11 +45,11 @@ instance.interceptors.response.use(
         message: error?.response?.data?.message || "Something went wrong",
         errorMessages: error?.response?.data?.message,
       };
-      toast.error(responseObject.message);
+      accessToken && toast.error(responseObject.message);
       return responseObject;
     }
 
-    // return Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 
