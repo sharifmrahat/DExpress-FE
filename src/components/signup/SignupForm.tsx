@@ -9,13 +9,22 @@ import {
   Checkbox,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useUserSignupMutation } from "@/redux/api/authApi";
+import { useUserProfileQuery } from "@/redux/api/userApi";
+import { storeUserInfo } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 function SignupForm() {
   const [visible, { toggle }] = useDisclosure(false);
+  const [userSignup, { isLoading, isError }] = useUserSignupMutation();
+  const { refetch } = useUserProfileQuery({});
+  const router = useRouter();
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -23,6 +32,7 @@ function SignupForm() {
     },
 
     validate: {
+      name: (val: string) => (!val ? "Name is Required" : null),
       email: (value: string) =>
         /^\S+@\S+$/.test(value) ? null : "Invalid email",
       password: (val) =>
@@ -31,23 +41,59 @@ function SignupForm() {
         val !== values.password ? "Password not matched" : null,
     },
   });
+
+  const handleSignupSubmit = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    try {
+      const res = await userSignup({ ...data }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+        toggle();
+        if (res.accessToken) {
+          storeUserInfo({ accessToken: res?.accessToken });
+          await refetch();
+          router.push("/profile");
+        }
+      }
+    } catch (err: any) {
+      toggle();
+      toast.error(err?.message);
+    }
+  };
   return (
     <>
-      <Box pos="relative" className="p-10 shadow-md">
+      <Box pos="relative" className="w-full">
         <LoadingOverlay
-          visible={visible}
+          visible={isLoading ?? visible}
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
           loaderProps={{ color: "pink", type: "bars" }}
         />
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+        <form
+          onSubmit={form.onSubmit((values) =>
+            handleSignupSubmit({
+              name: values.name,
+              email: values.email,
+              password: values.password,
+            })
+          )}
+        >
+          <TextInput
+            withAsterisk
+            label="Name"
+            placeholder="Your Name"
+            key={form.key("name")}
+            {...form.getInputProps("name")}
+          />
           <TextInput
             withAsterisk
             label="Email"
             placeholder="your@email.com"
             key={form.key("email")}
             {...form.getInputProps("email")}
-            required
           />
           <PasswordInput
             withAsterisk
@@ -55,7 +101,6 @@ function SignupForm() {
             placeholder="********"
             key={form.key("password")}
             {...form.getInputProps("password")}
-            required
           />
           <PasswordInput
             withAsterisk
@@ -63,7 +108,6 @@ function SignupForm() {
             placeholder="********"
             key={form.key("confirmPassword")}
             {...form.getInputProps("confirmPassword")}
-            required
           />
 
           <Checkbox
