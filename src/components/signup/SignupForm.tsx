@@ -1,72 +1,82 @@
-"use client";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  LoadingOverlay,
+  Button,
+  Group,
+  Box,
+  TextInput,
+  PasswordInput,
+  Checkbox,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
 
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+function SignupForm() {
+  const [visible, { toggle }] = useDisclosure(false);
 
-const SignupForm: React.FC<{
-  onSubmit: SubmitHandler<FieldValues>;
-  isLoading: boolean;
-}> = ({ onSubmit, isLoading = false }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      termsOfService: false,
+    },
 
+    validate: {
+      email: (value: string) =>
+        /^\S+@\S+$/.test(value) ? null : "Invalid email",
+      password: (val) =>
+        val.length < 8 ? "Password must be minimum 8 character" : null,
+      confirmPassword: (val, values) =>
+        val !== values.password ? "Password not matched" : null,
+    },
+  });
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-4">
-        <label className="block mb-2 text-gray-800" htmlFor="name">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Sharif Rahat"
-          {...register("name", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
+    <>
+      <Box pos="relative" className="p-10 shadow-md">
+        <LoadingOverlay
+          visible={visible}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
+          loaderProps={{ color: "pink", type: "bars" }}
         />
-        {errors.name && <p className="text-red-700">Name is required</p>}
-      </div>
+        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <TextInput
+            withAsterisk
+            label="Email"
+            placeholder="your@email.com"
+            key={form.key("email")}
+            {...form.getInputProps("email")}
+            required
+          />
+          <PasswordInput
+            withAsterisk
+            label="Password"
+            placeholder="********"
+            key={form.key("password")}
+            {...form.getInputProps("password")}
+            required
+          />
+          <PasswordInput
+            withAsterisk
+            label="Confirm Password"
+            placeholder="********"
+            key={form.key("confirmPassword")}
+            {...form.getInputProps("confirmPassword")}
+            required
+          />
 
-      <div className="mb-4">
-        <label className="block mb-2 text-gray-800" htmlFor="email">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          placeholder="mail@sharifrahat.com"
-          {...register("email", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
-        />
-        {errors.email && <p className="text-red-700">Email is required</p>}
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-2 text-gray-800" htmlFor="password">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          placeholder="************"
-          {...register("password", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
-        />
-        {errors.password && (
-          <p className="text-red-700">Password is required</p>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full px-4 py-2 text-accent bg-primary hover:bg-primary/90 rounded-md"
-      >
-        {isLoading ? "Loading..." : "Signup"}
-      </button>
-    </form>
+          <Checkbox
+            mt="md"
+            label="I agree to sell my privacy"
+            key={form.key("termsOfService")}
+            {...form.getInputProps("termsOfService", { type: "checkbox" })}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Box>
+    </>
   );
-};
+}
 
 export default SignupForm;
