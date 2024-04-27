@@ -4,7 +4,7 @@ import Modal from "@/components/ui/Modal";
 import {
   useDeleteLorryMutation,
   useSingleLorryQuery,
-} from "@/redux/api/lorryApi";
+} from "@/redux/api/serviceAPI";
 import { Dialog } from "@headlessui/react";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";

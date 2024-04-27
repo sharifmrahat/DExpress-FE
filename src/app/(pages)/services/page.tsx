@@ -1,6 +1,6 @@
 "use client";
 import LorriesByCategory from "@/components/homepage/LorriesByCategory";
-import { useAllLorriesQuery } from "@/redux/api/lorryApi";
+import { useAllLorriesQuery } from "@/redux/api/serviceAPI";
 
 const LorriesPage = () => {
   const {

@@ -6,7 +6,7 @@ import { IBooking, ILorry } from "@/types";
 import { useState } from "react";
 import EmptyState from "@/components/ui/EmptyState";
 import CreateLorry from "@/components/dashboard/admin/manage-lorries/CreateLorry";
-import { useAllLorriesQuery } from "@/redux/api/lorryApi";
+import { useAllLorriesQuery } from "@/redux/api/serviceAPI";
 import UpdateLorry from "@/components/dashboard/admin/manage-lorries/UpdateLorry";
 import DeleteLorry from "@/components/dashboard/admin/manage-lorries/DeleteLorry";
 import { useAllBookingsQuery } from "@/redux/api/bookingApi";

@@ -8,7 +8,7 @@ import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
 import {
   useSingleLorryQuery,
   useUpdateLorryMutation,
-} from "@/redux/api/lorryApi";
+} from "@/redux/api/serviceAPI";
 import { ICategory } from "@/types";
 import { Dialog, Transition } from "@headlessui/react";
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";

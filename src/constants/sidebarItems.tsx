@@ -21,19 +21,19 @@ export const SidebarItems = (role: string) => {
     {
       id: 3,
       name: "My Bookings",
-      href: "/bookings",
+      href: "/my-bookings",
       icon: ShoppingCartIcon,
     },
     {
       id: 4,
       name: "My Reviews",
-      href: "/reviews",
+      href: "/my-reviews",
       icon: StarIcon,
     },
     {
       id: 5,
       name: "My Feedbacks",
-      href: "/feedbacks",
+      href: "/my-feedbacks",
       icon: ChatBubbleBottomCenterTextIcon,
     },
   ];

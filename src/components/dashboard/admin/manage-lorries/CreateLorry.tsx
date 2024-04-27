@@ -5,7 +5,7 @@ import FormInput from "@/components/ui/FormInput";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
 import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
-import { useCreateLorryMutation } from "@/redux/api/lorryApi";
+import { useCreateLorryMutation } from "@/redux/api/serviceAPI";
 import { ICategory, Type } from "@/types";
 import { Dialog } from "@headlessui/react";
 import { Dispatch, SetStateAction, useState } from "react";

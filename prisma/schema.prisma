@@ -1,0 +1,202 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model articles {
+  id           String        @unique
+  title        String
+  thumbnail    String?
+  description  String
+  status       ArticleStatus @default(Drafted)
+  userId       String
+  totalReading Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime
+  isActive     Boolean       @default(true)
+  isDeleted    Boolean       @default(false)
+  users        users         @relation(fields: [userId], references: [id])
+}
+
+model bookingLogs {
+  id            String        @unique
+  bookingId     String
+  currentStatus BookingStatus
+  updatedById   String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  isActive      Boolean       @default(true)
+  isDeleted     Boolean       @default(false)
+  bookings      bookings      @relation(fields: [bookingId], references: [id])
+  users         users         @relation(fields: [updatedById], references: [id])
+}
+
+model bookings {
+  id              String        @unique
+  bkId            String        @unique
+  bookingType     BookingType   @default(Package)
+  userId          String
+  serviceId       String
+  packageId       String?
+  deliveryDate    DateTime
+  shippingAddress String
+  billingAddress  String
+  totalCost       Int           @default(0)
+  remarks         String?
+  paymentMethod   PaymentMethod @default(COD)
+  paymentStatus   PaymentStatus @default(Unpaid)
+  status          BookingStatus @default(Created)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime
+  isActive        Boolean       @default(true)
+  isDeleted       Boolean       @default(false)
+  bookingLogs     bookingLogs[]
+  packages        packages?     @relation(fields: [packageId], references: [id])
+  services        services      @relation(fields: [serviceId], references: [id])
+  users           users         @relation(fields: [userId], references: [id])
+  payments        payments[]
+  reviews         reviews?
+}
+
+model feedbacks {
+  id          String   @unique
+  subject     String
+  message     String
+  attachments String[]
+  userId      String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  isActive    Boolean  @default(true)
+  isDeleted   Boolean  @default(false)
+  users       users    @relation(fields: [userId], references: [id])
+}
+
+model packages {
+  id           String     @id
+  title        String     @unique
+  price        Int
+  imageUrl     String?
+  description  String?
+  serviceId    String
+  totalBooking Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime
+  isActive     Boolean    @default(true)
+  isDeleted    Boolean    @default(false)
+  bookings     bookings[]
+  services     services   @relation(fields: [serviceId], references: [id])
+}
+
+model payments {
+  id            String        @unique
+  userId        String
+  bookingId     String
+  paymentMethod PaymentMethod @default(COD)
+  totalAmount   Int           @default(0)
+  transactionId String?
+  provider      String?
+  status        PaymentStatus @default(Unpaid)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  isActive      Boolean       @default(true)
+  isDeleted     Boolean       @default(false)
+  bookings      bookings      @relation(fields: [bookingId], references: [id])
+  users         users         @relation(fields: [userId], references: [id])
+}
+
+model reviews {
+  id          String   @unique
+  description String?
+  rating      Float
+  imageUrls   String[]
+  userId      String
+  bookingId   String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  isActive    Boolean  @default(true)
+  isDeleted   Boolean  @default(false)
+  bookings    bookings @relation(fields: [bookingId], references: [id])
+  users       users    @relation(fields: [userId], references: [id])
+
+  @@id([userId, bookingId])
+}
+
+model services {
+  id           String     @id
+  title        String     @unique
+  imageUrl     String?
+  description  String?
+  totalBooking Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime
+  isActive     Boolean    @default(true)
+  isDeleted    Boolean    @default(false)
+  bookings     bookings[]
+  packages     packages[]
+}
+
+model users {
+  id          String        @id
+  name        String
+  email       String        @unique
+  password    String?
+  role        Role          @default(customer)
+  contactNo   String?
+  addresses   String[]
+  imageUrl    String?
+  currentOtp  String?
+  isVerified  Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  isActive    Boolean       @default(true)
+  isDeleted   Boolean       @default(false)
+  articles    articles[]
+  bookingLogs bookingLogs[]
+  bookings    bookings[]
+  feedbacks   feedbacks?
+  payments    payments[]
+  reviews     reviews[]
+}
+
+enum ArticleStatus {
+  Drafted
+  Published
+  Archived
+}
+
+enum BookingStatus {
+  Drafted
+  Created
+  Confirmed
+  Cancelled
+  Reverted
+  Shipped
+  Delivered
+}
+
+enum BookingType {
+  Package
+  Custom
+}
+
+enum PaymentMethod {
+  COD
+  Stripe
+  SSLCommerze
+}
+
+enum PaymentStatus {
+  Unpaid
+  Partial_Paid
+  Paid
+}
+
+enum Role {
+  customer
+  admin
+  super_admin
+}

@@ -1,15 +1,15 @@
 "use client";
 import CategoryCard from "../shared/CategoryCard";
-import { ICategory } from "@/types";
 import Spinner from "../common/Spinner";
-
+import { services } from "@prisma/client";
 const AvailableServices = ({
-  categories,
+  services,
   isLoading,
 }: {
-  categories: ICategory[];
+  services: services[];
   isLoading: boolean;
 }) => {
+  console.log(services);
   return (
     <div>
       <div className="text-center mb-8">
@@ -17,7 +17,7 @@ const AvailableServices = ({
           Available Services
         </h3>
         <p className="text-sm lg:text-lg text-slate-500">
-          Book Your Desired Service from Available Category!
+          Book Your Desired Service
         </p>
       </div>
       <div>
@@ -26,10 +26,10 @@ const AvailableServices = ({
             <Spinner />
           </div>
         )}
-        {categories?.length && (
+        {services?.length && (
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-10 justify-center items-center px-5 lg:px-16">
-            {categories?.map((category: ICategory) => (
-              <CategoryCard key={category.id} category={category} />
+            {services?.map((service: services) => (
+              <CategoryCard key={service.id} service={service} />
             ))}
           </div>
         )}

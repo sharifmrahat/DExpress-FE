@@ -15,6 +15,7 @@
     "@mantine/form": "^7.8.0",
     "@mantine/hooks": "7.8.0",
     "@mantine/notifications": "^7.8.0",
+    "@prisma/client": "^5.13.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@tabler/icons-react": "^3.2.0",
     "@types/react-datepicker": "^4.19.1",
@@ -41,6 +42,7 @@
     "postcss": "^8.4.35",
     "postcss-preset-mantine": "1.14.4",
     "postcss-simple-vars": "^7.0.1",
+    "prisma": "^5.13.0",
     "tailwindcss": "^3",
     "typescript": "5.4.2"
   }
