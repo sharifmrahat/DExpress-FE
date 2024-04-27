@@ -13,7 +13,6 @@ import { useUserSignupMutation } from "@/redux/api/authApi";
 import { useUserProfileQuery } from "@/redux/api/userApi";
 import { storeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import Spinner from "../common/Spinner";
 import Link from "next/link";
 import { showNotification } from "@/utils/showNotification";
@@ -55,7 +54,6 @@ function SignupForm() {
     try {
       const res = await userSignup({ ...data }).unwrap();
       if (res?.success) {
-        toast.success(res?.message);
         toggle();
         showNotification({
           type: "success",

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Oswald, Poppins } from "next/font/google";
+import { Oswald } from "next/font/google";
 import SignupForm from "@/components/signup/SignupForm";
 import signupImage from "@/assets/images/sign-up.png";
 import Link from "next/link";

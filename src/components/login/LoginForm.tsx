@@ -1,56 +1,121 @@
-"use client";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  LoadingOverlay,
+  Button,
+  Group,
+  Box,
+  TextInput,
+  PasswordInput,
+  Checkbox,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import {
+  useUserLoginMutation,
+  useUserSignupMutation,
+} from "@/redux/api/authApi";
+import { useUserProfileQuery } from "@/redux/api/userApi";
+import { storeUserInfo } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import Spinner from "../common/Spinner";
+import Link from "next/link";
+import { showNotification } from "@/utils/showNotification";
 
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+function LoginForm() {
+  const [visible, { toggle }] = useDisclosure(false);
+  const [userLogin, { isLoading }] = useUserLoginMutation();
+  const { refetch } = useUserProfileQuery({});
+  const router = useRouter();
 
-const LoginForm: React.FC<{
-  onSubmit: SubmitHandler<FieldValues>;
-  isLoading: boolean;
-}> = ({ onSubmit, isLoading = false }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      email: "",
+      password: "",
+    },
 
+    validate: {
+      email: (value: string) =>
+        /^\S+@\S+$/.test(value) ? null : "Invalid email",
+      password: (val) =>
+        val.length < 8 ? "Password must be minimum 8 character" : null,
+    },
+  });
+
+  const handleLoginSubmit = async (data: {
+    email: string;
+    password: string;
+  }) => {
+    try {
+      const res = await userLogin({ ...data }).unwrap();
+      if (res?.success) {
+        toggle();
+        showNotification({
+          type: "success",
+          title: "Login success",
+          message: res.message,
+        });
+        if (res.accessToken) {
+          storeUserInfo({ accessToken: res?.accessToken });
+          await refetch();
+          router.push("/profile");
+        }
+      }
+    } catch (err: any) {
+      toggle();
+    }
+  };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-4">
-        <label className="block mb-2 text-gray-800">Email</label>
-        <input
-          type="email"
-          placeholder="mail@sharifrahat.com"
-          id="email"
-          {...register("email", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
+    <>
+      <Box pos="relative" className="w-full">
+        <LoadingOverlay
+          visible={isLoading ?? visible}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 0 }}
+          loaderProps={{
+            children: (
+              <div className="w-fit mb-20">
+                <Spinner />
+              </div>
+            ),
+          }}
         />
-        {errors.email && <p className="text-red-700">Email is required</p>}
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-2 text-gray-800" htmlFor="password">
-          Password
-        </label>
-        <input
-          type="password"
-          placeholder="************"
-          id="password"
-          {...register("password", { required: true })}
-          className="w-full px-4 py-2 rounded-md focus:outline-none focus:none text-primary border border-secondary"
-        />
-        {errors.password && (
-          <p className="text-red-700">Password is required</p>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full px-4 py-2 text-accent bg-primary hover:bg-primary/90 rounded-md"
-      >
-        {isLoading ? "Loading..." : "Login"}
-      </button>
-    </form>
+        <form
+          onSubmit={form.onSubmit((values) =>
+            handleLoginSubmit({
+              email: values.email,
+              password: values.password,
+            })
+          )}
+          className="flex flex-col gap-2"
+        >
+          <TextInput
+            withAsterisk
+            label="Email"
+            placeholder="your@email.com"
+            key={form.key("email")}
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            withAsterisk
+            label="Password"
+            placeholder="********"
+            key={form.key("password")}
+            {...form.getInputProps("password")}
+          />
+          <Group className="mt-4">
+            <Button type="submit" color="#ff3f39">
+              Login Now
+            </Button>
+            <Link href="/signup">
+              <Button variant="light" color="#ff3f39">
+                Get Signup
+              </Button>
+            </Link>
+          </Group>
+        </form>
+      </Box>
+    </>
   );
-};
+}
 
 export default LoginForm;
