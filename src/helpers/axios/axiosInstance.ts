@@ -2,6 +2,7 @@ import { authKey } from "@/constants/storageKey";
 
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
+import { showNotification } from "@/utils/showNotification";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -37,18 +38,31 @@ instance.interceptors.response.use(
     return responseObject;
   },
   async function (error) {
-    const accessToken = getFromLocalStorage(authKey);
-    if (error?.response?.status === 403) {
-    } else {
-      const responseObject: IGenericErrorResponse = {
-        statusCode: error?.response?.data?.statusCode || 500,
-        message: error?.response?.data?.message || "Something went wrong",
-        errorMessages: error?.response?.data?.message,
-      };
-      accessToken && toast.error(responseObject.message);
-      return responseObject;
-    }
+    // const accessToken = getFromLocalStorage(authKey);
+    // if (error?.response?.status === 403) {
+    // } else {
+    //   const responseObject: IGenericErrorResponse = {
+    //     statusCode: error?.response?.data?.statusCode || 500,
+    //     message: error?.response?.data?.message || "Something went wrong",
+    //     errorMessages: error?.response?.data?.message,
+    //   };
+    //   accessToken && toast.error(responseObject.message);
+    //   return responseObject;
+    // }
 
+    const responseObject: IGenericErrorResponse = {
+      statusCode: error?.response?.status || 500,
+      message: error?.response?.data?.message || "Something went wrong!",
+      errorMessages: error?.response?.data?.errorMessages,
+    };
+
+    responseObject.statusCode !== 403 &&
+      showNotification({
+        type: "error",
+        title: "Error",
+        message: responseObject.message,
+      });
+    // return responseObject;
     return Promise.reject(error);
   }
 );

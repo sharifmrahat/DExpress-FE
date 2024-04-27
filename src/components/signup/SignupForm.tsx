@@ -14,10 +14,13 @@ import { useUserProfileQuery } from "@/redux/api/userApi";
 import { storeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Spinner from "../common/Spinner";
+import Link from "next/link";
+import { showNotification } from "@/utils/showNotification";
 
 function SignupForm() {
   const [visible, { toggle }] = useDisclosure(false);
-  const [userSignup, { isLoading, isError }] = useUserSignupMutation();
+  const [userSignup, { isLoading }] = useUserSignupMutation();
   const { refetch } = useUserProfileQuery({});
   const router = useRouter();
 
@@ -39,6 +42,8 @@ function SignupForm() {
         val.length < 8 ? "Password must be minimum 8 character" : null,
       confirmPassword: (val, values) =>
         val !== values.password ? "Password not matched" : null,
+      termsOfService: (val) =>
+        !val ? "You must check agree to sign up" : null,
     },
   });
 
@@ -52,6 +57,11 @@ function SignupForm() {
       if (res?.success) {
         toast.success(res?.message);
         toggle();
+        showNotification({
+          type: "success",
+          title: "Signup success",
+          message: res.message,
+        });
         if (res.accessToken) {
           storeUserInfo({ accessToken: res?.accessToken });
           await refetch();
@@ -60,7 +70,6 @@ function SignupForm() {
       }
     } catch (err: any) {
       toggle();
-      toast.error(err?.message);
     }
   };
   return (
@@ -69,8 +78,14 @@ function SignupForm() {
         <LoadingOverlay
           visible={isLoading ?? visible}
           zIndex={1000}
-          overlayProps={{ radius: "sm", blur: 2 }}
-          loaderProps={{ color: "pink", type: "bars" }}
+          overlayProps={{ radius: "sm", blur: 0 }}
+          loaderProps={{
+            children: (
+              <div className="w-fit mb-20">
+                <Spinner />
+              </div>
+            ),
+          }}
         />
         <form
           onSubmit={form.onSubmit((values) =>
@@ -80,6 +95,7 @@ function SignupForm() {
               password: values.password,
             })
           )}
+          className="flex flex-col gap-2"
         >
           <TextInput
             withAsterisk
@@ -112,11 +128,21 @@ function SignupForm() {
 
           <Checkbox
             mt="md"
-            label="I agree to sell my privacy"
+            label="I agree with terms and conditions"
             key={form.key("termsOfService")}
             {...form.getInputProps("termsOfService", { type: "checkbox" })}
+            color="#ff3f39"
           />
-          <Button type="submit">Submit</Button>
+          <Group className="mt-4">
+            <Button type="submit" color="#ff3f39">
+              Sign Up Now
+            </Button>
+            <Link href="/login">
+              <Button variant="light" color="#ff3f39">
+                Get Login
+              </Button>
+            </Link>
+          </Group>
         </form>
       </Box>
     </>

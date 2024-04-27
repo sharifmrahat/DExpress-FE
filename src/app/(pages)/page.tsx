@@ -10,8 +10,10 @@ import LorriesByCategory from "@/components/homepage/LorriesByCategory";
 import { useAllLorriesQuery } from "@/redux/api/lorryApi";
 import LatestArticles from "@/components/homepage/LatestArticles";
 import CustomerFeedbacks from "@/components/homepage/CustomerFeedbacks";
-import { SegmentedControl, PasswordInput } from "@mantine/core";
+import { SegmentedControl, PasswordInput, Button } from "@mantine/core";
 import { useState } from "react";
+import { notifications } from "@mantine/notifications";
+import { showNotification } from "@/utils/showNotification";
 
 export default function HomePage() {
   const { data: categories, isLoading } = useAllCategoriesQuery({});
@@ -43,6 +45,17 @@ export default function HomePage() {
           description="Input description"
           placeholder="Input placeholder"
         />
+        <Button
+          onClick={() =>
+            showNotification({
+              type: "warn",
+              title: "Default notification",
+              message: "Hey there, your code is awesome! 🤥",
+            })
+          }
+        >
+          Show notification
+        </Button>
         <section className="my-10">
           <AvailableServices
             categories={categories?.data?.slice(0, 10)}

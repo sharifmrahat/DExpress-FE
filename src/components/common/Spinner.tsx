@@ -1,12 +1,14 @@
 "use client";
 import { PuffLoader } from "react-spinners";
 
-function Spinner() {
-  return (
-    <div>
-      <PuffLoader color={"#006266"} loading={true} size={100} />
-    </div>
-  );
+function Spinner({
+  size = 100,
+  color = "#ff3f39",
+}: {
+  size?: number;
+  color?: string;
+}) {
+  return <PuffLoader color={color} loading={true} size={size} />;
 }
 
 export default Spinner;

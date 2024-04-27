@@ -1,11 +1,12 @@
 import "./globals.css";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
 import Providers from "@/lib/Provider";
 import { Poppins } from "next/font/google";
-import { ToastContainer } from "react-toastify";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../../theme";
+import { Notifications } from "@mantine/notifications";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,21 +30,11 @@ export default function RootLayout({
           <link rel="shortcut icon" href="/favicon.ico" />
         </head>
         <body className={`${poppins.className} bg-background`}>
-          <MantineProvider theme={theme}>{children}</MantineProvider>
+          <MantineProvider theme={theme}>
+            <Notifications position="top-right" zIndex={1000} />
+            {children}
+          </MantineProvider>
         </body>
-
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
       </html>
     </Providers>
   );
