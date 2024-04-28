@@ -78,18 +78,19 @@ const navigation = {
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 
 export default function Footer() {
+  const thisYear = new Date().getFullYear();
   return (
-    <footer className={`${poppins.className} bg-primary`}>
+    <footer className={`${poppins.className} bg-secondary`}>
       <div className="mx-auto w-full lg:max-w-7xl overflow-hidden px-6 py-10 lg:px-8">
         <nav
-          className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
+          className="-mb-6 columns-2 sm:flex sm:justify-center sm:items-center sm:space-x-12"
           aria-label="Footer"
         >
           {navigation.main.map((item) => (
             <div key={item.name} className="pb-6">
               <a
                 href={item.href}
-                className="text-sm leading-6 text-accent hover:text-secondary"
+                className="text-sm leading-6 text-white hover:text-accent"
               >
                 {item.name}
               </a>
@@ -101,15 +102,15 @@ export default function Footer() {
             <a
               key={item.name}
               href={item.href}
-              className="text-accent hover:text-secondary"
+              className="text-white hover:text-accent"
             >
               <span className="sr-only">{item.name}</span>
               <item.icon className="h-6 w-6" aria-hidden="true" />
             </a>
           ))}
         </div>
-        <p className="mt-10 text-center text-xs leading-5 text-secondary">
-          &copy; 2023 Lorry Lagbe | All rights reserved.
+        <p className="mt-10 text-center text-xs leading-5 text-white">
+          &copy; {thisYear} DExpress | All rights reserved.
         </p>
       </div>
     </footer>
