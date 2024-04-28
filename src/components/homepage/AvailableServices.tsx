@@ -9,7 +9,6 @@ const AvailableServices = ({
   services: services[];
   isLoading: boolean;
 }) => {
-  console.log(services);
   return (
     <div>
       <div className="text-center mb-8">

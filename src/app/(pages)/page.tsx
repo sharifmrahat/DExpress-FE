@@ -2,7 +2,6 @@
 import AvailableServices from "@/components/homepage/AvailableServices";
 import DownloadSection from "@/components/homepage/DownloadSection";
 import FeatureSection from "@/components/homepage/Survey";
-import HeroSection from "@/components/homepage/HeroSection";
 import UpcomingServices from "@/components/homepage/UpcomingServices";
 import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
 import Link from "next/link";
@@ -14,6 +13,7 @@ import { useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { showNotification } from "@/utils/showNotification";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
+import Banner from "@/components/homepage/Banner";
 
 export default function HomePage() {
   const {
@@ -27,10 +27,10 @@ export default function HomePage() {
   const [value, setValue] = useState("react");
   return (
     <>
+      <section>
+        <Banner />
+      </section>
       <div className="w-full lg:max-w-7xl mx-auto px-5 lg:px-0 pb-10">
-        <section>
-          <HeroSection />
-        </section>
         <section className="my-20">
           <FeatureSection />
         </section>
