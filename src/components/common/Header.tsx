@@ -1,47 +1,39 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect } from "react";
-import { Oswald } from "next/font/google";
-import { Poppins } from "next/font/google";
+import { Oswald, Poppins } from "next/font/google";
 import Link from "next/link";
 import { isLoggedIn, removeUserInfo } from "@/services/auth.service";
 import { authKey } from "@/constants/storageKey";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useUserProfileQuery } from "@/redux/api/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import { setProfile, handleLogout } from "@/redux/slice/profileSlice";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
 import { services } from "@prisma/client";
-import { Avatar, Button, Group, Menu, Skeleton } from "@mantine/core";
-import { IconChevronUp, IconChevronDown } from "@tabler/icons-react";
-import { useHover } from "@mantine/hooks";
+import { Avatar, Burger, Button, Drawer, Group, Menu } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { USER_ROLE } from "@/constants/role";
 import Spinner from "./Spinner";
 
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Header() {
+  const [opened, { toggle, close }] = useDisclosure();
   const { profile } = useAppSelector((state) => state.profile);
 
   const { data, isLoading, refetch } = useUserProfileQuery({});
 
-  const {
-    data: services,
-    isSuccess,
-    isLoading: serviceLoading,
-  } = useAllServicesQuery({ limit: 6 });
+  const { data: services, isSuccess } = useAllServicesQuery({ limit: 6 });
 
   const dispatch = useDispatch();
 
   const userLoggedIn = isLoggedIn();
 
   const router = useRouter();
+  const pathName = usePathname();
 
   const signOut = () => {
     removeUserInfo(authKey);
@@ -64,7 +56,7 @@ export default function Header() {
   return (
     <header className={`${poppins.className} bg-white sticky top-0 z-50`}>
       <nav
-        className="mx-auto flex w-full lg:max-w-7xl items-center justify-between py-4"
+        className="hidden lg:flex mx-auto w-full max-w-7xl items-center justify-between py-4"
         aria-label="Global"
       >
         {/* Heading */}
@@ -86,13 +78,17 @@ export default function Header() {
         <div className="flex gap-x-12 justify-center items-center">
           <Link
             href="/"
-            className="text-sm font-semibold leading-6 text-secondary hover:text-primary"
+            className={`text-sm font-semibold leading-6  hover:text-primary ${
+              pathName === "/" ? "text-primary" : "text-secondary"
+            }`}
           >
             Home
           </Link>
           <Link
             href="/packages"
-            className="text-sm font-semibold leading-6 text-secondary hover:text-primary"
+            className={`text-sm font-semibold leading-6  hover:text-primary ${
+              pathName === "/packages" ? "text-primary" : "text-secondary"
+            }`}
           >
             Package
           </Link>
@@ -106,7 +102,9 @@ export default function Header() {
             <Menu.Target>
               <Link
                 href="/services"
-                className="flex gap-2 text-sm font-semibold leading-6 text-secondary hover:text-primary"
+                className={`text-sm font-semibold leading-6  hover:text-primary ${
+                  pathName === "/services" ? "text-primary" : "text-secondary"
+                }`}
               >
                 <span>Service</span>
               </Link>
@@ -127,18 +125,23 @@ export default function Header() {
 
           <Link
             href="/feedbacks"
-            className="text-sm font-semibold leading-6 text-secondary hover:text-primary"
+            className={`text-sm font-semibold leading-6  hover:text-primary ${
+              pathName === "/feedbacks" ? "text-primary" : "text-secondary"
+            }`}
           >
             Feedback
           </Link>
           <Link
             href="/articles"
-            className="text-sm font-semibold leading-6 text-secondary hover:text-primary"
+            className={`text-sm font-semibold leading-6  hover:text-primary ${
+              pathName === "/articles" ? "text-primary" : "text-secondary"
+            }`}
           >
             Article
           </Link>
         </div>
 
+        {/* Login vs Avatar */}
         <div className="flex flex-1 justify-end items-center gap-8">
           {userLoggedIn && data?.success ? (
             <div>
@@ -146,7 +149,7 @@ export default function Header() {
                 <Menu.Target>
                   <Avatar
                     src={profile?.imageUrl}
-                    className="border-2 border-primary"
+                    className="border-2 border-primary cursor-pointer"
                     alt={profile?.name}
                     color="#ff3f39"
                     size="md"
@@ -203,6 +206,148 @@ export default function Header() {
           )}
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <nav
+        className="flex lg:hidden items-center justify-between p-4"
+        aria-label="Global"
+      >
+        {/* Heading */}
+        <div className="flex">
+          <Link href="/">
+            <span className={`text-2xl text-primary ${oswald.className}`}>
+              DExpress
+            </span>
+            {/* <img
+            className="h-8 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            alt=""
+          /> */}
+          </Link>
+        </div>
+
+        {/* Avatar & Burger */}
+        <div className="flex flex-1 justify-end items-center gap-4">
+          {userLoggedIn && data?.success ? (
+            <div>
+              <Menu shadow="md" width={200} openDelay={100} closeDelay={200}>
+                <Menu.Target>
+                  <Avatar
+                    src={profile?.imageUrl}
+                    className="border-2 border-primary cursor-pointer"
+                    alt={profile?.name}
+                    color="#ff3f39"
+                    size="sm"
+                  >
+                    {profile?.name?.charAt(0)?.toUpperCase()}
+                  </Avatar>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <p className="text-center font-semibold text-secondary my-2">
+                    {profile?.name}
+                  </p>
+                  <Link href="/profile">
+                    <Menu.Item className="hover:text-primary text-secondary">
+                      Profile
+                    </Menu.Item>
+                  </Link>
+                  <Link
+                    href={
+                      profile?.role === USER_ROLE.CUSTOMER
+                        ? "/my-bookings"
+                        : "/manage-bookings"
+                    }
+                  >
+                    <Menu.Item className="hover:text-primary text-secondary">
+                      Bookings
+                    </Menu.Item>
+                  </Link>
+
+                  <div onClick={() => signOut()}>
+                    <Menu.Item className="hover:bg-primary text-secondary hover:text-white">
+                      Logout
+                    </Menu.Item>
+                  </div>
+                </Menu.Dropdown>
+              </Menu>
+            </div>
+          ) : isLoading ? (
+            <>
+              <div>
+                <Spinner size={30} />
+              </div>
+            </>
+          ) : (
+            <Group>
+              <Link href="/signup">
+                <Button variant="light" color="#ff3f39" size="xs">
+                  Sign Up
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button color="#ff3f39" size="xs">
+                  Login
+                </Button>
+              </Link>
+            </Group>
+          )}
+          {/* Burger */}
+          <div>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              color="#ff3f39"
+              aria-label="Toggle navigation"
+            />
+          </div>
+        </div>
+      </nav>
+      <Drawer position="right" size="xs" opened={opened} onClose={close}>
+        {/* Drawer content */}
+
+        <div className="flex flex-col gap-y-2 justify-start items-start">
+          <Link
+            href="/"
+            className={`font-semibold leading-6 text-secondary hover:text-white hover:bg-primary p-2 rounded block w-full ${
+              pathName === "/" ? "bg-primary text-white" : ""
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            href="/packages"
+            className={`font-semibold leading-6 text-secondary hover:text-white hover:bg-primary p-2 rounded block w-full ${
+              pathName === "/packages" ? "bg-primary text-white" : ""
+            }`}
+          >
+            Package
+          </Link>
+          <Link
+            href="/services"
+            className={`font-semibold leading-6 text-secondary hover:text-white hover:bg-primary p-2 rounded block w-full ${
+              pathName === "/services" ? "bg-primary text-white" : ""
+            }`}
+          >
+            Services
+          </Link>
+          <Link
+            href="/feedbacks"
+            className={`font-semibold leading-6 text-secondary hover:text-white hover:bg-primary p-2 rounded block w-full ${
+              pathName === "/feedbacks" ? "bg-primary text-white" : ""
+            }`}
+          >
+            Feedback
+          </Link>
+          <Link
+            href="/articles"
+            className={`font-semibold leading-6 text-secondary hover:text-white hover:bg-primary p-2 rounded block w-full ${
+              pathName === "/articles" ? "bg-primary text-white" : ""
+            }`}
+          >
+            Article
+          </Link>
+        </div>
+      </Drawer>
     </header>
   );
 }
