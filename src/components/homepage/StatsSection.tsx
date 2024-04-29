@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+"use client";
 import { Oswald } from "next/font/google";
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 import statImage1 from "@/assets/images/stats-1.png";

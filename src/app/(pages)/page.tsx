@@ -1,7 +1,6 @@
 "use client";
 import AvailableServices from "@/components/homepage/AvailableServices";
 import DownloadSection from "@/components/homepage/DownloadSection";
-import FeatureSection from "@/components/homepage/Survey";
 import UpcomingServices from "@/components/homepage/UpcomingServices";
 import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
 import Link from "next/link";

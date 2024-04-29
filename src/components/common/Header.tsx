@@ -16,6 +16,7 @@ import { Avatar, Burger, Button, Drawer, Group, Menu } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { USER_ROLE } from "@/constants/role";
 import Spinner from "./Spinner";
+import dexpressLogo from "@/assets/images/dexpress.png";
 
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
@@ -60,18 +61,17 @@ export default function Header() {
         aria-label="Global"
       >
         {/* Heading */}
-        <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5">
+        <div className="flex flex-1">
+          <Link
+            href="/"
+            className="-m-1.5 p-1.5 flex flex-row justify-center items-center gap-2"
+          >
+            <img className="h-7 w-auto" src={dexpressLogo.src} alt="DExpress" />
             <span
-              className={`text-xl lg:text-3xl text-primary pl-5 lg:pl-0 ${oswald.className}`}
+              className={`text-xl lg:text-3xl text-secondary pl-5 lg:pl-0 ${oswald.className}`}
             >
               DExpress
             </span>
-            {/* <img
-            className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt=""
-          /> */}
           </Link>
         </div>
         {/* Routes  */}
@@ -214,15 +214,14 @@ export default function Header() {
       >
         {/* Heading */}
         <div className="flex">
-          <Link href="/">
-            <span className={`text-2xl text-primary ${oswald.className}`}>
+          <Link
+            href="/"
+            className="flex flex-row justify-center items-center gap-2"
+          >
+            <img className="h-4 w-auto" src={dexpressLogo.src} alt="DExpress" />
+            <span className={`text-xl text-secondary ${oswald.className}`}>
               DExpress
             </span>
-            {/* <img
-            className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt=""
-          /> */}
           </Link>
         </div>
 
@@ -279,13 +278,13 @@ export default function Header() {
             </>
           ) : (
             <Group>
-              <Link href="/signup">
+              {/* <Link href="/signup">
                 <Button variant="light" color="#ff3f39" size="xs">
                   Sign Up
                 </Button>
-              </Link>
+              </Link> */}
               <Link href="/login">
-                <Button color="#ff3f39" size="xs">
+                <Button color="#ff3f39" size="xs" variant="light">
                   Login
                 </Button>
               </Link>
@@ -305,7 +304,7 @@ export default function Header() {
       <Drawer position="right" size="xs" opened={opened} onClose={close}>
         {/* Drawer content */}
 
-        <div className="flex flex-col gap-y-2 justify-start items-start">
+        <div className="flex flex-col gap-y-2 justify-start items-start text-sm">
           <Link
             href="/"
             className={`font-semibold leading-6 text-secondary hover:text-white hover:bg-primary p-2 rounded block w-full ${
