@@ -14,6 +14,7 @@ import { showNotification } from "@/utils/showNotification";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
 import Banner from "@/components/homepage/Banner";
 import StatsSection from "@/components/homepage/StatsSection";
+import ServiceSection from "@/components/homepage/ServiceSection";
 
 export default function HomePage() {
   const {
@@ -30,25 +31,12 @@ export default function HomePage() {
       <section>
         <Banner />
       </section>
-      <div className="w-full lg:max-w-7xl mx-auto px-5 lg:px-0 pb-10">
+      <div className="w-full lg:max-w-7xl mx-auto px-5 pb-10">
         <section className="my-20">
           <StatsSection />
         </section>
         <section className="my-10">
-          <AvailableServices
-            services={isSuccess && services?.data?.result}
-            isLoading={serviceLoading}
-          />
-          {services?.data?.length && (
-            <div className="flex justify-end  px-5 lg:px-16 mt-8">
-              <Link
-                href="/services"
-                className="py-0.5 px-2 border-2 border-secondary rounded text-primary"
-              >
-                Load More
-              </Link>
-            </div>
-          )}
+          <ServiceSection />
         </section>
         <section className="my-20">
           {/* <LorriesByCategory
