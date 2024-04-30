@@ -17,12 +17,6 @@ import StatsSection from "@/components/homepage/StatsSection";
 import ServiceSection from "@/components/homepage/ServiceSection";
 
 export default function HomePage() {
-  const {
-    data: services,
-    isSuccess,
-    isLoading: serviceLoading,
-  } = useAllServicesQuery({ limit: 6 });
-
   // const { data: lorries, isLoading: lorryLoading } = useAllLorriesQuery({});
 
   const [value, setValue] = useState("react");
@@ -32,13 +26,13 @@ export default function HomePage() {
         <Banner />
       </section>
       <div className="w-full lg:max-w-7xl mx-auto px-5 pb-10">
-        <section className="my-20">
+        <section className="my-32">
           <StatsSection />
         </section>
-        <section className="my-10">
+        <section className="my-32">
           <ServiceSection />
         </section>
-        <section className="my-20">
+        <section className="my-32">
           {/* <LorriesByCategory
             lorries={lorries?.data?.result?.slice(0, 10)}
             isLoading={lorryLoading}
@@ -54,7 +48,7 @@ export default function HomePage() {
             </div>
           )} */}
         </section>
-        <section className="my-20">
+        <section className="my-32">
           {/* <UpcomingServices />
           <div className="flex justify-end  px-5 lg:px-16 mt-8">
             <Link
@@ -65,7 +59,7 @@ export default function HomePage() {
             </Link>
           </div> */}
         </section>
-        <section className="my-20">
+        <section className="my-32">
           <LatestArticles />
           <div className="flex justify-center px-5 lg:px-16 mt-8">
             <Link
@@ -76,10 +70,10 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
-        <section className="my-20">
+        <section className="my-32">
           <DownloadSection />
         </section>
-        <section className="my-20">
+        <section className="my-32">
           <CustomerFeedbacks />
           <div className="flex justify-center px-5 lg:px-16 mt-8">
             <Link

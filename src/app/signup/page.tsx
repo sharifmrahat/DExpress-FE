@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Oswald } from "next/font/google";
-import SignupForm from "@/components/signup/SignupForm";
+import SignupForm from "@/components/authpage/SignupForm";
 import signupImage from "@/assets/images/sign-up.png";
 import Link from "next/link";
 

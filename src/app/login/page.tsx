@@ -4,7 +4,7 @@
 import { Oswald } from "next/font/google";
 import loginImage from "@/assets/images/login.png";
 import Link from "next/link";
-import LoginForm from "@/components/login/LoginForm";
+import LoginForm from "@/components/authpage/LoginForm";
 
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
