@@ -11,8 +11,16 @@ import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import { setProfile, handleLogout } from "@/redux/slice/profileSlice";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
-import { services } from "@prisma/client";
-import { Avatar, Burger, Button, Drawer, Group, Menu } from "@mantine/core";
+import { Role, services } from "@prisma/client";
+import {
+  Avatar,
+  Badge,
+  Burger,
+  Button,
+  Drawer,
+  Group,
+  Menu,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { USER_ROLE } from "@/constants/role";
 import Spinner from "./Spinner";
@@ -158,9 +166,15 @@ export default function Header() {
                   </Avatar>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <p className="text-center font-semibold text-secondary my-2">
-                    {profile?.name}
-                  </p>
+                  <div className="my-2 text-center ">
+                    <p className="font-semibold text-secondary">
+                      {profile?.name}
+                    </p>
+                    <Badge variant="light" color="#ff3f39">
+                      {profile?.role}
+                    </Badge>
+                  </div>
+
                   <Link href="/profile">
                     <Menu.Item className="hover:text-primary text-secondary">
                       Profile
@@ -242,9 +256,14 @@ export default function Header() {
                   </Avatar>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <p className="text-center font-semibold text-secondary my-2">
-                    {profile?.name}
-                  </p>
+                  <div className="my-2 text-center">
+                    <p className="font-semibold text-secondary">
+                      {profile?.name}
+                    </p>
+                    <Badge variant="light" color="#ff3f39">
+                      {profile?.role}
+                    </Badge>
+                  </div>
                   <Link href="/profile">
                     <Menu.Item className="hover:text-primary text-secondary">
                       Profile
