@@ -60,7 +60,7 @@ export default function HomePage() {
           </div> */}
         </section>
         <section className="my-32">
-          <LatestArticles />
+          {/* <LatestArticles />
           <div className="flex justify-center px-5 lg:px-16 mt-8">
             <Link
               href="/articles"
@@ -68,13 +68,13 @@ export default function HomePage() {
             >
               Load More
             </Link>
-          </div>
+          </div> */}
         </section>
         <section className="my-32">
           <DownloadSection />
         </section>
         <section className="my-32">
-          <CustomerFeedbacks />
+          {/* <CustomerFeedbacks />
           <div className="flex justify-center px-5 lg:px-16 mt-8">
             <Link
               href="/customer-feedbacks"
@@ -82,7 +82,7 @@ export default function HomePage() {
             >
               Load More
             </Link>
-          </div>
+          </div> */}
         </section>
       </div>
     </>
