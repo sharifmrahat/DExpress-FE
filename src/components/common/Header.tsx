@@ -35,7 +35,10 @@ export default function Header() {
 
   const { data, isLoading, refetch } = useUserProfileQuery({});
 
-  const { data: services, isSuccess } = useAllServicesQuery({ limit: 6 });
+  const { data: services, isSuccess } = useAllServicesQuery({
+    limit: 6,
+    sortBy: "totalBooking",
+  });
 
   const dispatch = useDispatch();
 
