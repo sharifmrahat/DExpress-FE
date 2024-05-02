@@ -5,11 +5,28 @@ import SectionHeading from "@/components/common/SectionHeading";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 import ServiceCard from "@/components/pages/services/ServiceCard";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
-import { Badge, Select } from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Collapse,
+  Group,
+  Input,
+  Select,
+  TextInput,
+} from "@mantine/core";
+import { useDebouncedState, useDisclosure } from "@mantine/hooks";
 import { services } from "@prisma/client";
+import {
+  IconChevronsDown,
+  IconChevronsUp,
+  IconSearch,
+} from "@tabler/icons-react";
 import { useState } from "react";
 
 const ServicePage = () => {
+  const [opened, { toggle }] = useDisclosure(false);
+  const [searchValue, setSearchValue] = useDebouncedState("", 200);
+
   const [sortFieldValue, setSortFieldValue] = useState<string | undefined>(
     "totalBooking"
   );
@@ -32,6 +49,7 @@ const ServicePage = () => {
   } = useAllServicesQuery({
     sortBy: sortFieldValue,
     sortOrder: sortOrderValue,
+    search: searchValue,
   });
 
   return (
@@ -50,25 +68,59 @@ const ServicePage = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row justify-center items-center gap-4 mt-5 lg:mt-0">
-          <Select
-            label="Sort By"
-            data={sortFields}
-            value={sortFieldValue ? sortFieldValue : undefined}
-            onChange={(value, option) => setSortFieldValue(value as string)}
-            checkIconPosition="right"
-            size="xs"
-          />
-          <Select
-            label="Sort Order"
-            data={sortOrders}
-            value={sortOrderValue ? sortOrderValue : "desc"}
-            onChange={(value, option) =>
-              setSortOrderValue(value as "asc" | "desc")
-            }
-            checkIconPosition="right"
-            size="xs"
-          />
+        <div>
+          <div className="flex flex-col justify-center items-center gap-2 mt-5 lg:mt-0 mb-4">
+            <div className="w-full">
+              <TextInput
+                size="xs"
+                placeholder="Search Package"
+                rightSection={<IconSearch />}
+                defaultValue={searchValue}
+                onChange={(event) => setSearchValue(event.currentTarget.value)}
+              />
+            </div>
+            <div className="flex flex-row justify-center items-center gap-4">
+              <Select
+                label="Sort By"
+                data={sortFields}
+                value={sortFieldValue ? sortFieldValue : undefined}
+                onChange={(value, option) => setSortFieldValue(value as string)}
+                checkIconPosition="right"
+                size="xs"
+              />
+              <Select
+                label="Sort Order"
+                data={sortOrders}
+                value={sortOrderValue ? sortOrderValue : "desc"}
+                onChange={(value, option) =>
+                  setSortOrderValue(value as "asc" | "desc")
+                }
+                checkIconPosition="right"
+                size="xs"
+              />
+            </div>
+          </div>
+          {/* <Group justify="center" mb={5}>
+            <Button
+              onClick={toggle}
+              variant="light"
+              fullWidth
+              size="xs"
+              color="#0f1b24"
+              rightSection={
+                opened ? (
+                  <IconChevronsUp size={18} />
+                ) : (
+                  <IconChevronsDown size={18} />
+                )
+              }
+            >
+              Filter
+            </Button>
+          </Group> */}
+          {/* <Collapse in={opened}>
+            <div className="flex flex-col gap-4">{/* Filter component *</div>
+          </Collapse> */}
         </div>
       </div>
       <div className="mt-20">
@@ -76,7 +128,7 @@ const ServicePage = () => {
           {isSuccess && services?.data?.result?.length ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 justify-center items-center gap-8 lg:gap-10">
               {services?.data?.result.map((service: services) => (
-                <div key={service.id}>
+                <div key={service.id} className="h-full cursor-pointer">
                   <ServiceCard service={service} />
                 </div>
               ))}

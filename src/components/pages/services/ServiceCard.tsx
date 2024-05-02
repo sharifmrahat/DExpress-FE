@@ -54,7 +54,7 @@ const ServiceCard = ({ service }: { service: services }) => {
         <Link href={`/services/${service.id}`} className="w-full lg:w-1/3">
           <Button
             variant="light"
-            color={hovered ? "#ff3f39" : "#0f1b24"}
+            color={!hovered ? "#ff3f39" : "#0f1b24"}
             size="xs"
             radius="sm"
             fullWidth

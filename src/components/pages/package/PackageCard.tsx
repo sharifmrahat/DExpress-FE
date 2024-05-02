@@ -35,18 +35,19 @@ const PackageCard = ({ currentPackage }: { currentPackage: packages }) => {
           </Text>
         </Link>
         <Link href={`/services/${currentPackage.serviceId}`} className="mt-5">
-          <Badge size="md" variant="light" mt="md">
+          <Badge
+            size="md"
+            variant="light"
+            mt="md"
+            color={!hovered ? "#ff3f39" : "#0f1b24"}
+          >
             {(currentPackage as any).service.title}
           </Badge>
         </Link>
       </Card.Section>
 
       <Link href={`/packages/${currentPackage?.id}`}>
-        <Text
-          size="sm"
-          c="dimmed"
-          className="text-xs lg:text-sm text-justify mb-5"
-        >
+        <Text size="sm" className="text-xs lg:text-sm text-justify mb-5">
           {currentPackage.description!.length <= 200
             ? currentPackage.description
             : currentPackage.description?.slice(0, 200) + "..."}
