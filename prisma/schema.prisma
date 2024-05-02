@@ -87,6 +87,7 @@ model packages {
   updatedAt    DateTime
   isActive     Boolean    @default(true)
   isDeleted    Boolean    @default(false)
+  unit         String?
   bookings     bookings[]
   services     services   @relation(fields: [serviceId], references: [id])
 }

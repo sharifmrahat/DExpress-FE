@@ -16,8 +16,8 @@ const ServicePage = () => {
   const [sortOrderValue, setSortOrderValue] = useState<"asc" | "desc">("desc");
 
   const sortFields = [
+    { value: "totalBooking", label: "Popularity" },
     { value: "title", label: "Title" },
-    { value: "totalBooking", label: "Total Booking" },
   ];
 
   const sortOrders = [
