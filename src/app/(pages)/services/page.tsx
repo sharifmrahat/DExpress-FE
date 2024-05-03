@@ -73,7 +73,7 @@ const ServicePage = () => {
             <div className="w-full">
               <TextInput
                 size="xs"
-                placeholder="Search Package"
+                placeholder="Search Service"
                 rightSection={<IconSearch />}
                 defaultValue={searchValue}
                 onChange={(event) => setSearchValue(event.currentTarget.value)}

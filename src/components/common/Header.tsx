@@ -22,7 +22,6 @@ import {
   Menu,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { USER_ROLE } from "@/constants/role";
 import Spinner from "./Spinner";
 import dexpressLogo from "@/assets/images/dexpress.png";
 
@@ -185,7 +184,7 @@ export default function Header() {
                   </Link>
                   <Link
                     href={
-                      profile?.role === USER_ROLE.CUSTOMER
+                      profile?.role === Role.customer
                         ? "/my-bookings"
                         : "/manage-bookings"
                     }
@@ -274,7 +273,7 @@ export default function Header() {
                   </Link>
                   <Link
                     href={
-                      profile?.role === USER_ROLE.CUSTOMER
+                      profile?.role === Role.customer
                         ? "/my-bookings"
                         : "/manage-bookings"
                     }

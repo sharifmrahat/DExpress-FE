@@ -9,7 +9,7 @@ import {
   DocumentTextIcon,
   RssIcon,
 } from "@heroicons/react/24/outline";
-import { USER_ROLE } from "./role";
+import { Role } from "@prisma/client";
 export const SidebarItems = (role: string) => {
   const customerDashboardNavigation = [
     {
@@ -99,9 +99,9 @@ export const SidebarItems = (role: string) => {
     },
   ];
 
-  if (role === USER_ROLE.SUPER_ADMIN) return superAdminDashboardNavigation;
-  else if (role === USER_ROLE.ADMIN) return adminDashboardNavigation;
-  else if (role === USER_ROLE.CUSTOMER) return customerDashboardNavigation;
+  if (role === Role.super_admin) return superAdminDashboardNavigation;
+  else if (role === Role.admin) return adminDashboardNavigation;
+  else if (role === Role.customer) return customerDashboardNavigation;
   else {
     return customerDashboardNavigation;
   }

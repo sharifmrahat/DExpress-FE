@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgres://postgres.nsttipummmgjkaivbbqn:mXHP4hpdESCVRQK@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
 }
 
 model articles {
@@ -90,6 +90,7 @@ model packages {
   unit         String?
   bookings     bookings[]
   services     services   @relation(fields: [serviceId], references: [id])
+  reviews      reviews[]
 }
 
 model payments {
@@ -110,18 +111,22 @@ model payments {
 }
 
 model reviews {
-  id          String   @unique
+  id          String    @unique
   description String?
   rating      Float
   imageUrls   String[]
   userId      String
-  bookingId   String   @unique
-  createdAt   DateTime @default(now())
+  bookingId   String    @unique
+  createdAt   DateTime  @default(now())
   updatedAt   DateTime
-  isActive    Boolean  @default(true)
-  isDeleted   Boolean  @default(false)
-  bookings    bookings @relation(fields: [bookingId], references: [id])
-  users       users    @relation(fields: [userId], references: [id])
+  isActive    Boolean   @default(true)
+  isDeleted   Boolean   @default(false)
+  packageId   String?
+  serviceId   String
+  bookings    bookings  @relation(fields: [bookingId], references: [id])
+  packages    packages? @relation(fields: [packageId], references: [id])
+  services    services  @relation(fields: [serviceId], references: [id])
+  users       users     @relation(fields: [userId], references: [id])
 
   @@id([userId, bookingId])
 }
@@ -138,6 +143,7 @@ model services {
   isDeleted    Boolean    @default(false)
   bookings     bookings[]
   packages     packages[]
+  reviews      reviews[]
 }
 
 model users {

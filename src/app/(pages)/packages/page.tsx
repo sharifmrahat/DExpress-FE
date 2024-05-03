@@ -139,7 +139,7 @@ const PackagePage = () => {
               variant="light"
               fullWidth
               size="xs"
-              color="#0f1b24"
+              color={opened ? "#ff3f39" : "#0f1b24"}
               rightSection={
                 opened ? (
                   <IconChevronsUp size={18} />
@@ -190,7 +190,7 @@ const PackagePage = () => {
                   step={500}
                   defaultValue={[500, 10000]}
                   label={(value) => `$${value}`}
-                  color="red"
+                  color="#0f1b24"
                   onChangeEnd={(val) =>
                     setFilterData({
                       serviceId: filterData.serviceId

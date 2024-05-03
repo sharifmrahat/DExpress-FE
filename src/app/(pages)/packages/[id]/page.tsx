@@ -4,7 +4,10 @@ import DataNotFound from "@/components/common/DataNotFound";
 import SectionHeading from "@/components/common/SectionHeading";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 import PackageCard from "@/components/pages/package/PackageCard";
-import { useAllPackagesQuery } from "@/redux/api/packageApi";
+import {
+  useAllPackagesQuery,
+  useSinglePackageQuery,
+} from "@/redux/api/packageApi";
 import { useAllReviewsQuery } from "@/redux/api/reviewApi";
 import { useSingleServiceQuery } from "@/redux/api/serviceAPI";
 import {
@@ -16,39 +19,50 @@ import {
   Button,
   Tabs,
 } from "@mantine/core";
-import { packages, reviews, services } from "@prisma/client";
+import { packages, reviews } from "@prisma/client";
 import { IconCircleCheck } from "@tabler/icons-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
+const PackageDetailsPage = ({ params }: { params: { id: string } }) => {
   const [activeTab, setActiveTab] = useState<string | null>("packages");
   const {
-    data: service,
+    data: packageResult,
     isSuccess,
     isLoading,
-  } = useSingleServiceQuery(params?.id);
+  } = useSinglePackageQuery(params?.id);
+
+  const currentPackage = useMemo(
+    () => packageResult?.data as packages,
+    [packageResult]
+  );
 
   const {
     data: packages,
     isSuccess: isPackageSuccess,
     isLoading: isPackageLoading,
-  } = useAllPackagesQuery({ serviceId: params?.id });
+  } = useAllPackagesQuery({ serviceId: currentPackage?.serviceId });
+
+  const similarPackages = useMemo(
+    () =>
+      (packages?.data?.result as packages[])?.filter(
+        (p) => p?.id !== currentPackage?.id
+      ),
+    [packages, currentPackage]
+  );
 
   const {
     data: reviews,
     isSuccess: isReviewSuccess,
     isLoading: isReviewLoading,
-  } = useAllReviewsQuery({ serviceId: params?.id });
-
-  const currentService = useMemo(() => service?.data as services, [service]);
+  } = useAllReviewsQuery({ packageId: params?.id });
 
   const routes = [
     { title: "Home", href: "/" },
-    { title: "Service", href: "/services" },
+    { title: "Package", href: "/packages" },
     {
-      title: currentService?.title
-        ? currentService?.title
+      title: currentPackage?.title
+        ? currentPackage?.title
         : isLoading
         ? "Loading..."
         : "Not Found",
@@ -82,26 +96,26 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
     <div className="w-full lg:max-w-7xl mx-auto px-5 pt-10 pb-48">
       <Breadcrumbs className="hidden lg:flex">{routes}</Breadcrumbs>
       <div className="mt-0 lg:mt-10">
-        {isSuccess && currentService ? (
+        {isSuccess && currentPackage ? (
           <>
             <div className="flex flex-col lg:flex-row justify-start items-start gap-5 lg:gap-16">
-              <div>
+              {/* <div>
                 <Image
-                  src={currentService.imageUrl}
-                  alt={currentService.title}
+                  src={currentPackage.imageUrl}
+                  alt={currentPackage.title}
                   className="w-full lg:w-[480px] lg:h-[320px]"
                   radius="sm"
                 />
-              </div>
+              </div> */}
               <div className="flex flex-col justify-between h-full lg:h-[320px]">
                 <div>
-                  <SectionHeading line1={currentService.title} />
+                  <SectionHeading line1={currentPackage.title} />
                   <Text
                     size="sm"
                     c="dimmed"
                     className="text-xs lg:text-sm text-justify my-4 max-w-sm"
                   >
-                    {currentService.description}
+                    {currentPackage.description}
                   </Text>
                 </div>
                 <div className="flex flex-col gap-5">
@@ -115,14 +129,14 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
                       />
                     }
                   >
-                    Total Booking: {currentService.totalBooking}
+                    Total Booking: {currentPackage.totalBooking}
                   </Badge>
                   <Button
                     color="#ff3f39"
                     size="xs"
                     radius="sm"
                     fullWidth
-                    onClick={() => handleBooking(service.id)}
+                    onClick={() => handleBooking(packageResult.id)}
                   >
                     Book Now
                   </Button>
@@ -142,8 +156,8 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
           <>
             <div className="w-full lg:w-[480px] lg:h-[320px]">
               <DataNotFound
-                description="No service data is found"
-                title="Service not found!"
+                description="No package data is found"
+                title="Package not found!"
               />
             </div>
           </>
@@ -163,7 +177,7 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
                 activeTab === "packages" && "text-primary"
               }`}
             >
-              Packages
+              Similar Packages
             </Tabs.Tab>
             <Tabs.Tab
               value="reviews"
@@ -174,11 +188,10 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
               Reviews
             </Tabs.Tab>
           </Tabs.List>
-
           <Tabs.Panel value="packages">
-            {isSuccess && isPackageSuccess && packages?.data?.result?.length ? (
+            {isSuccess && isPackageSuccess && similarPackages?.length ? (
               <div className="grid grid-cols-1 lg:grid-cols-4 justify-center items-center gap-8 lg:gap-10 py-8 lg:py-10">
-                {packages?.data?.result.map((currentPackage: packages) => (
+                {similarPackages?.map((currentPackage: packages) => (
                   <div key={currentPackage.id} className="h-full">
                     <PackageCard currentPackage={currentPackage} />
                   </div>
@@ -228,4 +241,4 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default ServiceDetailsPage;
+export default PackageDetailsPage;

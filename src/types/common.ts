@@ -37,3 +37,13 @@ export interface IPackageQueryType extends QueryType {
   minPrice?: number;
   maxPrice?: number;
 }
+
+export interface IReviewQueryType extends QueryType {
+  search?: string;
+  userId?: string;
+  bookingId?: string;
+  serviceId?: string;
+  packageId?: string;
+  minRating?: number;
+  maxRating?: number;
+}
