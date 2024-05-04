@@ -11,13 +11,12 @@ function classNames(...classes: string[]) {
 }
 
 const DashboardContents = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { role } = getUserInfo() as any;
   const pathName = usePathname();
   return (
     <>
       <div>
-        <div className="bg-white shadow w-1/5 h-screen hidden lg:block fixed left-0 p-5">
+        <div className="bg-white shadow w-1/5 h-[100vh] hidden lg:block fixed left-0 p-5 overflow-auto mb-10">
           <nav className="mt-5 space-y-1 px-2">
             {SidebarItems(role).map((item, idx) => (
               <>
@@ -44,7 +43,9 @@ const DashboardContents = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="mb-2 block lg:hidden">Drawer</div>
 
-        <div className="w-full lg:w-4/5 h-screen p-5 ml-auto">{children}</div>
+        <div className="w-full lg:w-4/5 h-screen p-5 ml-auto h-[100vh]">
+          {children}
+        </div>
       </div>
     </>
   );

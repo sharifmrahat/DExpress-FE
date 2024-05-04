@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* :root {
+    --primary: rgb(255,63,57);
+  } */
+
+  /* * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary) var(--primary);
+  } */
+  
+  /* Chrome, Edge, and Safari */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(255,63,57);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-button{
+display: none;
+  }
