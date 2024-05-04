@@ -2,8 +2,8 @@
 import Header from "@/components/common/Header";
 import Spinner from "@/components/common/Spinner";
 import DashboardContents from "@/components/dashboard/DashboardContents";
-import { USER_ROLE } from "@/constants/role";
 import { getUserInfo, isLoggedIn } from "@/services/auth.service";
+import { Role } from "@prisma/client";
 import { notFound, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -19,11 +19,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       router.push("/login");
     }
     setIsLoading(true);
-    if (
-      userLoggedIn &&
-      role !== USER_ROLE.ADMIN &&
-      role !== USER_ROLE.SUPER_ADMIN
-    ) {
+    if (userLoggedIn && role !== Role.admin && role !== Role.super_admin) {
       return notFound();
     }
     setIsLoading(true);

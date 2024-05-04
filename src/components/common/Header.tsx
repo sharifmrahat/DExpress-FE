@@ -24,6 +24,13 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Spinner from "./Spinner";
 import dexpressLogo from "@/assets/images/dexpress.png";
+import {
+  IconChecklist,
+  IconCirclePlus,
+  IconLayoutDashboard,
+  IconLogout,
+  IconUserSquareRounded,
+} from "@tabler/icons-react";
 
 const poppins = Poppins({ style: "normal", weight: "400", subsets: ["latin"] });
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
@@ -172,31 +179,66 @@ export default function Header() {
                     <p className="font-semibold text-secondary">
                       {profile?.name}
                     </p>
-                    <Badge variant="light" color="#0f1b24">
+                    <Badge variant="light" color="#ff3f39">
                       {profile?.role}
                     </Badge>
                   </div>
 
-                  <Link href="/profile">
-                    <Menu.Item className="hover:text-primary text-secondary">
-                      Profile
+                  <Link href="/new-booking">
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2">
+                        <IconCirclePlus size={20} />
+                        <p>
+                          {profile.role === Role.customer
+                            ? "New Booking"
+                            : "Create Quotation"}
+                        </p>
+                      </div>
                     </Menu.Item>
                   </Link>
-                  <Link
+
+                  <Link href="/overview">
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2">
+                        <IconLayoutDashboard size={20} />
+                        <p>Dashboard</p>
+                      </div>
+                    </Menu.Item>
+                  </Link>
+
+                  {/* <Link
                     href={
                       profile?.role === Role.customer
                         ? "/my-bookings"
-                        : "/manage-bookings"
+                        : "/bookings"
                     }
                   >
-                    <Menu.Item className="hover:text-primary text-secondary">
-                      Bookings
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2">
+                        <IconChecklist size={20} />
+                        <p>
+                          {profile.role === Role.customer
+                            ? "My Bookings"
+                            : "Manage Bookings"}
+                        </p>
+                      </div>
+                    </Menu.Item>
+                  </Link> */}
+                  <Link href="/profile">
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2">
+                        <IconUserSquareRounded size={20} />
+                        <p>Profile</p>
+                      </div>
                     </Menu.Item>
                   </Link>
 
                   <div onClick={() => signOut()}>
-                    <Menu.Item className="hover:bg-primary text-secondary hover:text-white">
-                      Logout
+                    <Menu.Item className="hover:bg-primary text-secondary hover:text-white hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2">
+                        <IconLogout size={20} />
+                        <p>Logout</p>
+                      </div>
                     </Menu.Item>
                   </div>
                 </Menu.Dropdown>
@@ -258,34 +300,70 @@ export default function Header() {
                   </Avatar>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <div className="my-2 text-center">
+                  <div className="my-2 text-center text-sm">
                     <p className="font-semibold text-secondary">
                       {profile?.name}
                     </p>
-                    <Badge variant="light" color="#0f1b24">
+                    <Badge variant="light" color="#ff3f39" size="xs">
                       {profile?.role}
                     </Badge>
                   </div>
-                  <Link href="/profile">
-                    <Menu.Item className="hover:text-primary text-secondary">
-                      Profile
+
+                  <Link href="/new-booking">
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
+                        <IconCirclePlus size={15} />
+                        <p>
+                          {profile.role === Role.customer
+                            ? "New Booking"
+                            : "Create Quotation"}
+                        </p>
+                      </div>
                     </Menu.Item>
                   </Link>
-                  <Link
+
+                  <Link href="/dashboard">
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
+                        <IconLayoutDashboard size={15} />
+                        <p>Dashboard</p>
+                      </div>
+                    </Menu.Item>
+                  </Link>
+
+                  {/* <Link
                     href={
                       profile?.role === Role.customer
                         ? "/my-bookings"
-                        : "/manage-bookings"
+                        : "/bookings"
                     }
                   >
-                    <Menu.Item className="hover:text-primary text-secondary">
-                      Bookings
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
+                        <IconChecklist size={15} />
+                        <p>
+                          {profile.role === Role.customer
+                            ? "My Bookings"
+                            : "Manage Bookings"}
+                        </p>
+                      </div>
+                    </Menu.Item>
+                  </Link> */}
+                  <Link href="/profile">
+                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
+                        <IconUserSquareRounded size={15} />
+                        <p>Profile</p>
+                      </div>
                     </Menu.Item>
                   </Link>
 
                   <div onClick={() => signOut()}>
-                    <Menu.Item className="hover:bg-primary text-secondary hover:text-white">
-                      Logout
+                    <Menu.Item className="hover:bg-primary text-secondary hover:text-white hover:font-semibold">
+                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
+                        <IconLogout size={15} />
+                        <p>Logout</p>
+                      </div>
                     </Menu.Item>
                   </div>
                 </Menu.Dropdown>

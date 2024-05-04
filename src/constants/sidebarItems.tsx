@@ -13,7 +13,20 @@ import { Role } from "@prisma/client";
 export const SidebarItems = (role: string) => {
   const customerDashboardNavigation = [
     {
+      id: 0,
+      name: "Overview",
+      href: "/overview",
+      icon: UserCircleIcon,
+    },
+    {
       id: 1,
+      name: "New Booking",
+      href: "/new-booking",
+      icon: UserCircleIcon,
+    },
+
+    {
+      id: 2,
       name: "Profile",
       href: "/profile",
       icon: UserCircleIcon,
@@ -40,49 +53,61 @@ export const SidebarItems = (role: string) => {
 
   const adminDashboardNavigation = [
     {
+      id: 0,
+      name: "Overview",
+      href: "/overview",
+      icon: UserCircleIcon,
+    },
+    {
       id: 1,
+      name: "Create Quotation",
+      href: "/new-booking",
+      icon: UserCircleIcon,
+    },
+    {
+      id: 2,
       name: "Profile",
       href: "/profile",
       icon: UserCircleIcon,
     },
     {
-      id: 2,
+      id: 3,
       name: "Manage Bookings",
       href: "/manage-bookings",
       icon: ShoppingCartIcon,
     },
     {
-      id: 3,
+      id: 4,
       name: "Manage Categories",
       href: "/manage-categories",
       icon: DocumentTextIcon,
     },
     {
-      id: 4,
+      id: 5,
       name: "Manage Lorries",
       href: "/manage-lorries",
       icon: TruckIcon,
     },
     {
-      id: 5,
+      id: 6,
       name: "Manage Reviews",
       href: "/manage-reviews",
       icon: StarIcon,
     },
     {
-      id: 6,
+      id: 7,
       name: "Manage Feedbacks",
       href: "/manage-feedbacks",
       icon: ChatBubbleBottomCenterTextIcon,
     },
     {
-      id: 7,
+      id: 8,
       name: "Manage Articles",
       href: "/manage-articles",
       icon: RssIcon,
     },
     {
-      id: 8,
+      id: 9,
       name: "Manage Users",
       href: "/manage-users",
       icon: UserGroupIcon,
@@ -92,7 +117,7 @@ export const SidebarItems = (role: string) => {
   const superAdminDashboardNavigation = [
     ...adminDashboardNavigation,
     {
-      id: 9,
+      id: 10,
       name: "Manage Admin",
       href: "/manage-admins",
       icon: ShieldCheckIcon,

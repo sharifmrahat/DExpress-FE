@@ -1,15 +1,7 @@
 "use client";
 
-import CustomerFeedbacks from "@/components/homepage/CustomerFeedbacks";
-
-const CustomerFeedbacksPage = () => {
-  return (
-    <div>
-      <section className="my-10 h-full lg:h-screen">
-        <CustomerFeedbacks />
-      </section>
-    </div>
-  );
+const FeedbacksPage = () => {
+  return <div></div>;
 };
 
-export default CustomerFeedbacksPage;
+export default FeedbacksPage;
