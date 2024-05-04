@@ -23,6 +23,7 @@ import { packages, reviews } from "@prisma/client";
 import { IconCircleCheck } from "@tabler/icons-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import defaultImage from "@/assets/images/default-image.png";
 
 const PackageDetailsPage = ({ params }: { params: { id: string } }) => {
   const [activeTab, setActiveTab] = useState<string | null>("packages");
@@ -99,14 +100,16 @@ const PackageDetailsPage = ({ params }: { params: { id: string } }) => {
         {isSuccess && currentPackage ? (
           <>
             <div className="flex flex-col lg:flex-row justify-start items-start gap-5 lg:gap-16">
-              {/* <div>
+              <div>
                 <Image
-                  src={currentPackage.imageUrl}
+                  src={currentPackage.imageUrl ?? defaultImage.src}
                   alt={currentPackage.title}
-                  className="w-full lg:w-[480px] lg:h-[320px]"
+                  className={`w-full lg:w-[480px] lg:h-[320px] shadow ${
+                    currentPackage.imageUrl ? "opacity-100" : "opacity-50"
+                  }`}
                   radius="sm"
                 />
-              </div> */}
+              </div>
               <div className="flex flex-col justify-between h-full lg:h-[320px]">
                 <div>
                   <SectionHeading line1={currentPackage.title} />
@@ -119,18 +122,26 @@ const PackageDetailsPage = ({ params }: { params: { id: string } }) => {
                   </Text>
                 </div>
                 <div className="flex flex-col gap-5">
-                  <Badge
-                    size="lg"
-                    variant="light"
-                    leftSection={
-                      <IconCircleCheck
-                        style={{ width: rem(15), height: rem(15) }}
-                        className="mb-0.5"
-                      />
-                    }
-                  >
-                    Total Booking: {currentPackage.totalBooking}
-                  </Badge>
+                  <div className="flex flex-row gap-4 justify-star items-center">
+                    <Link href={`/services/${currentPackage.serviceId}`}>
+                      <Badge size="lg" variant="light" color="#0f1b24">
+                        {(currentPackage as any).service.title}
+                      </Badge>
+                    </Link>
+                    <Badge
+                      size="lg"
+                      variant="light"
+                      color="#0f1b24"
+                      leftSection={
+                        <IconCircleCheck
+                          style={{ width: rem(15), height: rem(15) }}
+                          className="mb-0.5"
+                        />
+                      }
+                    >
+                      Total Booking: {currentPackage.totalBooking}
+                    </Badge>
+                  </div>
                   <Button
                     color="#ff3f39"
                     size="xs"
@@ -199,7 +210,7 @@ const PackageDetailsPage = ({ params }: { params: { id: string } }) => {
               </div>
             ) : isLoading || isPackageLoading ? (
               <div className="grid grid-cols-1 lg:grid-cols-4 justify-center items-center gap-8 lg:gap-10 py-8 lg:py-10">
-                <SkeletonLoader amount={4}>
+                <SkeletonLoader amount={3}>
                   <div className="h-[300px] lg:h-[400px]"></div>
                 </SkeletonLoader>
               </div>

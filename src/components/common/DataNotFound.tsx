@@ -5,7 +5,7 @@ import { IconMoodSad } from "@tabler/icons-react";
 
 const DataNotFound = ({
   variant = "light",
-  color = "blue",
+  color = "#ff3f39",
   title = "Data Not Found!",
   description = "No data is found",
   icon = <IconMoodSad />,

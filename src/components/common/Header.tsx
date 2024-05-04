@@ -172,7 +172,7 @@ export default function Header() {
                     <p className="font-semibold text-secondary">
                       {profile?.name}
                     </p>
-                    <Badge variant="light" color="blue">
+                    <Badge variant="light" color="#0f1b24">
                       {profile?.role}
                     </Badge>
                   </div>
@@ -262,7 +262,7 @@ export default function Header() {
                     <p className="font-semibold text-secondary">
                       {profile?.name}
                     </p>
-                    <Badge variant="light" color="blue">
+                    <Badge variant="light" color="#0f1b24">
                       {profile?.role}
                     </Badge>
                   </div>

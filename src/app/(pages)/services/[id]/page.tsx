@@ -89,7 +89,9 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
                 <Image
                   src={currentService.imageUrl}
                   alt={currentService.title}
-                  className="w-full lg:w-[480px] lg:h-[320px]"
+                  className={`w-full lg:w-[480px] h-[320px] shadow ${
+                    currentService.imageUrl ? "opacity-100" : "opacity-50"
+                  }`}
                   radius="sm"
                 />
               </div>
@@ -108,6 +110,7 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
                   <Badge
                     size="lg"
                     variant="light"
+                    color="#0f1b24"
                     leftSection={
                       <IconCircleCheck
                         style={{ width: rem(15), height: rem(15) }}
