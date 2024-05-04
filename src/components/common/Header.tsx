@@ -1,17 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useEffect } from "react";
+import { useMemo, useState } from "react";
 import { Oswald, Poppins } from "next/font/google";
 import Link from "next/link";
 import { isLoggedIn, removeUserInfo } from "@/services/auth.service";
 import { authKey } from "@/constants/storageKey";
 import { useRouter, usePathname } from "next/navigation";
 import { useUserProfileQuery } from "@/redux/api/userApi";
-import { useAppSelector } from "@/redux/hooks";
-import { useDispatch } from "react-redux";
-import { setProfile, handleLogout } from "@/redux/slice/profileSlice";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
-import { Role, services } from "@prisma/client";
+import { Role, services, users } from "@prisma/client";
 import {
   Avatar,
   Badge,
@@ -20,12 +17,13 @@ import {
   Drawer,
   Group,
   Menu,
+  Modal,
+  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Spinner from "./Spinner";
 import dexpressLogo from "@/assets/images/dexpress.png";
 import {
-  IconChecklist,
   IconCirclePlus,
   IconLayoutDashboard,
   IconLogout,
@@ -37,16 +35,17 @@ const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
 export default function Header() {
   const [opened, { toggle, close }] = useDisclosure();
-  const { profile } = useAppSelector((state) => state.profile);
 
-  const { data, isLoading, refetch } = useUserProfileQuery({});
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const { data, isLoading } = useUserProfileQuery({});
+
+  const profile = useMemo(() => data?.data as users, [data]);
 
   const { data: services, isSuccess } = useAllServicesQuery({
     limit: 6,
     sortBy: "totalBooking",
   });
-
-  const dispatch = useDispatch();
 
   const userLoggedIn = isLoggedIn();
 
@@ -55,21 +54,9 @@ export default function Header() {
 
   const signOut = () => {
     removeUserInfo(authKey);
-    dispatch(handleLogout());
-    router.push("/login");
-    window?.location?.reload();
+    setOpenModal(false);
+    router.push("/");
   };
-
-  useEffect(() => {
-    if (userLoggedIn) {
-      refetch();
-      if (data?.success) {
-        dispatch(setProfile(data?.data));
-      }
-    } else {
-      dispatch(setProfile({}));
-    }
-  }, [userLoggedIn, data, dispatch, refetch]);
 
   return (
     <header
@@ -235,7 +222,7 @@ export default function Header() {
                     </Menu.Item>
                   </Link>
 
-                  <div onClick={() => signOut()}>
+                  <div onClick={() => setOpenModal(true)}>
                     <Menu.Item className="hover:bg-primary text-secondary hover:text-white hover:font-semibold">
                       <div className="flex flex-row justify-start items-center gap-2">
                         <IconLogout size={20} />
@@ -360,7 +347,7 @@ export default function Header() {
                     </Menu.Item>
                   </Link>
 
-                  <div onClick={() => signOut()}>
+                  <div onClick={() => setOpenModal(true)}>
                     <Menu.Item className="hover:bg-primary text-secondary hover:text-white hover:font-semibold">
                       <div className="flex flex-row justify-start items-center gap-2 text-xs">
                         <IconLogout size={15} />
@@ -448,6 +435,31 @@ export default function Header() {
           </Link>
         </div>
       </Drawer>
+
+      <Modal
+        opened={openModal}
+        onClose={() => setOpenModal(false)}
+        centered
+        title="Confirm Logout"
+        withCloseButton={false}
+      >
+        <Text size="sm">
+          Hi, {profile?.name}! Are you sure to logout from DExpess?
+        </Text>
+        <div className="flex flex-row justify-end items-end gap-2 mt-5">
+          <Button
+            color="gray"
+            variant="outline"
+            size="xs"
+            onClick={() => setOpenModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button color="red" onClick={() => signOut()} size="xs">
+            Logout Now
+          </Button>
+        </div>
+      </Modal>
     </header>
   );
 }

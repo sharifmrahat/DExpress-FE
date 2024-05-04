@@ -1,5 +1,5 @@
-const dashboard = () => {
+const OverViewPage = () => {
   return <div>OverView Page</div>;
 };
 
-export default dashboard;
+export default OverViewPage;
