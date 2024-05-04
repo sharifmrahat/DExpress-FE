@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: "#ff3f39", //redish
+        primaryLight: "#ffe6e6",
         accent: "#d9b995", //cartoon
         secondary: "#0f1b24", //blackish
         background: "#f0f3f7", //grayish

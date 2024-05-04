@@ -72,7 +72,9 @@ export default function Header() {
   }, [userLoggedIn, data, dispatch, refetch]);
 
   return (
-    <header className={`${poppins.className} bg-white sticky top-0 z-50`}>
+    <header
+      className={`${poppins.className} bg-white sticky top-0 z-50 shadow`}
+    >
       <nav
         className="hidden lg:flex mx-auto w-full max-w-7xl items-center justify-between py-4"
         aria-label="Global"

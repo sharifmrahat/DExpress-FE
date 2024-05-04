@@ -57,7 +57,7 @@ function LoginForm() {
         if (res.accessToken) {
           storeUserInfo({ accessToken: res?.accessToken });
           await refetch();
-          router.push("/profile");
+          router.push("/overview");
         }
       }
     } catch (err: any) {
