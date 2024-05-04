@@ -8,8 +8,6 @@ import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../../theme";
 import { Notifications } from "@mantine/notifications";
 
-import "react-toastify/dist/ReactToastify.css";
-
 export const metadata: Metadata = {
   title: "DExpress",
   description: "The incredible tale of reliable logistics",
