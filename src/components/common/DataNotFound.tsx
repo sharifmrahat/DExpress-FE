@@ -19,12 +19,14 @@ const DataNotFound = ({
   return (
     <Paper p="md" className={`w-full bg-${bgColor}`}>
       <div className="flex flex-col justify-center items-center gap-3">
-        <div className="text-gray-400 w-fit mx-auto">{icon}</div>
+        <div className="text-gray-500 w-fit mx-auto">{icon}</div>
         <div className="flex flex-col justify-center items-center gap-1">
-          <Text className={`${oswald.className} text-lg lg:text-xl max-w-sm`}>
+          <Text
+            className={`${oswald.className} text-lg lg:text-xl max-w-sm text-secondary`}
+          >
             {title}
           </Text>
-          <Text c="dimmed" className="text-sm lg:text-base max-w-sm">
+          <Text className="text-sm lg:text-base max-w-sm text-gray-600">
             {description}
           </Text>
         </div>

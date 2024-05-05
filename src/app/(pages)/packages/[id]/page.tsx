@@ -165,7 +165,7 @@ const PackageDetailsPage = ({ params }: { params: { id: string } }) => {
           </>
         ) : (
           <>
-            <div className="w-full lg:w-[480px] lg:h-[320px]">
+            <div>
               <DataNotFound
                 description="No package data is found"
                 title="Package not found!"

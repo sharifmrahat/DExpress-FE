@@ -143,7 +143,7 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
           </>
         ) : (
           <>
-            <div className="w-full lg:w-[480px] lg:h-[320px]">
+            <div>
               <DataNotFound
                 description="No service data is found"
                 title="Service not found!"
