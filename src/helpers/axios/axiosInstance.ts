@@ -1,10 +1,8 @@
 import { authKey } from "@/constants/storageKey";
-
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 import { showNotification } from "@/utils/showNotification";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
