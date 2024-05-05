@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import UnderDevelopment from "@/components/common/UnderDevelopment";
 import { useUserProfileQuery } from "@/redux/api/userApi";
 import { users } from "@prisma/client";
 import { useMemo } from "react";
@@ -11,7 +12,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      Profile Page: {profile?.name}, {profile?.email}
+      <UnderDevelopment />
     </div>
   );
 };

@@ -107,7 +107,7 @@ function LoginForm() {
               Login Now
             </Button>
             <Link href="/signup">
-              <Button variant="light" color="#ff3f39">
+              <Button variant="light" color="#0f1b24">
                 Get Signup
               </Button>
             </Link>

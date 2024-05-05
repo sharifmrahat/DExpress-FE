@@ -30,3 +30,23 @@
   ::-webkit-scrollbar-button{
 display: none;
   }
+
+
+  .hanging-image {
+    position: relative;
+    animation: swing 2s infinite ease-in-out alternate;
+    transform-origin: top center;
+    top: -16px;
+}
+
+@keyframes swing {
+    0% {
+        transform: rotate(3deg);
+    }
+    50% {
+        transform: rotate(-3deg);
+    }
+    100% {
+        transform: rotate(3deg);
+    }
+}

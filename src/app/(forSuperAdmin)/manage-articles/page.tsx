@@ -1,5 +1,12 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment";
+
 const ManageArticles = () => {
-  return <div>Manage Articles</div>;
+  return (
+    <div>
+      {" "}
+      <UnderDevelopment />
+    </div>
+  );
 };
 
 export default ManageArticles;

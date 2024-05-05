@@ -1,5 +1,12 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment";
+
 const MyReviews = () => {
-  return <div>My Reviews</div>;
+  return (
+    <div>
+      {" "}
+      <UnderDevelopment />
+    </div>
+  );
 };
 
 export default MyReviews;

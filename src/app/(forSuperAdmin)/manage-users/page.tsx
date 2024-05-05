@@ -1,5 +1,12 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment";
+
 const ManageUsers = () => {
-  return <div>Manage Users</div>;
+  return (
+    <div>
+      {" "}
+      <UnderDevelopment />
+    </div>
+  );
 };
 
 export default ManageUsers;

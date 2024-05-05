@@ -1,5 +1,12 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment";
+
 const ManageReviews = () => {
-  return <div>Manage Reviews</div>;
+  return (
+    <div>
+      {" "}
+      <UnderDevelopment />
+    </div>
+  );
 };
 
 export default ManageReviews;

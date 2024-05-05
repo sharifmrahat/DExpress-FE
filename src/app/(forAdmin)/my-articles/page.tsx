@@ -1,5 +1,12 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment";
+
 const MyArticles = () => {
-  return <div>My Articles</div>;
+  return (
+    <div>
+      {" "}
+      <UnderDevelopment />
+    </div>
+  );
 };
 
 export default MyArticles;

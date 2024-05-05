@@ -136,7 +136,7 @@ function SignupForm() {
               Sign Up Now
             </Button>
             <Link href="/login">
-              <Button variant="light" color="#ff3f39">
+              <Button variant="light" color="#0f1b24">
                 Get Login
               </Button>
             </Link>

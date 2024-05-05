@@ -1,5 +1,11 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment";
+
 const NewBookingPage = () => {
-  return <div>Book New Service</div>;
+  return (
+    <div>
+      <UnderDevelopment />
+    </div>
+  );
 };
 
 export default NewBookingPage;

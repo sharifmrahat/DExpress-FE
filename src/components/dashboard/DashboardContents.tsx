@@ -84,7 +84,7 @@ const DashboardContents = ({ children }: { children: React.ReactNode }) => {
           </Menu>
         </div>
 
-        <div className="w-full lg:w-[85%] p-5 ml-auto">{children}</div>
+        <div className="w-full lg:w-[85%] ml-auto">{children}</div>
       </div>
     </>
   );
