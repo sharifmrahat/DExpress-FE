@@ -72,7 +72,7 @@ const ServicePage = () => {
           <div className="flex flex-col justify-center items-center gap-2 mt-5 lg:mt-0 mb-4">
             <div className="w-full">
               <TextInput
-                size="xs"
+                size="sm"
                 placeholder="Search Service"
                 rightSection={<IconSearch />}
                 defaultValue={searchValue}
@@ -86,7 +86,7 @@ const ServicePage = () => {
                 value={sortFieldValue ? sortFieldValue : undefined}
                 onChange={(value, option) => setSortFieldValue(value as string)}
                 checkIconPosition="right"
-                size="xs"
+                size="sm"
               />
               <Select
                 label="Sort Order"
@@ -96,7 +96,7 @@ const ServicePage = () => {
                   setSortOrderValue(value as "asc" | "desc")
                 }
                 checkIconPosition="right"
-                size="xs"
+                size="sm"
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ const ServicePage = () => {
               onClick={toggle}
               variant="light"
               fullWidth
-              size="xs"
+              size="sm"
               color="#0f1b24"
               rightSection={
                 opened ? (

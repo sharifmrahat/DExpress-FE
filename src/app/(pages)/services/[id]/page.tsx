@@ -101,7 +101,7 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
                   <Text
                     size="sm"
                     c="dimmed"
-                    className="text-xs lg:text-sm text-justify my-4 max-w-sm"
+                    className="text-sm text-justify my-4 max-w-sm"
                   >
                     {currentService.description}
                   </Text>
@@ -122,7 +122,7 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
                   </Badge>
                   <Button
                     color="#ff3f39"
-                    size="xs"
+                    size="sm"
                     radius="sm"
                     fullWidth
                     onClick={() => handleBooking(service.id)}
@@ -137,7 +137,7 @@ const ServiceDetailsPage = ({ params }: { params: { id: string } }) => {
           <>
             <div className="flex flex-col lg:flex-row justify-start items-start gap-5 lg:gap-16 w-fit">
               <SkeletonLoader amount={2}>
-                <div className="w-[330px] lg:w-[490px] h-[200px] lg:h-[308px]"></div>
+                <div className="w-[350px] lg:w-[490px] h-[200px] lg:h-[308px]"></div>
               </SkeletonLoader>
             </div>
           </>

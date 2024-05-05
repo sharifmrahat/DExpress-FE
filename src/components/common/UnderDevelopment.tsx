@@ -9,7 +9,7 @@ const UnderDevelopment = () => {
       <Image
         src={comingSoon.src}
         alt="Coming Soon"
-        className="max-w-[400px] hanging-image"
+        className="w-[250px] lg:w-[400px] hanging-image"
       />
     </div>
   );

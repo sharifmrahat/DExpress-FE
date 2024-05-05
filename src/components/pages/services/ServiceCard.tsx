@@ -33,7 +33,7 @@ const ServiceCard = ({ service }: { service: services }) => {
 
       <Group justify="space-between" mt="md" mb="xs">
         <Text
-          className={`${oswald.className} text-xl lg:text-2xl ${
+          className={`${oswald.className} text-2xl ${
             hovered ? "text-primary" : "text-secondary"
           }`}
         >
@@ -41,11 +41,7 @@ const ServiceCard = ({ service }: { service: services }) => {
         </Text>
       </Group>
 
-      <Text
-        size="sm"
-        c="dimmed"
-        className="text-xs lg:text-sm text-justify mb-5"
-      >
+      <Text size="sm" c="dimmed" className="text-sm text-justify mb-5">
         {service.description!.length <= 130
           ? service.description
           : service.description?.slice(0, 130) + "..."}
@@ -55,7 +51,7 @@ const ServiceCard = ({ service }: { service: services }) => {
           <Button
             variant="light"
             color={!hovered ? "#ff3f39" : "#0f1b24"}
-            size="xs"
+            size="sm"
             radius="sm"
             fullWidth
           >
@@ -64,7 +60,7 @@ const ServiceCard = ({ service }: { service: services }) => {
         </Link>
         <Button
           color={hovered ? "#ff3f39" : "#0f1b24"}
-          size="xs"
+          size="sm"
           radius="sm"
           className="w-full lg:w-2/3"
           onClick={() => handleBooking(service.id)}

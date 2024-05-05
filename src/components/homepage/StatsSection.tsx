@@ -65,12 +65,12 @@ const StatsSection = () => {
               className="w-[130px] lg:w-[160px] h-[120px]"
             />
             <p
-              className={`${oswald.className} text-secondary text-2xl lg:text-4xl`}
+              className={`${oswald.className} text-secondary text-3xl lg:text-4xl`}
             >
               {item.amount}
             </p>
-            <div className={`${oswald.className} text-xl lg:text-2xl`}>
-              <p className="text-secondary">
+            <div className={`${oswald.className} text-2xl`}>
+              <p className="text-secondary w-full">
                 {item.title}
                 <span className="text-primary">.</span>
               </p>

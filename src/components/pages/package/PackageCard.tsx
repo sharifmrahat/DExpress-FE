@@ -27,7 +27,7 @@ const PackageCard = ({ currentPackage }: { currentPackage: packages }) => {
       <Card.Section withBorder py="md" px="md" mb="md">
         <Link href={`/packages/${currentPackage?.id}`}>
           <Text
-            className={`${oswald.className} text-xl lg:text-2xl ${
+            className={`${oswald.className} text-2xl ${
               hovered ? "text-primary" : "text-secondary"
             }`}
           >
@@ -36,7 +36,7 @@ const PackageCard = ({ currentPackage }: { currentPackage: packages }) => {
         </Link>
         <Link href={`/services/${currentPackage.serviceId}`} className="mt-5">
           <Badge
-            size="md"
+            size="lg"
             variant="light"
             mt="md"
             color={!hovered ? "#ff3f39" : "#0f1b24"}
@@ -47,7 +47,7 @@ const PackageCard = ({ currentPackage }: { currentPackage: packages }) => {
       </Card.Section>
 
       <Link href={`/packages/${currentPackage?.id}`}>
-        <Text size="sm" className="text-xs lg:text-sm text-justify mb-5">
+        <Text size="sm" className="text-sm text-justify mb-5">
           {currentPackage.description!.length <= 200
             ? currentPackage.description
             : currentPackage.description?.slice(0, 200) + "..."}
@@ -58,7 +58,7 @@ const PackageCard = ({ currentPackage }: { currentPackage: packages }) => {
         <Button
           variant="light"
           color={hovered ? "#ff3f39" : "#0f1b24"}
-          size="xs"
+          size="sm"
           radius="sm"
           fullWidth
         >
@@ -67,7 +67,7 @@ const PackageCard = ({ currentPackage }: { currentPackage: packages }) => {
         </Button>
         <Button
           color={hovered ? "#ff3f39" : "#0f1b24"}
-          size="xs"
+          size="sm"
           radius="sm"
           fullWidth
           onClick={() => handleBooking(currentPackage.id)}

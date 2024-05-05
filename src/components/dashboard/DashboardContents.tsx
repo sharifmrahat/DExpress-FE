@@ -50,14 +50,15 @@ const DashboardContents = ({ children }: { children: React.ReactNode }) => {
             ))}
           </nav>
         </div>
-        <div className="mb-2 block lg:hidden">
-          <Menu shadow="md" opened={opened}>
+        <div className="mb-2 block lg:hidden relative z-50">
+          <Menu shadow="md" opened={opened} radius={0}>
             <Menu.Target>
               <div
-                className={`${oswald.className} p-1 text-white bg-primary text-base w-full flex flex-row justify-center items-center gap-1`}
+                className={`${oswald.className} p-2 text-white bg-primary text-lg w-full flex flex-row justify-center items-center gap-1 `}
                 onClick={opened ? close : open}
               >
-                <IconLayoutDashboardFilled size={18} /> <p>Dashboard</p>
+                <IconLayoutDashboardFilled size={22} />
+                <p>Dashboard</p>
               </div>
             </Menu.Target>
 
@@ -72,7 +73,7 @@ const DashboardContents = ({ children }: { children: React.ReactNode }) => {
                       item.href === pathName
                         ? "bg-primaryLight text-primary border-r-4 border-primary font-semibold"
                         : "text-secondary hover:text-primary hover:bg-primaryLight",
-                      "flex flex-row justify-start items-center gap-2 text-xs p-2 px-4 font-medium"
+                      "flex flex-row justify-start items-center gap-2 text-sm p-2 px-4 font-medium"
                     )}
                   >
                     <item.icon size={15} />

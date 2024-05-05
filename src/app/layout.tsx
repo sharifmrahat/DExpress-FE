@@ -29,7 +29,7 @@ export default function RootLayout({
         </head>
         <body className={`${poppins.className} bg-background`}>
           <MantineProvider theme={theme}>
-            <Notifications position="top-right" zIndex={1000} />
+            <Notifications position="top-right" zIndex={1000} limit={1} />
             {children}
           </MantineProvider>
         </body>

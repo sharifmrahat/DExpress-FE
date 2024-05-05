@@ -27,16 +27,16 @@ const SignupPage = () => {
           <div className="mb-8 lg:mb-16">
             <Link
               href="/"
-              className={`text-xl lg:text-3xl font-semibold cursor-pointer text-secondary ${oswald.className} flex flex-row justify-start items-center gap-2`}
+              className={`text-2xl lg:text-3xl font-semibold cursor-pointer text-secondary ${oswald.className} flex flex-row justify-start items-center gap-2`}
             >
               <img
-                className="h-4 lg:h-6 w-auto"
+                className="h-5 lg:h-7 w-auto"
                 src={dexpressLogo.src}
                 alt="DExpress"
               />
               <p> DExpress</p>
             </Link>
-            <p className="text-secondary max-w-sm text-xs lg:text-base mt-1">
+            <p className="text-secondary max-w-sm text-sm lg:text-base mt-1">
               The incredible tale of reliable logistics
             </p>
           </div>

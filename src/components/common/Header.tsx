@@ -74,7 +74,7 @@ export default function Header() {
           >
             <img className="h-7 w-auto" src={dexpressLogo.src} alt="DExpress" />
             <span
-              className={`text-xl lg:text-3xl text-secondary pl-5 lg:pl-0 ${oswald.className}`}
+              className={`text-3xl text-secondary pl-5 lg:pl-0 ${oswald.className}`}
             >
               DExpress
             </span>
@@ -164,7 +164,7 @@ export default function Header() {
                   </Avatar>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <div className="my-2 text-center ">
+                  <div className="my-2 text-center">
                     <p className="font-semibold text-secondary">
                       {profile?.name}
                     </p>
@@ -194,25 +194,6 @@ export default function Header() {
                       </div>
                     </Menu.Item>
                   </Link>
-
-                  {/* <Link
-                    href={
-                      profile?.role === Role.customer
-                        ? "/my-bookings"
-                        : "/bookings"
-                    }
-                  >
-                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
-                      <div className="flex flex-row justify-start items-center gap-2">
-                        <IconChecklist size={20} />
-                        <p>
-                          {profile.role === Role.customer
-                            ? "My Bookings"
-                            : "Manage Bookings"}
-                        </p>
-                      </div>
-                    </Menu.Item>
-                  </Link> */}
                   <Link href="/profile">
                     <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
                       <div className="flex flex-row justify-start items-center gap-2">
@@ -265,8 +246,8 @@ export default function Header() {
             href="/"
             className="flex flex-row justify-center items-center gap-2"
           >
-            <img className="h-4 w-auto" src={dexpressLogo.src} alt="DExpress" />
-            <span className={`text-xl text-secondary ${oswald.className}`}>
+            <img className="h-5 w-auto" src={dexpressLogo.src} alt="DExpress" />
+            <span className={`text-2xl text-secondary ${oswald.className}`}>
               DExpress
             </span>
           </Link>
@@ -283,25 +264,25 @@ export default function Header() {
                     className="border-2 border-primary cursor-pointer"
                     alt={profile?.name}
                     color="#ff3f39"
-                    size="sm"
+                    size="md"
                   >
                     {profile?.name?.charAt(0)?.toUpperCase()}
                   </Avatar>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <div className="my-2 text-center text-sm">
+                  <div className="my-2 text-center text-base">
                     <p className="font-semibold text-secondary">
                       {profile?.name}
                     </p>
-                    <Badge variant="light" color="#ff3f39" size="xs">
+                    <Badge variant="light" color="#ff3f39" size="sm">
                       {profile?.role}
                     </Badge>
                   </div>
 
                   <Link href="/new-booking">
                     <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
-                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
-                        <IconCirclePlus size={15} />
+                      <div className="flex flex-row justify-start items-center gap-2 text-sm">
+                        <IconCirclePlus size={18} />
                         <p>
                           {profile.role === Role.customer
                             ? "New Booking"
@@ -311,37 +292,19 @@ export default function Header() {
                     </Menu.Item>
                   </Link>
 
-                  <Link href="/dashboard">
+                  <Link href="/overview">
                     <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
-                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
-                        <IconLayoutDashboard size={15} />
+                      <div className="flex flex-row justify-start items-center gap-2 text-sm">
+                        <IconLayoutDashboard size={18} />
                         <p>Dashboard</p>
                       </div>
                     </Menu.Item>
                   </Link>
 
-                  {/* <Link
-                    href={
-                      profile?.role === Role.customer
-                        ? "/my-bookings"
-                        : "/bookings"
-                    }
-                  >
-                    <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
-                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
-                        <IconChecklist size={15} />
-                        <p>
-                          {profile.role === Role.customer
-                            ? "My Bookings"
-                            : "Manage Bookings"}
-                        </p>
-                      </div>
-                    </Menu.Item>
-                  </Link> */}
                   <Link href="/profile">
                     <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
-                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
-                        <IconUserSquareRounded size={15} />
+                      <div className="flex flex-row justify-start items-center gap-2 text-sm">
+                        <IconUserSquareRounded size={18} />
                         <p>Profile</p>
                       </div>
                     </Menu.Item>
@@ -349,8 +312,8 @@ export default function Header() {
 
                   <div onClick={() => setOpenModal(true)}>
                     <Menu.Item className="hover:bg-primary text-secondary hover:text-white hover:font-semibold">
-                      <div className="flex flex-row justify-start items-center gap-2 text-xs">
-                        <IconLogout size={15} />
+                      <div className="flex flex-row justify-start items-center gap-2 text-sm">
+                        <IconLogout size={18} />
                         <p>Logout</p>
                       </div>
                     </Menu.Item>
@@ -367,12 +330,12 @@ export default function Header() {
           ) : (
             <Group>
               {/* <Link href="/signup">
-                <Button variant="light" color="#ff3f39" size="xs">
+                <Button variant="light" color="#ff3f39" size="sm">
                   Sign Up
                 </Button>
               </Link> */}
               <Link href="/login">
-                <Button color="#ff3f39" size="xs" variant="light">
+                <Button color="#ff3f39" size="sm" variant="light">
                   Login
                 </Button>
               </Link>
@@ -450,12 +413,12 @@ export default function Header() {
           <Button
             color="gray"
             variant="outline"
-            size="xs"
+            size="sm"
             onClick={() => setOpenModal(false)}
           >
             Cancel
           </Button>
-          <Button color="red" onClick={() => signOut()} size="xs">
+          <Button color="red" onClick={() => signOut()} size="sm">
             Logout Now
           </Button>
         </div>
