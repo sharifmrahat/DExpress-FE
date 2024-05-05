@@ -8,6 +8,7 @@ import LoginForm from "@/components/authpage/LoginForm";
 import dexpressLogo from "@/assets/images/dexpress.png";
 import { isLoggedIn } from "@/services/auth.service";
 import { notFound } from "next/navigation";
+import { Image } from "@mantine/core";
 
 const oswald = Oswald({ style: "normal", weight: "600", subsets: ["latin"] });
 
@@ -18,9 +19,9 @@ const LoginPagePage = () => {
   }
   return (
     <div className="px-4 lg:px-0">
-      <div className="flex flex-row justify-center items-center gap-20 shadow-lg rounded p-5 mx-auto my-10 bg-white border-2 border-secondary max-w-4xl">
+      <div className="flex flex-row justify-center items-center gap-20 shadow border rounded p-5 mx-auto my-10 bg-white max-w-4xl">
         <div className="w-full hidden lg:block">
-          <img src={loginImage.src} className="w-[400px]" />
+          <Image src={loginImage.src} alt="login" className="w-[400px]" />
         </div>
 
         <div className="w-full">
@@ -29,7 +30,7 @@ const LoginPagePage = () => {
               href="/"
               className={`text-2xl lg:text-3xl font-semibold cursor-pointer text-secondary ${oswald.className} flex flex-row justify-start items-center gap-2`}
             >
-              <img
+              <Image
                 className="h-5 lg:h-7 w-auto"
                 src={dexpressLogo.src}
                 alt="DExpress"
