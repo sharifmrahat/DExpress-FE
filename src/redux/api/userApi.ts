@@ -49,7 +49,7 @@ export const userApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `${USER_URL}/update-password`,
         method: "PATCH",
-        data: data.body,
+        data: data,
       }),
     }),
     singleUser: build.query({

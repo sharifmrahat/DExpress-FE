@@ -4,12 +4,9 @@ import Link from "next/link";
 import { SidebarItems } from "@/constants/sidebarItems";
 import { getUserInfo } from "@/services/auth.service";
 import { usePathname } from "next/navigation";
-import { Button, Divider, Drawer, Menu, ScrollArea } from "@mantine/core";
+import { Divider, Menu } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconLayoutDashboard,
-  IconLayoutDashboardFilled,
-} from "@tabler/icons-react";
+import { IconLayoutDashboardFilled } from "@tabler/icons-react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

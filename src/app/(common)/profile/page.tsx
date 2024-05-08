@@ -4,10 +4,14 @@
 import DataNotFound from "@/components/common/DataNotFound";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 import Spinner from "@/components/common/Spinner";
+import { authKey } from "@/constants/storageKey";
 import {
+  useUpdatePasswordMutation,
   useUpdateProfileMutation,
   useUserProfileQuery,
 } from "@/redux/api/userApi";
+import { removeUserInfo } from "@/services/auth.service";
+import { showNotification } from "@/utils/showNotification";
 import {
   Avatar,
   Badge,
@@ -16,6 +20,7 @@ import {
   Button,
   Group,
   LoadingOverlay,
+  PasswordInput,
   Skeleton,
   Tabs,
   Text,
@@ -23,9 +28,9 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { showNotification } from "@mantine/notifications";
 import { users } from "@prisma/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 const ProfilePage = () => {
@@ -37,7 +42,12 @@ const ProfilePage = () => {
   const [updateProfile, { isLoading: loadingUpdate }] =
     useUpdateProfileMutation();
 
+  const [updatePassword, { isLoading: loadingUpdatePassword }] =
+    useUpdatePasswordMutation();
+
   const profile = useMemo(() => data?.data as users, [data]);
+
+  const router = useRouter();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -51,6 +61,24 @@ const ProfilePage = () => {
     validate: {
       email: (value: string) =>
         /^\S+@\S+$/.test(value) ? null : "Invalid email",
+    },
+  });
+
+  const passwordForm = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      password: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    },
+
+    validate: {
+      password: (val) =>
+        val.length < 8 ? "Password must be minimum 8 character" : null,
+      newPassword: (val) =>
+        val.length < 8 ? "Password must be minimum 8 character" : null,
+      confirmNewPassword: (val, values) =>
+        val !== values.newPassword ? "Password not matched" : null,
     },
   });
 
@@ -79,6 +107,33 @@ const ProfilePage = () => {
           type: "success",
           title: "Update success",
           message: res.message,
+        });
+      }
+    } catch (err: any) {
+      toggle();
+    }
+  };
+
+  const submitUpdatePassword = async (data: {
+    password?: string;
+    newPassword?: string;
+  }) => {
+    try {
+      const res = await updatePassword({ ...data }).unwrap();
+      if (res?.success) {
+        refetch();
+        toggle();
+        showNotification({
+          type: "success",
+          title: "Password Updated",
+          message: res.message,
+        });
+        removeUserInfo(authKey);
+        router.push("/login");
+        showNotification({
+          type: "info",
+          title: "Signed out",
+          message: "Please login again",
         });
       }
     } catch (err: any) {
@@ -152,7 +207,7 @@ const ProfilePage = () => {
                     activeTab === "personal" && "text-primary"
                   }`}
                 >
-                  Personal Info
+                  Basic Info
                 </Tabs.Tab>
                 <Tabs.Tab
                   value="settings"
@@ -160,19 +215,21 @@ const ProfilePage = () => {
                     activeTab === "settings" && "text-primary"
                   }`}
                 >
-                  Account Settings
+                  Update Password
                 </Tabs.Tab>
               </Tabs.List>
 
               <Tabs.Panel value="personal" className="p-4">
                 <Box pos="relative" className="w-full lg:w-1/3">
                   <LoadingOverlay
+                    className="bg-transparent"
                     visible={loadingUpdate ?? visible}
                     zIndex={1000}
-                    overlayProps={{ radius: "sm", blur: 0 }}
+                    px={20}
+                    overlayProps={{ blur: 1 }}
                     loaderProps={{
                       children: (
-                        <div className="w-fit mb-20">
+                        <div className="w-fit">
                           <Spinner />
                         </div>
                       ),
@@ -180,13 +237,20 @@ const ProfilePage = () => {
                   />
                   <form
                     className="flex flex-col gap-3"
-                    onSubmit={form.onSubmit((values) =>
+                    onSubmit={form.onSubmit((values) => {
+                      if (
+                        values.name?.trim() === profile.name &&
+                        values.imageUrl?.trim() === profile.imageUrl &&
+                        values.contactNo?.trim() === profile.contactNo
+                      ) {
+                        return;
+                      }
                       submitUpdate({
                         name: values?.name,
                         imageUrl: values?.imageUrl ?? "",
                         contactNo: values?.contactNo ?? "",
-                      })
-                    )}
+                      });
+                    })}
                   >
                     <TextInput
                       label="Name"
@@ -247,8 +311,63 @@ const ProfilePage = () => {
                 </Box>
               </Tabs.Panel>
 
-              <Tabs.Panel value="settings">
-                <div className="p-4">Account Settings</div>
+              <Tabs.Panel value="settings" className="p-4">
+                <Box pos="relative" className="w-full lg:w-1/3">
+                  <LoadingOverlay
+                    className="bg-transparent"
+                    visible={loadingUpdatePassword ?? visible}
+                    zIndex={1000}
+                    px={20}
+                    overlayProps={{ blur: 1 }}
+                    loaderProps={{
+                      children: (
+                        <div className="w-fit">
+                          <Spinner />
+                        </div>
+                      ),
+                    }}
+                  />
+                  <form
+                    className="flex flex-col gap-3"
+                    onSubmit={passwordForm.onSubmit((values) => {
+                      submitUpdatePassword({
+                        password: values.password,
+                        newPassword: values.newPassword,
+                      });
+                    })}
+                  >
+                    <PasswordInput
+                      withAsterisk
+                      label="Current Password"
+                      placeholder="********"
+                      key={passwordForm.key("password")}
+                      {...passwordForm.getInputProps("password")}
+                      required
+                    />
+                    <PasswordInput
+                      withAsterisk
+                      label="New Password"
+                      placeholder="********"
+                      key={passwordForm.key("newPassword")}
+                      {...passwordForm.getInputProps("newPassword")}
+                      required
+                    />
+                    <PasswordInput
+                      withAsterisk
+                      label="Confirm Password"
+                      placeholder="********"
+                      key={passwordForm.key("confirmNewPassword")}
+                      {...passwordForm.getInputProps("confirmNewPassword")}
+                      required
+                    />
+
+                    <Group className="mt-4 flex justify-end">
+                      <Button type="submit" color="#ff3f39">
+                        Update Password
+                      </Button>
+                    </Group>
+                  </form>
+                </Box>
               </Tabs.Panel>
             </Tabs>
           </div>
