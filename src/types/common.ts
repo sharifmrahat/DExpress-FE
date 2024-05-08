@@ -26,7 +26,10 @@ export interface QueryType {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
 }
-
+export interface IUserQueryType extends QueryType {
+  search?: string;
+  role?: string;
+}
 export interface IServiceQueryType extends QueryType {
   search?: string;
 }

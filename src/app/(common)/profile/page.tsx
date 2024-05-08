@@ -1,17 +1,87 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import UnderDevelopment from "@/components/common/UnderDevelopment";
-import { useUserProfileQuery } from "@/redux/api/userApi";
-import { Avatar, Badge, Breadcrumbs, Tabs, Text } from "@mantine/core";
+import Spinner from "@/components/common/Spinner";
+import {
+  useUpdateProfileMutation,
+  useUserProfileQuery,
+} from "@/redux/api/userApi";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Breadcrumbs,
+  Button,
+  Group,
+  LoadingOverlay,
+  Tabs,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { users } from "@prisma/client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ProfilePage = () => {
+  const [editable, setEditable] = useState(false);
+  const [visible, { toggle }] = useDisclosure(false);
   const [activeTab, setActiveTab] = useState<string | null>("personal");
-  const { data, isLoading } = useUserProfileQuery({});
+  const { data, isLoading, refetch } = useUserProfileQuery({});
+
+  const [updateProfile, { isLoading: loadingUpdate }] =
+    useUpdateProfileMutation();
 
   const profile = useMemo(() => data?.data as users, [data]);
+
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      name: profile?.name,
+      imageUrl: profile?.imageUrl,
+      email: profile?.email,
+      contactNo: profile?.contactNo,
+    },
+
+    validate: {
+      email: (value: string) =>
+        /^\S+@\S+$/.test(value) ? null : "Invalid email",
+    },
+  });
+
+  useEffect(() => {
+    if (profile) {
+      form.setValues({
+        name: profile?.name,
+        email: profile?.email,
+        imageUrl: profile?.imageUrl,
+        contactNo: profile?.contactNo,
+      });
+    }
+  }, [profile]);
+
+  const submitUpdate = async (updatedData: {
+    name?: string;
+    imageUrl?: string;
+    contactNo?: string;
+  }) => {
+    try {
+      const res = await updateProfile({ ...updatedData }).unwrap();
+      if (res?.success) {
+        refetch();
+        toggle();
+        showNotification({
+          type: "success",
+          title: "Update success",
+          message: res.message,
+        });
+      }
+    } catch (err: any) {
+      toggle();
+    }
+  };
 
   const routes = [
     { title: "Home", href: "/" },
@@ -89,8 +159,87 @@ const ProfilePage = () => {
             </Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="personal">
-            <div className="p-4">Personal Info</div>
+          <Tabs.Panel value="personal" className="p-4">
+            <Box pos="relative" className="w-full lg:w-1/3">
+              <LoadingOverlay
+                visible={loadingUpdate ?? visible}
+                zIndex={1000}
+                overlayProps={{ radius: "sm", blur: 0 }}
+                loaderProps={{
+                  children: (
+                    <div className="w-fit mb-20">
+                      <Spinner />
+                    </div>
+                  ),
+                }}
+              />
+              <form
+                className="flex flex-col gap-3"
+                onSubmit={form.onSubmit((values) =>
+                  submitUpdate({
+                    name: values?.name,
+                    imageUrl: values?.imageUrl ?? "",
+                    contactNo: values?.contactNo ?? "",
+                  })
+                )}
+              >
+                <TextInput
+                  label="Name"
+                  placeholder="Your Name"
+                  key={form.key("name")}
+                  {...form.getInputProps("name")}
+                  disabled={!editable}
+                />
+                <TextInput
+                  label="Profile Picture"
+                  placeholder="Profile Picture"
+                  key={form.key("imageUrl")}
+                  {...form.getInputProps("imageUrl")}
+                  disabled={!editable}
+                />
+                <TextInput
+                  label="Email"
+                  placeholder="Your Email"
+                  key={form.key("email")}
+                  {...form.getInputProps("email")}
+                  disabled
+                />
+                <TextInput
+                  label="Contact No."
+                  placeholder="Contact No."
+                  key={form.key("contactNo")}
+                  {...form.getInputProps("contactNo")}
+                  disabled={!editable}
+                />
+
+                {!editable && (
+                  <Group className="mt-4 flex justify-end">
+                    <Button
+                      variant="light"
+                      color="#ff3f39"
+                      onClick={() => setEditable(true)}
+                    >
+                      Edit
+                    </Button>
+                  </Group>
+                )}
+
+                {editable && (
+                  <Group className="mt-4 flex justify-end">
+                    <Button
+                      variant="outline"
+                      color="gray"
+                      onClick={() => setEditable(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" color="#ff3f39">
+                      Update
+                    </Button>
+                  </Group>
+                )}
+              </form>
+            </Box>
           </Tabs.Panel>
 
           <Tabs.Panel value="settings">

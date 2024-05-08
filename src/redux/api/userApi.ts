@@ -1,9 +1,37 @@
-import { tagTypes } from "../tag-types";
+import { IUserQueryType } from "@/types";
 import { baseApi } from "./baseApi";
 const USER_URL = "/users";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    createUser: build.mutation({
+      query: (data) => ({
+        url: `${USER_URL}`,
+        method: "POST",
+        data: data,
+      }),
+    }),
+    allUsers: build.query({
+      query: (query?: IUserQueryType) => {
+        let url = `${USER_URL}`;
+
+        const queryArr = [];
+        for (const key in query) {
+          if (query[key as keyof IUserQueryType]) {
+            const tempQuery = query[key as keyof IUserQueryType];
+            if (tempQuery) queryArr.push(`${key}=${tempQuery}`);
+          }
+        }
+        if (queryArr.length) {
+          url = `${url}?${queryArr.join("&")}`;
+        }
+
+        return {
+          url: url,
+          method: "GET",
+        };
+      },
+    }),
     userProfile: build.query({
       query: () => ({
         url: `${USER_URL}/profile`,
@@ -12,15 +40,17 @@ export const userApi = baseApi.injectEndpoints({
     }),
     updateProfile: build.mutation({
       query: (data) => ({
-        url: `${USER_URL}/${data.id}`,
+        url: `${USER_URL}/profile`,
+        method: "PATCH",
+        data: data,
+      }),
+    }),
+    updatePassword: build.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/update-password`,
         method: "PATCH",
         data: data.body,
       }),
-      invalidatesTags: [
-        tagTypes.CUSTOMER,
-        tagTypes.ADMIN,
-        tagTypes.SUPER_ADMIN,
-      ],
     }),
     singleUser: build.query({
       query: (id) => ({
@@ -28,10 +58,11 @@ export const userApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    allUsers: build.query({
-      query: () => ({
-        url: `${USER_URL}`,
-        method: "GET",
+    updateUser: build.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/${data.id}`,
+        method: "PATCH",
+        data: data.body,
       }),
     }),
     deleteUser: build.mutation({
@@ -40,21 +71,16 @@ export const userApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    createAdmin: build.mutation({
-      query: (data) => ({
-        url: `${USER_URL}/create-admin`,
-        method: "POST",
-        data: data,
-      }),
-    }),
   }),
 });
 
 export const {
+  useCreateUserMutation,
+  useAllUsersQuery,
   useUserProfileQuery,
   useUpdateProfileMutation,
-  useAllUsersQuery,
+  useUpdatePasswordMutation,
   useSingleUserQuery,
+  useUpdateUserMutation,
   useDeleteUserMutation,
-  useCreateAdminMutation,
 } = userApi;
