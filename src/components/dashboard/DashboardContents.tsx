@@ -50,7 +50,7 @@ const DashboardContents = ({ children }: { children: React.ReactNode }) => {
             ))}
           </nav>
         </div>
-        <div className="mb-2 block lg:hidden relative z-50">
+        <div className="mb-2 block lg:hidden z-50 sticky top-16">
           <Menu shadow="md" opened={opened} radius={0}>
             <Menu.Target>
               <div
