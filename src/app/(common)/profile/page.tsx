@@ -4,6 +4,7 @@
 import DataNotFound from "@/components/common/DataNotFound";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 import Spinner from "@/components/common/Spinner";
+import AddressInput from "@/components/dashboard/profile/AddressInput";
 import { authKey } from "@/constants/storageKey";
 import {
   useUpdatePasswordMutation,
@@ -25,18 +26,20 @@ import {
   Tabs,
   Text,
   TextInput,
+  Textarea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { users } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const ProfilePage = () => {
   const [editable, setEditable] = useState(false);
   const [visible, { toggle }] = useDisclosure(false);
   const [activeTab, setActiveTab] = useState<string | null>("personal");
+  const [addresses, setAddresses] = useState<string[]>([""]);
   const { data, isLoading, isSuccess, refetch } = useUserProfileQuery({});
 
   const [updateProfile, { isLoading: loadingUpdate }] =
@@ -82,6 +85,24 @@ const ProfilePage = () => {
     },
   });
 
+  const handleAddAddress = () => {
+    setAddresses([...addresses, ""]);
+  };
+
+  const handleRemoveAddress = (index: number) => {
+    const newAddresses = [...addresses];
+    newAddresses.splice(index, 1);
+    setAddresses(newAddresses);
+  };
+
+  const handleAddressChange = (index: number, updatedAddress: string) => {
+    setAddresses((prevAddresses) =>
+      prevAddresses.map((address, i) =>
+        i === index ? updatedAddress : address
+      )
+    );
+  };
+
   useEffect(() => {
     if (profile) {
       form.setValues({
@@ -90,6 +111,7 @@ const ProfilePage = () => {
         imageUrl: profile?.imageUrl,
         contactNo: profile?.contactNo,
       });
+      setAddresses(profile?.addresses.length ? profile?.addresses : [""]);
     }
   }, [profile]);
 
@@ -97,6 +119,7 @@ const ProfilePage = () => {
     name?: string;
     imageUrl?: string;
     contactNo?: string;
+    addresses?: string[];
   }) => {
     try {
       const res = await updateProfile({ ...updatedData }).unwrap();
@@ -241,7 +264,9 @@ const ProfilePage = () => {
                       if (
                         values.name?.trim() === profile.name &&
                         values.imageUrl?.trim() === profile.imageUrl &&
-                        values.contactNo?.trim() === profile.contactNo
+                        values.contactNo?.trim() === profile.contactNo &&
+                        addresses.length === profile?.addresses?.length &&
+                        addresses.every((e) => profile?.addresses?.includes(e))
                       ) {
                         return;
                       }
@@ -249,6 +274,7 @@ const ProfilePage = () => {
                         name: values?.name,
                         imageUrl: values?.imageUrl ?? "",
                         contactNo: values?.contactNo ?? "",
+                        addresses,
                       });
                     })}
                   >
@@ -280,6 +306,18 @@ const ProfilePage = () => {
                       {...form.getInputProps("contactNo")}
                       disabled={!editable}
                     />
+                    {addresses.map((address, index) => (
+                      <div key={index}>
+                        <AddressInput
+                          key={index}
+                          address={address}
+                          index={index}
+                          onAddressChange={handleAddressChange}
+                          onRemove={handleRemoveAddress}
+                        />
+                      </div>
+                    ))}
+                    <Button onClick={handleAddAddress}>Add Address</Button>
 
                     {!editable && (
                       <Group className="mt-4 flex justify-end">
