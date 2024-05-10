@@ -31,6 +31,11 @@ import {
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { users } from "@prisma/client";
+import {
+  IconPlus,
+  IconSquarePlus,
+  IconSquareRoundedPlus,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -312,12 +317,25 @@ const ProfilePage = () => {
                           key={index}
                           address={address}
                           index={index}
+                          total={addresses?.length}
+                          disabled={!editable}
                           onAddressChange={handleAddressChange}
                           onRemove={handleRemoveAddress}
                         />
                       </div>
                     ))}
-                    <Button onClick={handleAddAddress}>Add Address</Button>
+                    {editable && (
+                      <Button
+                        onClick={handleAddAddress}
+                        variant="light"
+                        color="black"
+                        className="w-fit"
+                        size="xs"
+                      >
+                        <IconPlus size={18} />{" "}
+                        <span className="text-sm ml-2">Add More</span>
+                      </Button>
+                    )}
 
                     {!editable && (
                       <Group className="mt-4 flex justify-end">
