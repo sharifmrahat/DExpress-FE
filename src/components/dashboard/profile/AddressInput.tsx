@@ -24,7 +24,7 @@ const AddressInput = ({
     <div className="flex flex-row justify-start items-center gap-2 w-full">
       <div className="w-full">
         <Textarea
-          label={`Address ${index + 1}`}
+          label={`Address-${index + 1}`}
           value={address}
           onChange={(e) => onAddressChange(index, e.target.value)}
           disabled={disabled}

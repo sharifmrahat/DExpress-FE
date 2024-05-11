@@ -151,6 +151,7 @@ const ProfilePage = () => {
       if (res?.success) {
         refetch();
         toggle();
+        setEditable(false);
         showNotification({
           type: "success",
           title: "Password Updated",
@@ -247,14 +248,16 @@ const ProfilePage = () => {
                 </Tabs.Tab>
               </Tabs.List>
 
-              <Tabs.Panel value="personal" className="p-4">
-                <Box pos="relative" className="w-full lg:w-1/3">
+              <Tabs.Panel value="personal" className="my-5">
+                <Box
+                  pos="relative"
+                  className="w-full lg:w-1/3 bg-white p-4 rounded shadow border"
+                >
                   <LoadingOverlay
                     className="bg-transparent"
                     visible={loadingUpdate ?? visible}
                     zIndex={1000}
-                    px={20}
-                    overlayProps={{ blur: 1 }}
+                    overlayProps={{ blur: 0 }}
                     loaderProps={{
                       children: (
                         <div className="w-fit">
@@ -367,14 +370,16 @@ const ProfilePage = () => {
                 </Box>
               </Tabs.Panel>
 
-              <Tabs.Panel value="settings" className="p-4">
-                <Box pos="relative" className="w-full lg:w-1/3">
+              <Tabs.Panel value="settings" className="my-5">
+                <Box
+                  pos="relative"
+                  className="w-full lg:w-1/3 bg-white p-4 rounded shadow border"
+                >
                   <LoadingOverlay
                     className="bg-transparent"
                     visible={loadingUpdatePassword ?? visible}
                     zIndex={1000}
-                    px={20}
-                    overlayProps={{ blur: 1 }}
+                    overlayProps={{ blur: 0 }}
                     loaderProps={{
                       children: (
                         <div className="w-fit">
