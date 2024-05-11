@@ -345,6 +345,8 @@ const ProfilePage = () => {
                         <Button
                           variant="light"
                           color="#ff3f39"
+                          size="sm"
+                          radius="sm"
                           onClick={() => setEditable(true)}
                         >
                           Edit
@@ -357,11 +359,18 @@ const ProfilePage = () => {
                         <Button
                           variant="outline"
                           color="gray"
+                          size="sm"
+                          radius="sm"
                           onClick={() => setEditable(false)}
                         >
                           Cancel
                         </Button>
-                        <Button type="submit" color="#ff3f39">
+                        <Button
+                          type="submit"
+                          color="#ff3f39"
+                          size="sm"
+                          radius="sm"
+                        >
                           Update
                         </Button>
                       </Group>
@@ -423,7 +432,12 @@ const ProfilePage = () => {
                     />
 
                     <Group className="mt-4 flex justify-end">
-                      <Button type="submit" color="#ff3f39">
+                      <Button
+                        type="submit"
+                        color="#ff3f39"
+                        size="sm"
+                        radius="sm"
+                      >
                         Update Password
                       </Button>
                     </Group>
