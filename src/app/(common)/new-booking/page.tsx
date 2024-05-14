@@ -5,19 +5,30 @@ import DeliveryDetails from "@/components/dashboard/new-booking/DeliveryDetails"
 import PaymentMethod from "@/components/dashboard/new-booking/PaymentMethod";
 import ServiceInfo from "@/components/dashboard/new-booking/ServiceInfo";
 import { getUserInfo } from "@/services/auth.service";
+import { ICreateBookingType } from "@/types";
 import { Breadcrumbs, Button, Group, Stepper, Text } from "@mantine/core";
-import { Role } from "@prisma/client";
+import { useForm } from "@mantine/form";
+import { BookingType, Role } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
 
 const NewBookingPage = () => {
   const { role } = getUserInfo() as any;
 
+  const [bookingData, setBookingData] = useState<ICreateBookingType>();
+
+  const updateBookingData = () => {};
+
   const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
+
+  const handleSubmitForms = (values: any) => {
+    console.log(values);
+  };
+
   const routes = [
     { title: "Home", href: "/" },
     { title: "Dashboard", href: "/overview" },
@@ -60,7 +71,11 @@ const NewBookingPage = () => {
               label="Service Info"
               description="Booking type & service"
             >
-              <ServiceInfo />
+              <ServiceInfo
+                active={active}
+                prevStep={prevStep}
+                nextStep={nextStep}
+              />
             </Stepper.Step>
             <Stepper.Step
               label="Delivery Details"
@@ -79,7 +94,7 @@ const NewBookingPage = () => {
             </Stepper.Completed>
           </Stepper>
 
-          <Group justify="center" mt="xl">
+          {/* <Group justify="center" mt="xl">
             <Button
               variant="light"
               onClick={prevStep}
@@ -104,7 +119,7 @@ const NewBookingPage = () => {
                 </Button>
               </>
             )}
-          </Group>
+          </Group> */}
         </div>
       </div>
     </div>

@@ -72,3 +72,15 @@ export interface IBookingQueryType extends QueryType {
   maxTotal?: number;
   createdDateRange?: Date[];
 }
+
+export interface ICreateBookingType {
+  bookingType?: BookingType;
+  customerId?: string;
+  serviceId?: string;
+  packageId?: string;
+  deliveryDate?: Date;
+  shippingAddress?: string;
+  billingAddress?: string;
+  paymentMethod?: PaymentMethod;
+  remarks?: string;
+}
