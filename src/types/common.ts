@@ -36,6 +36,7 @@ export interface QueryType {
 export interface IUserQueryType extends QueryType {
   search?: string;
   role?: string;
+  id?: string;
 }
 export interface IServiceQueryType extends QueryType {
   search?: string;

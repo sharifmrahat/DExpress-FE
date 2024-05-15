@@ -2,22 +2,29 @@
 
 import { useAllPackagesQuery } from "@/redux/api/packageApi";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
+import { useAllUsersQuery, useLazyAllUsersQuery } from "@/redux/api/userApi";
+import { getUserInfo } from "@/services/auth.service";
+import { ICreateBookingType } from "@/types";
 import { Button, Group, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { BookingType, packages, services } from "@prisma/client";
-import { useMemo, useState } from "react";
+import { BookingType, Role, packages, services, users } from "@prisma/client";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 const ServiceInfo = ({
-  active,
-  prevStep,
+  bookingData,
+  setBookingData,
   nextStep,
 }: {
-  active: number;
-  prevStep: () => void;
+  bookingData: Partial<ICreateBookingType>;
+  setBookingData: Dispatch<SetStateAction<ICreateBookingType | undefined>>;
   nextStep: () => void;
 }) => {
-  const [showPackage, setShowPackage] = useState<boolean>(false);
-  const [serviceId, setServiceId] = useState<string | undefined>(undefined);
+  const [showPackage, setShowPackage] = useState<boolean>(
+    !!bookingData?.packageId
+  );
+
+  const { role } = getUserInfo() as any;
+
   const { data: services, isLoading: isServiceLoading } = useAllServicesQuery({
     limit: 6,
     sortBy: "title",
@@ -25,8 +32,11 @@ const ServiceInfo = ({
   });
 
   const { data: packages, isLoading: isPackageLoading } = useAllPackagesQuery({
-    serviceId: serviceId,
+    serviceId: bookingData?.serviceId,
   });
+
+  const [trigger, { data: users, isLoading: isUserLoading }] =
+    useLazyAllUsersQuery();
 
   const allServices = useMemo(
     () => services?.data?.result as services[],
@@ -38,22 +48,30 @@ const ServiceInfo = ({
     [packages]
   );
 
-  const serviceInfoForm = useForm({
+  const allUsers = useMemo(() => users?.data?.result as users[], [users]);
+
+  const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      bookingType: BookingType.Package,
-      serviceId: undefined,
-      packageId: undefined,
+      customerId: bookingData?.customerId,
+      bookingType: bookingData?.bookingType,
+      serviceId: bookingData?.serviceId,
+      packageId: bookingData?.packageId,
     },
     onValuesChange: (values) => {
-      if (values.serviceId) {
-        setServiceId(values.serviceId);
-      }
+      setBookingData((prevState) => ({
+        ...prevState,
+        ...values,
+      }));
 
       if (values.bookingType === BookingType.Package && values.serviceId) {
         setShowPackage(true);
       } else {
         setShowPackage(false);
+        setBookingData((prevState) => ({
+          ...prevState,
+          packageId: undefined,
+        }));
       }
     },
 
@@ -63,12 +81,15 @@ const ServiceInfo = ({
         packageId:
           values.bookingType === BookingType.Package && packageId
             ? packageId
-            : null,
+            : undefined,
         ...rest,
       };
     },
 
     validate: {
+      customerId: (val) => {
+        return role !== Role.customer && !val ? "Select customer" : null;
+      },
       bookingType: (val) => {
         return !val ? "Select Booking Type" : null;
       },
@@ -85,30 +106,52 @@ const ServiceInfo = ({
     },
   });
 
-  const handleSubmitForms = (values: any) => {
-    console.log(values);
-    //save data and next state
-    nextStep();
-  };
-
-  serviceInfoForm.watch(
-    "serviceId",
-    ({ previousValue, value, touched, dirty }) => {
-      if (value !== previousValue) {
-        serviceInfoForm.setFieldValue("packageId", undefined);
-      }
+  form.watch("serviceId", ({ previousValue, value, touched, dirty }) => {
+    if (value !== previousValue) {
+      form.setFieldValue("packageId", undefined);
     }
-  );
+  });
+
+  useEffect(() => {
+    if (role !== Role.customer) {
+      trigger({ role: Role.customer });
+    }
+  }, [role, trigger]);
+
+  // useEffect(() => {
+  //   if (bookingData?.customerId) {
+  //     trigger({ id: bookingData.customerId });
+  //   }
+  // }, [bookingData, trigger]);
 
   return (
     <div>
-      <form
-        onSubmit={serviceInfoForm.onSubmit((values) =>
-          handleSubmitForms(values)
-        )}
-        className="my-5"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full lg:w-1/2">
+      <form onSubmit={form.onSubmit(() => nextStep())} className="mt-5">
+        <div className="grid grid-cols-1 gap-4 w-full lg:w-1/3">
+          {role !== Role.customer && (
+            <Select
+              withAsterisk
+              label="Select User"
+              data={allUsers?.map((e) => ({
+                label: `${e.name} - ${e.email}`,
+                value: e.id,
+              }))}
+              placeholder={isUserLoading ? "Loading..." : "Select User"}
+              checkIconPosition="right"
+              size="sm"
+              searchable
+              clearable
+              onSearchChange={(value) =>
+                trigger({ role: Role.customer, search: value })
+              }
+              nothingFoundMessage={
+                isUserLoading ? "Loading..." : "No data found!"
+              }
+              key={form.key("customerId")}
+              {...form.getInputProps("customerId")}
+            />
+          )}
+
           <Select
             withAsterisk
             label="Booking Type"
@@ -116,8 +159,8 @@ const ServiceInfo = ({
             defaultValue={BookingType.Package}
             checkIconPosition="right"
             size="sm"
-            key={serviceInfoForm.key("bookingType")}
-            {...serviceInfoForm.getInputProps("bookingType")}
+            key={form.key("bookingType")}
+            {...form.getInputProps("bookingType")}
           />
 
           <Select
@@ -135,11 +178,11 @@ const ServiceInfo = ({
             nothingFoundMessage={
               isServiceLoading ? "Loading..." : "No data found!"
             }
-            key={serviceInfoForm.key("serviceId")}
-            {...serviceInfoForm.getInputProps("serviceId")}
+            key={form.key("serviceId")}
+            {...form.getInputProps("serviceId")}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 w-full lg:w-1/2 mt-4">
+        <div className="grid grid-cols-1 gap-4 w-full lg:w-1/3 mt-4">
           {showPackage && (
             <Select
               withAsterisk
@@ -151,20 +194,28 @@ const ServiceInfo = ({
               placeholder={isPackageLoading ? "Loading..." : "Select Package"}
               checkIconPosition="right"
               size="sm"
+              searchable
+              clearable
               nothingFoundMessage={
                 isPackageLoading ? "Loading..." : "No data found!"
               }
-              key={serviceInfoForm.key("packageId")}
-              {...serviceInfoForm.getInputProps("packageId")}
+              key={form.key("packageId")}
+              {...form.getInputProps("packageId")}
             />
           )}
         </div>
         <Group
           justify="center"
           mt="xl"
-          className="w-full lg:w-1/2 flex justify-end"
+          className="w-full lg:w-1/3 flex justify-end"
         >
-          <Button color="#ff3f39" size="sm" radius="sm" type="submit">
+          <Button
+            color="#ff3f39"
+            size="sm"
+            radius="sm"
+            type="submit"
+            disabled={!form.isValid()}
+          >
             Next
           </Button>
         </Group>

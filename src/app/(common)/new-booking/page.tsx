@@ -17,16 +17,14 @@ const NewBookingPage = () => {
 
   const [bookingData, setBookingData] = useState<ICreateBookingType>();
 
-  const updateBookingData = () => {};
-
   const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
 
-  const handleSubmitForms = (values: any) => {
-    console.log(values);
+  const handleSubmitBooking = () => {
+    console.log(bookingData);
   };
 
   const routes = [
@@ -72,8 +70,8 @@ const NewBookingPage = () => {
               description="Booking type & service"
             >
               <ServiceInfo
-                active={active}
-                prevStep={prevStep}
+                bookingData={bookingData as ICreateBookingType}
+                setBookingData={setBookingData}
                 nextStep={nextStep}
               />
             </Stepper.Step>

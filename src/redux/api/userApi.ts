@@ -77,6 +77,7 @@ export const userApi = baseApi.injectEndpoints({
 export const {
   useCreateUserMutation,
   useAllUsersQuery,
+  useLazyAllUsersQuery,
   useUserProfileQuery,
   useUpdateProfileMutation,
   useUpdatePasswordMutation,
