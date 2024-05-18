@@ -76,7 +76,7 @@ export interface IBookingQueryType extends QueryType {
 
 export interface ICreateBookingType {
   bookingType?: BookingType;
-  customerId?: string;
+  userId?: string;
   serviceId?: string;
   packageId?: string;
   deliveryDate?: Date;
@@ -84,4 +84,5 @@ export interface ICreateBookingType {
   billingAddress?: string;
   paymentMethod?: PaymentMethod;
   remarks?: string;
+  totalCost?: number;
 }

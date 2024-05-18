@@ -17,6 +17,7 @@ const NewBookingPage = () => {
 
   const [bookingData, setBookingData] = useState<ICreateBookingType>({
     deliveryDate: addDays(new Date(), 1),
+    totalCost: 0,
   });
 
   const [active, setActive] = useState(0);

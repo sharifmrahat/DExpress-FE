@@ -59,6 +59,7 @@ export const {
   useAllPackagesQuery,
   useLazyAllPackagesQuery,
   useSinglePackageQuery,
+  useLazySinglePackageQuery,
   useUpdatePackageMutation,
   useDeletePackageMutation,
 } = packageAPI;

@@ -57,8 +57,11 @@ instance.interceptors.response.use(
     responseObject.statusCode !== 403 &&
       showNotification({
         type: "error",
-        title: "Error",
-        message: responseObject.message,
+        title:
+          responseObject?.errorMessages[0]?.message === responseObject?.message
+            ? "Error"
+            : responseObject?.message,
+        message: responseObject?.errorMessages[0]?.message,
       });
     // return responseObject;
     return Promise.reject(error);
