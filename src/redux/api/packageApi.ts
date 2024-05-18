@@ -57,6 +57,7 @@ export const packageAPI = baseApi.injectEndpoints({
 export const {
   useCreatePackageMutation,
   useAllPackagesQuery,
+  useLazyAllPackagesQuery,
   useSinglePackageQuery,
   useUpdatePackageMutation,
   useDeletePackageMutation,

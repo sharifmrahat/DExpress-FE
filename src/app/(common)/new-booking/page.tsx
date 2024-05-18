@@ -9,13 +9,16 @@ import { ICreateBookingType } from "@/types";
 import { Breadcrumbs, Button, Group, Stepper, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { BookingType, Role } from "@prisma/client";
+import { addDays } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
 
 const NewBookingPage = () => {
   const { role } = getUserInfo() as any;
 
-  const [bookingData, setBookingData] = useState<ICreateBookingType>();
+  const [bookingData, setBookingData] = useState<ICreateBookingType>({
+    deliveryDate: addDays(new Date(), 1),
+  });
 
   const [active, setActive] = useState(0);
   const nextStep = () =>
@@ -79,7 +82,12 @@ const NewBookingPage = () => {
               label="Delivery Details"
               description="Delivery address & date"
             >
-              <DeliveryDetails />
+              <DeliveryDetails
+                bookingData={bookingData as ICreateBookingType}
+                setBookingData={setBookingData}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
             </Stepper.Step>
             <Stepper.Step
               label="Payment Method"

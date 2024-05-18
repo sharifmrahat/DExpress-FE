@@ -2,7 +2,7 @@
 
 import { useAllPackagesQuery } from "@/redux/api/packageApi";
 import { useAllServicesQuery } from "@/redux/api/serviceAPI";
-import { useAllUsersQuery, useLazyAllUsersQuery } from "@/redux/api/userApi";
+import { useLazyAllUsersQuery } from "@/redux/api/userApi";
 import { getUserInfo } from "@/services/auth.service";
 import { ICreateBookingType } from "@/types";
 import { Button, Group, Select } from "@mantine/core";
@@ -16,7 +16,7 @@ const ServiceInfo = ({
   nextStep,
 }: {
   bookingData: Partial<ICreateBookingType>;
-  setBookingData: Dispatch<SetStateAction<ICreateBookingType | undefined>>;
+  setBookingData: Dispatch<SetStateAction<ICreateBookingType>>;
   nextStep: () => void;
 }) => {
   const [showPackage, setShowPackage] = useState<boolean>(
@@ -35,7 +35,7 @@ const ServiceInfo = ({
     serviceId: bookingData?.serviceId,
   });
 
-  const [trigger, { data: users, isLoading: isUserLoading }] =
+  const [trigger, { data: users, isLoading: isUserLoading, isSuccess }] =
     useLazyAllUsersQuery();
 
   const allServices = useMemo(
@@ -128,7 +128,7 @@ const ServiceInfo = ({
     <div>
       <form onSubmit={form.onSubmit(() => nextStep())} className="mt-5">
         <div className="grid grid-cols-1 gap-4 w-full lg:w-1/3">
-          {role !== Role.customer && (
+          {role !== Role.customer && isSuccess && (
             <Select
               withAsterisk
               label="Select User"
