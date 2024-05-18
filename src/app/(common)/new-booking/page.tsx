@@ -2,13 +2,12 @@
 import SectionHeading from "@/components/common/SectionHeading";
 import CompleteBooking from "@/components/dashboard/new-booking/CompleteBooking";
 import DeliveryDetails from "@/components/dashboard/new-booking/DeliveryDetails";
-import PaymentMethod from "@/components/dashboard/new-booking/PaymentMethod";
+import PaymentInfo from "@/components/dashboard/new-booking/PaymentMethod";
 import ServiceInfo from "@/components/dashboard/new-booking/ServiceInfo";
 import { getUserInfo } from "@/services/auth.service";
 import { ICreateBookingType } from "@/types";
-import { Breadcrumbs, Button, Group, Stepper, Text } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { BookingType, Role } from "@prisma/client";
+import { Breadcrumbs, Stepper, Text } from "@mantine/core";
+import { Role } from "@prisma/client";
 import { addDays } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
@@ -25,10 +24,6 @@ const NewBookingPage = () => {
     setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
-
-  const handleSubmitBooking = () => {
-    console.log(bookingData);
-  };
 
   const routes = [
     { title: "Home", href: "/" },
@@ -90,42 +85,23 @@ const NewBookingPage = () => {
               />
             </Stepper.Step>
             <Stepper.Step
-              label="Payment Method"
-              description="Payment method & costing"
+              label="Payment Info"
+              description="Payment info & remarks"
             >
-              <PaymentMethod />
+              <PaymentInfo
+                bookingData={bookingData as ICreateBookingType}
+                setBookingData={setBookingData}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
             </Stepper.Step>
             <Stepper.Completed>
-              <CompleteBooking />
+              <CompleteBooking
+                bookingData={bookingData as ICreateBookingType}
+                prevStep={prevStep}
+              />
             </Stepper.Completed>
           </Stepper>
-
-          {/* <Group justify="center" mt="xl">
-            <Button
-              variant="light"
-              onClick={prevStep}
-              color="#0f1b24"
-              size="sm"
-              radius="sm"
-            >
-              Back
-            </Button>
-            {active !== 3 && (
-              <Button onClick={nextStep} color="#ff3f39" size="sm" radius="sm">
-                Next
-              </Button>
-            )}
-            {active === 3 && (
-              <>
-                <Button variant="light" color="#ff3f39" size="sm" radius="sm">
-                  Save as Draft
-                </Button>
-                <Button color="#ff3f39" size="sm" radius="sm">
-                  Confirm Booking
-                </Button>
-              </>
-            )}
-          </Group> */}
         </div>
       </div>
     </div>

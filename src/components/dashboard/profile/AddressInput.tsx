@@ -1,8 +1,6 @@
 "use client";
-
-import { Button, Group, Textarea } from "@mantine/core";
+import { Textarea } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
-
 interface AddressInputProps {
   address: string;
   index: number;
@@ -28,6 +26,7 @@ const AddressInput = ({
           value={address}
           onChange={(e) => onAddressChange(index, e.target.value)}
           disabled={disabled}
+          resize="vertical"
         />
       </div>
       {total > 1 && !disabled && (
