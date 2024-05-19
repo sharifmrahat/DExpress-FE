@@ -61,9 +61,7 @@ const PaymentInfo = ({
 
     validate: {
       totalCost: (val) => {
-        return role !== Role.customer && val! <= 0
-          ? "Estimate total cost"
-          : null;
+        return val! <= 0 ? "Estimate total cost" : null;
       },
       paymentMethod: (val) => {
         return !val ? "Select Payment Method" : null;
@@ -78,6 +76,10 @@ const PaymentInfo = ({
     ) {
       triggerPackage(bookingData?.packageId);
       form.setFieldValue("totalCost", selectedPackage?.price);
+      setBookingData((prevState) => ({
+        ...prevState,
+        totalCost: form.values.totalCost,
+      }));
     }
   }, [triggerPackage, bookingData?.packageId, bookingData?.bookingType]);
 
@@ -89,7 +91,11 @@ const PaymentInfo = ({
             bookingData?.bookingType === BookingType?.Custom) && (
             <NumberInput
               withAsterisk
-              label="Total Cost"
+              label={
+                bookingData?.bookingType === BookingType?.Package
+                  ? "Package Price"
+                  : "Service Price (Estimated)"
+              }
               size="sm"
               placeholder="Total Costing"
               value={
@@ -97,10 +103,7 @@ const PaymentInfo = ({
                   ? selectedPackage?.price
                   : bookingData?.totalCost
               }
-              disabled={
-                bookingData?.bookingType === BookingType?.Package ||
-                role === Role.customer
-              }
+              disabled={bookingData?.bookingType === BookingType?.Package}
               prefix="$"
               allowNegative={false}
               decimalScale={2}

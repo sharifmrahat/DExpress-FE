@@ -4,7 +4,12 @@ import {
   useCreateBookingMutation,
   useCreateQuotationMutation,
 } from "@/redux/api/bookingApi";
-import { useUserProfileQuery } from "@/redux/api/userApi";
+import { useLazySinglePackageQuery } from "@/redux/api/packageApi";
+import { useSingleServiceQuery } from "@/redux/api/serviceAPI";
+import {
+  useLazySingleUserQuery,
+  useUserProfileQuery,
+} from "@/redux/api/userApi";
 import { getUserInfo } from "@/services/auth.service";
 import { ICreateBookingType } from "@/types";
 import formatCurrency from "@/utils/formatCurrency";
@@ -27,11 +32,14 @@ import {
   BookingType,
   PaymentMethod,
   Role,
+  packages,
+  services,
   users,
 } from "@prisma/client";
 import { format } from "date-fns";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 const CompleteBooking = ({
   bookingData,
@@ -46,7 +54,39 @@ const CompleteBooking = ({
 
   const { data, isLoading, isSuccess } = useUserProfileQuery({});
 
+  const { data: service, isLoading: isServiceLoading } = useSingleServiceQuery(
+    bookingData.serviceId
+  );
+
+  const [
+    triggerPackage,
+    {
+      data: singlePackage,
+      isLoading: isPackageLoading,
+      isSuccess: successPackage,
+    },
+  ] = useLazySinglePackageQuery();
+
+  const [
+    triggerUser,
+    { data: singleUser, isLoading: isUserLoading, isSuccess: successUser },
+  ] = useLazySingleUserQuery();
+
   const profile = useMemo(() => data?.data as users, [data]);
+
+  const customer = useMemo(() => singleUser?.data as users, [singleUser]);
+
+  const selectedService = useMemo(() => service?.data as services, [service]);
+
+  const selectedPackage = useMemo(
+    () => singlePackage?.data as packages,
+    [singlePackage]
+  );
+
+  const totalCost = useMemo(
+    () => selectedPackage?.price ?? bookingData?.totalCost,
+    [bookingData?.totalCost, selectedPackage?.price]
+  );
 
   const [createQuotation, { isLoading: isQuotationLoading }] =
     useCreateQuotationMutation();
@@ -84,6 +124,21 @@ const CompleteBooking = ({
       toggle();
     }
   };
+
+  useEffect(() => {
+    if (
+      bookingData.bookingType === BookingType.Package &&
+      bookingData?.packageId
+    ) {
+      triggerPackage(bookingData.packageId);
+    }
+  }, [bookingData.bookingType, bookingData.packageId, triggerPackage]);
+
+  useEffect(() => {
+    if (role !== Role.customer && bookingData?.userId) {
+      triggerUser(bookingData.userId);
+    }
+  }, [bookingData.userId, role, triggerUser]);
   return (
     <>
       <Box pos="relative" className="w-full">
@@ -125,11 +180,25 @@ const CompleteBooking = ({
                 </Table.Td>
                 <Table.Td>
                   <div className="text-slate-700 flex flex-col gap-1">
-                    <p>Name: {profile?.name}</p>
-                    <p>Email: {profile?.email}</p>
+                    <p>
+                      Name:{" "}
+                      {role !== Role?.customer ? customer?.name : profile?.name}
+                    </p>
+                    <p>
+                      Email:{" "}
+                      {role !== Role?.customer
+                        ? customer?.email
+                        : profile?.email}
+                    </p>
                     <p>
                       Contact No:{" "}
-                      {profile?.contactNo ? profile?.contactNo : "N/A"}
+                      {role !== Role?.customer
+                        ? customer?.contactNo
+                          ? customer?.contactNo
+                          : "N/A"
+                        : profile?.contactNo
+                        ? profile?.contactNo
+                        : "N/A"}
                     </p>
                   </div>
                 </Table.Td>
@@ -139,17 +208,38 @@ const CompleteBooking = ({
                   <p className="font-semibold">Service</p>
                 </Table.Td>
                 <Table.Td>
-                  <p className=" text-slate-700">Service Title with link</p>
+                  <Link
+                    href={`services/${selectedService?.id}`}
+                    className=" text-blue-600 hover:underline"
+                    target="_blank"
+                  >
+                    {selectedService?.title}
+                  </Link>
+                  {isServiceLoading && (
+                    <p className="text-slate-700">Loading...</p>
+                  )}
                 </Table.Td>
               </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
-                  <p className="font-semibold">Package</p>
-                </Table.Td>
-                <Table.Td>
-                  <p className=" text-slate-700">Package Title with link</p>
-                </Table.Td>
-              </Table.Tr>
+              {bookingData?.bookingType === BookingType?.Package && (
+                <Table.Tr>
+                  <Table.Td>
+                    <p className="font-semibold">Package</p>
+                  </Table.Td>
+                  <Table.Td>
+                    <Link
+                      href={`packages/${selectedService?.id}`}
+                      className=" text-blue-600 hover:underline"
+                      target="_blank"
+                    >
+                      {selectedPackage?.title}
+                    </Link>
+                    {isPackageLoading && (
+                      <p className="text-slate-700">Loading...</p>
+                    )}
+                  </Table.Td>
+                </Table.Tr>
+              )}
+
               <Table.Tr>
                 <Table.Td>
                   <p className="font-semibold">Shipping Address</p>
@@ -214,7 +304,9 @@ const CompleteBooking = ({
                         <div className=" text-slate-700">
                           Total:{" "}
                           <span className="font-semibold">
-                            {formatCurrency(bookingData?.totalCost ?? 0.0)}
+                            {formatCurrency(totalCost)}{" "}
+                            {bookingData?.bookingType === BookingType.Custom &&
+                              "(Pending for review)"}
                           </span>
                         </div>
                       </Table.Td>
@@ -234,7 +326,7 @@ const CompleteBooking = ({
                         <div className=" text-slate-700">
                           Due:{" "}
                           <span className="font-semibold text-primary">
-                            {formatCurrency(bookingData?.totalCost ?? 0.0)}
+                            {formatCurrency(totalCost)}
                           </span>
                         </div>
                       </Table.Td>
@@ -268,6 +360,7 @@ const CompleteBooking = ({
             color="#ff3f39"
             size="sm"
             radius="sm"
+            disabled={bookingData?.bookingType === BookingType?.Custom}
             onClick={() => submitBooking()}
           >
             Confirm Booking

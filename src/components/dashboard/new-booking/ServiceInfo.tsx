@@ -123,12 +123,6 @@ const ServiceInfo = ({
     }
   }, [role, trigger]);
 
-  // useEffect(() => {
-  //   if (bookingData?.customerId) {
-  //     trigger({ id: bookingData.customerId });
-  //   }
-  // }, [bookingData, trigger]);
-
   return (
     <>
       <Box pos="relative" className="w-full lg:w-1/3">
@@ -149,12 +143,12 @@ const ServiceInfo = ({
             {role !== Role.customer && isSuccess && (
               <Select
                 withAsterisk
-                label="Select User"
+                label="Select Customer"
                 data={allUsers?.map((e) => ({
                   label: `${e.name} - ${e.email}`,
                   value: e.id,
                 }))}
-                placeholder={isUserLoading ? "Loading..." : "Select User"}
+                placeholder={isUserLoading ? "Loading..." : "Select Customer"}
                 checkIconPosition="right"
                 size="sm"
                 searchable
