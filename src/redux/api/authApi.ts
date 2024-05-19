@@ -24,6 +24,19 @@ export const authApi = baseApi.injectEndpoints({
         data: socialLoginData,
       }),
     }),
+    verifyEmail: build.mutation({
+      query: (data) => ({
+        url: `${AUTH_URL}/verify-email`,
+        method: "POST",
+        data: data,
+      }),
+    }),
+    sendOTP: build.query({
+      query: (data) => ({
+        url: `${AUTH_URL}/send-otp`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -31,4 +44,6 @@ export const {
   useUserSignupMutation,
   useUserLoginMutation,
   useUserSocialLoginMutation,
+  useVerifyEmailMutation,
+  useSendOTPQuery,
 } = authApi;
