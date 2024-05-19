@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
@@ -6,6 +7,10 @@ import SkeletonLoader from "@/components/common/SkeletonLoader";
 import Spinner from "@/components/common/Spinner";
 import AddressInput from "@/components/dashboard/profile/AddressInput";
 import { authKey } from "@/constants/storageKey";
+import {
+  useSendOTPMutation,
+  useVerifyEmailMutation,
+} from "@/redux/api/authApi";
 import {
   useUpdatePasswordMutation,
   useUpdateProfileMutation,
@@ -21,21 +26,17 @@ import {
   Button,
   Group,
   LoadingOverlay,
+  Modal,
   PasswordInput,
   Skeleton,
   Tabs,
   Text,
   TextInput,
-  Textarea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { users } from "@prisma/client";
-import {
-  IconPlus,
-  IconSquarePlus,
-  IconSquareRoundedPlus,
-} from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -53,7 +54,14 @@ const ProfilePage = () => {
   const [updatePassword, { isLoading: loadingUpdatePassword }] =
     useUpdatePasswordMutation();
 
+  const [verifyEmail, { isLoading: loadingVerifyEmail }] =
+    useVerifyEmailMutation();
+
+  const [sendOTP, { isLoading: loadingSendOtp }] = useSendOTPMutation();
+
   const profile = useMemo(() => data?.data as users, [data]);
+
+  const [openModal, setOpenModal] = useState<boolean>(!profile?.isVerified);
 
   const router = useRouter();
 
@@ -87,6 +95,17 @@ const ProfilePage = () => {
         val.length < 8 ? "Password must be minimum 8 character" : null,
       confirmNewPassword: (val, values) =>
         val !== values.newPassword ? "Password not matched" : null,
+    },
+  });
+
+  const verifyEmailForm = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      currentOtp: undefined,
+    },
+
+    validate: {
+      currentOtp: (value: string) => (value.length < 6 ? "Invalid OTP" : null),
     },
   });
 
@@ -170,6 +189,38 @@ const ProfilePage = () => {
     }
   };
 
+  const submitVerifyEmail = async (data: { currentOtp?: string }) => {
+    try {
+      const res = await verifyEmail({ ...data }).unwrap();
+      if (res?.success) {
+        refetch();
+        showNotification({
+          type: "success",
+          title: "Success",
+          message: res.message,
+        });
+        setOpenModal(false);
+      }
+    } catch (err: any) {
+      toggle();
+    }
+  };
+
+  const handleSendOtp = async () => {
+    try {
+      const res = await sendOTP({}).unwrap();
+      if (res?.success) {
+        showNotification({
+          type: "success",
+          title: "Success",
+          message: res.message,
+        });
+      }
+    } catch (error) {
+      toggle();
+    }
+  };
+
   const routes = [
     { title: "Home", href: "/" },
     { title: "Dashboard", href: "/overview" },
@@ -212,12 +263,24 @@ const ProfilePage = () => {
                 <Text className="text-2xl lg:text-3xl font-semibold">
                   {profile?.name}
                 </Text>
-                <Badge variant="light" color="#ff3f39" size="md">
-                  {profile?.role}
-                </Badge>
-                {/* <Badge color={profile?.isVerified ? "teal" : "dark"}>
-              {profile?.isVerified ? "Verified" : "Not Verified"}
-            </Badge> */}
+                <div className="flex flex-row justify-start items-center gap-4">
+                  <Badge variant="light" color="#ff3f39" size="md">
+                    {profile?.role}
+                  </Badge>
+                  {profile.isVerified ? (
+                    <Badge color="teal" size="md">
+                      Verified
+                    </Badge>
+                  ) : (
+                    <Badge
+                      color="#ff3f39"
+                      className="cursor-pointer"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Click to verify
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -478,6 +541,75 @@ const ProfilePage = () => {
         <div className="flex justify-start items-start mt-0 lg:mt-10 mx-0">
           <DataNotFound description="No profile data is found" />
         </div>
+      )}
+
+      {profile && !profile?.isVerified && (
+        <Modal
+          opened={openModal}
+          onClose={() => setOpenModal(false)}
+          centered
+          title="Verify Email"
+          withCloseButton={false}
+        >
+          <Text size="sm">
+            Please check your email we've sent OTP to {profile?.email}
+          </Text>
+
+          <Box pos="relative">
+            <LoadingOverlay
+              className="bg-transparent"
+              visible={(loadingVerifyEmail || loadingSendOtp) ?? visible}
+              zIndex={1000}
+              overlayProps={{ blur: 0 }}
+              loaderProps={{
+                children: (
+                  <div className="w-fit">
+                    <Spinner />
+                  </div>
+                ),
+              }}
+            />
+            <form
+              className="mt-4"
+              onSubmit={verifyEmailForm.onSubmit((values) => {
+                submitVerifyEmail({
+                  currentOtp: values.currentOtp,
+                });
+              })}
+            >
+              <TextInput
+                withAsterisk
+                label="OTP"
+                placeholder="Enter OTP"
+                key={verifyEmailForm.key("currentOtp")}
+                {...verifyEmailForm.getInputProps("currentOtp")}
+              />
+              <p className="text-sm text-gray-500 mt-2">
+                Didn't get OTP?{" "}
+                <span
+                  className="text-primary cursor-pointer hover:underline"
+                  onClick={() => handleSendOtp()}
+                >
+                  Send again
+                </span>
+              </p>
+
+              <div className="flex flex-row justify-end items-end gap-2 mt-5">
+                <Button
+                  color="gray"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setOpenModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button color="red" type="submit" size="sm">
+                  Verify
+                </Button>
+              </div>
+            </form>
+          </Box>
+        </Modal>
       )}
     </div>
   );

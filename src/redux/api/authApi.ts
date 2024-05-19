@@ -31,10 +31,10 @@ export const authApi = baseApi.injectEndpoints({
         data: data,
       }),
     }),
-    sendOTP: build.query({
-      query: (data) => ({
+    sendOTP: build.mutation({
+      query: () => ({
         url: `${AUTH_URL}/send-otp`,
-        method: "GET",
+        method: "POST",
       }),
     }),
   }),
@@ -45,5 +45,5 @@ export const {
   useUserLoginMutation,
   useUserSocialLoginMutation,
   useVerifyEmailMutation,
-  useSendOTPQuery,
+  useSendOTPMutation,
 } = authApi;
