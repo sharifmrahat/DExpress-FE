@@ -16,7 +16,8 @@ import {
   useUpdateProfileMutation,
   useUserProfileQuery,
 } from "@/redux/api/userApi";
-import { removeUserInfo } from "@/services/auth.service";
+import { getUserInfo, removeUserInfo } from "@/services/auth.service";
+import getChangedFields from "@/utils/getChangedValues";
 import { showNotification } from "@/utils/showNotification";
 import {
   Avatar,
@@ -64,6 +65,7 @@ const ProfilePage = () => {
   const [openModal, setOpenModal] = useState<boolean>(!profile?.isVerified);
 
   const router = useRouter();
+  const { email } = getUserInfo() as any;
 
   const form = useForm({
     mode: "uncontrolled",
@@ -139,12 +141,15 @@ const ProfilePage = () => {
     }
   }, [profile]);
 
-  const submitUpdate = async (updatedData: {
-    name?: string;
-    imageUrl?: string;
-    contactNo?: string;
-    addresses?: string[];
-  }) => {
+  const submitUpdate = async (
+    updatedData: Partial<{
+      name: string;
+      email: string;
+      imageUrl: string | null;
+      contactNo: string | null;
+      addresses: string[];
+    }>
+  ) => {
     try {
       const res = await updateProfile({ ...updatedData }).unwrap();
       if (res?.success) {
@@ -155,6 +160,15 @@ const ProfilePage = () => {
           title: "Update success",
           message: res.message,
         });
+      }
+      if (res?.data?.email !== email) {
+        showNotification({
+          type: "info",
+          title: "Login again",
+          message: "Please login with updated email",
+        });
+        removeUserInfo(authKey);
+        router.push("/login");
       }
     } catch (err: any) {
       toggle();
@@ -332,21 +346,21 @@ const ProfilePage = () => {
                   <form
                     className="flex flex-col gap-3"
                     onSubmit={form.onSubmit((values) => {
-                      if (
-                        values.name?.trim() === profile.name &&
-                        values.imageUrl?.trim() === profile.imageUrl &&
-                        values.contactNo?.trim() === profile.contactNo &&
-                        addresses.length === profile?.addresses?.length &&
-                        addresses.every((e) => profile?.addresses?.includes(e))
-                      ) {
+                      const data = getChangedFields(
+                        {
+                          name: profile?.name,
+                          email: profile?.email,
+                          imageUrl: profile?.imageUrl,
+                          contactNo: profile?.contactNo,
+                          addresses: profile?.addresses,
+                        },
+                        { ...values, addresses }
+                      );
+                      if (!Object.keys(data)?.length) {
                         return;
+                      } else {
+                        submitUpdate(data);
                       }
-                      submitUpdate({
-                        name: values?.name,
-                        imageUrl: values?.imageUrl ?? "",
-                        contactNo: values?.contactNo ?? "",
-                        addresses,
-                      });
                     })}
                   >
                     <TextInput
@@ -368,7 +382,7 @@ const ProfilePage = () => {
                       placeholder="Your Email"
                       key={form.key("email")}
                       {...form.getInputProps("email")}
-                      disabled
+                      disabled={!editable}
                     />
                     <TextInput
                       label="Contact No."
