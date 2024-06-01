@@ -4,9 +4,9 @@ import {
   IconCarambola,
   IconChartBar,
   IconChecklist,
-  IconCirclePlus,
   IconFolder,
   IconMessage,
+  IconSquareRoundedPlus,
   IconUserSquareRounded,
   IconUsers,
 } from "@tabler/icons-react";
@@ -22,7 +22,7 @@ export const SidebarItems = (role: string) => {
       id: 1,
       name: "New Booking",
       href: "/new-booking",
-      icon: IconCirclePlus,
+      icon: IconSquareRoundedPlus,
     },
     {
       id: 2,
@@ -61,7 +61,7 @@ export const SidebarItems = (role: string) => {
       id: 1,
       name: "Create Quotation",
       href: "/new-booking",
-      icon: IconCirclePlus,
+      icon: IconSquareRoundedPlus,
     },
     {
       id: 2,

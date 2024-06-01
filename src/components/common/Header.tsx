@@ -24,9 +24,9 @@ import { useDisclosure } from "@mantine/hooks";
 import Spinner from "./Spinner";
 import dexpressLogo from "@/assets/images/dexpress.png";
 import {
-  IconCirclePlus,
   IconLayoutDashboard,
   IconLogout,
+  IconSquareRoundedPlus,
   IconUserSquareRounded,
 } from "@tabler/icons-react";
 
@@ -176,7 +176,7 @@ export default function Header() {
                   <Link href="/new-booking">
                     <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
                       <div className="flex flex-row justify-start items-center gap-2">
-                        <IconCirclePlus size={20} />
+                        <IconSquareRoundedPlus size={20} />
                         <p>
                           {profile.role === Role.customer
                             ? "New Booking"
@@ -282,7 +282,7 @@ export default function Header() {
                   <Link href="/new-booking">
                     <Menu.Item className="hover:text-primary text-secondary hover:font-semibold">
                       <div className="flex flex-row justify-start items-center gap-2 text-sm">
-                        <IconCirclePlus size={18} />
+                        <IconSquareRoundedPlus size={18} />
                         <p>
                           {profile.role === Role.customer
                             ? "New Booking"
